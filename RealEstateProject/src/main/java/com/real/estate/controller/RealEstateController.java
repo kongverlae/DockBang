@@ -18,6 +18,26 @@ public class RealEstateController {
 		// view 페이지로 반환
 		return modelAndView;
 	}
+	@RequestMapping("/page_main.do")
+	ModelAndView page_main() {
+		
+		// view(.jsp) 설정
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.setViewName("page_main");
+		
+		// view 페이지로 반환
+		return modelAndView;
+	}
+	@RequestMapping("/page_search.do")
+	ModelAndView page_search() {
+		
+		// view(.jsp) 설정
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.setViewName("page_search");
+		
+		// view 페이지로 반환
+		return modelAndView;
+	}
 	
 	
 }

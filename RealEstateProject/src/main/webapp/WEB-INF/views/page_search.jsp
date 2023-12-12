@@ -1,21 +1,23 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta name="description" content="">
-	<meta name="author" content="">
-	<title>독방</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="">
+<meta name="author" content="">
+<title>독방</title>
 
-	<!-- CSS FILES -->        
-	<link rel="preconnect" href="https://fonts.googleapis.com">
-	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-	<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&family=Open+Sans&display=swap" rel="stylesheet">
-	<link href="css/bootstrap.min.css" rel="stylesheet">
-	<link href="css/bootstrap-icons.css" rel="stylesheet">
-	<link href="css/templatemo-topic-listing.css" rel="stylesheet">   
+<!-- CSS FILES -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link
+	href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&family=Open+Sans&display=swap"
+	rel="stylesheet">
+<link href="css/bootstrap.min.css" rel="stylesheet">
+<link href="css/bootstrap-icons.css" rel="stylesheet">
+<link href="css/templatemo-topic-listing.css" rel="stylesheet">
 </head>
 
 <body>
@@ -73,64 +75,48 @@
 		</nav>
 		<!-- nav 종료 -->
 
+
 		<section
-			class="hero-section d-flex justify-content-center align-items-center"
-			id="section_1">
+			class="hero-section justify-content-center align-items-center">
 			<div class="container">
 				<div class="row">
-					<div class="col-lg-8 col-12 mx-auto">
-						<!-- 제목 -->
-						<h1 class="text-white text-center">독방</h1>
-						<!-- 부제목 -->
-						<h6 class="text-center">원하는 부동산을 더 쉽게 찾으세요</h6>
+					<div class="mx-auto">
+
 						<form method="get" class="custom-form mt-4 pt-2 mb-lg-0 mb-5"
 							role="search" action="page_search.do">
 							<div class="input-group input-group-lg">
 								<span class="input-group-text bi-search" id="basic-addon1">
+
 								</span> <input name="keyword" type="search" class="form-control"
 									id="keyword" placeholder="수원시, 장안구, 정자동 등 주소 입력"
 									aria-label="Search">
+
 								<button type="submit" class="form-control">Search</button>
 							</div>
 						</form>
 					</div>
-
 				</div>
 			</div>
+	
 		</section>
-
-
-		<section class="featured-section">
-			<div class="container">
-				<div class="row justify-content-center">
-
-					<!-- 설문조사 col-lg-8 이부분이 가로 -->
-					<!--  -->
-					<!-- <div class="col-lg-4 col-12 mb-4 mb-lg-0"> -->
-					<div class="col-lg-8 col-12 mb-4 mb-lg-0">
-						<div class="custom-block bg-white shadow-lg">
-							<a href="topics-detail.html">
-								<div class="d-flex">
-									<div>
-										<h5 class="mb-2">나만의 집 찾기</h5>
-										<p class="mb-0">간단한 설문을 통해 원하는 지역과 집을 편하게 찾으세요.</p>
-									</div>									<!-- 숫자 뱃지 -->
-									<!-- <span class="badge bg-design rounded-pill ms-auto">14</span> -->
-								</div> <img src="images/topics/undraw_Remote_design_team_re_urdx.png"
-								class="custom-block-image img-fluid" alt="">
-							</a>
-						</div>
-					</div>
-				</div>
-			</div>
-		</section>
-
+		
+		<div class="row">
+			<section class="section" id="section-3" >
+				<div id="map" style="width: 100%; height: 300px; margin: auto"></div>
+				<code id="snippet" class="snippet"></code>
+			</section>
+		</div>
+		<!-- 각자 발급받은 Client ID 값 넣기 -->
+		<script type="text/javascript"
+			src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=0xkngoqc6q"></script>
+		<script id="code">
+			var mapDiv = document.getElementById('map');
+			var map = new naver.maps.Map(mapDiv);
+		</script>
+		
+	
 
 	</main>
-	<!-- <hr />
-        여까지 메인
-        <hr /> -->
-
 	<footer class="site-footer section-padding">
 		<div class="container">
 			<div class="row">
@@ -203,7 +189,7 @@
 	<script src="js/jquery.min.js"></script>
 	<script src="js/bootstrap.bundle.min.js"></script>
 	<script src="js/jquery.sticky.js"></script>
-	<script src="js/click-scroll.js"></script>
 	<script src="js/custom.js"></script>
+
 </body>
 </html>
