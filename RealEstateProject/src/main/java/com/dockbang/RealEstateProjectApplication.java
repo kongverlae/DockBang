@@ -1,4 +1,4 @@
-package com.real.estate;
+package com.dockbang;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

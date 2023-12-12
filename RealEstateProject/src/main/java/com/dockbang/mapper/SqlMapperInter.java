@@ -1,4 +1,4 @@
-package com.real.estate.mapper;
+package com.dockbang.mapper;
 
 import java.util.List;
 

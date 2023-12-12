@@ -1,4 +1,4 @@
-package com.real.estate.controller;
+package com.dockbang.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
