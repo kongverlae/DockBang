@@ -8,7 +8,7 @@ import org.springframework.web.servlet.ModelAndView;
 public class RealEstateController {
 	// 컨트롤러 템플릿
 	// 반환형: ModelAndView
-	@RequestMapping("")
+	@RequestMapping("/index.do")
 	ModelAndView index() {
 		
 		// view(.jsp) 설정
