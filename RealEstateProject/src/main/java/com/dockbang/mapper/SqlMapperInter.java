@@ -15,13 +15,8 @@ public interface SqlMapperInter {
 //	MyBatis - annotation Guide
 	
 	
-	
-//	DAO에서 @Autowired 이용하여 주입받아 사용할 것
-	
-//	Ex
-//	@Autowired;
-//	private SqlMapperInter inter;
-	
+//	DAO / Mapper 이용시 반드시 @Autowired 처리 되있는 변수를 사용할 것 (new ~~ 생성 X)
+
 	
 	
 //	annotation으로 dml문 지정 후 sql문 작성
