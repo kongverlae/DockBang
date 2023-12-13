@@ -39,5 +39,28 @@ public class RealEstateController {
 		return modelAndView;
 	}
 	
+	@RequestMapping("/page_login.do")
+	ModelAndView page_login() {
+		
+		// view(.jsp) 설정
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.setViewName("page_login");
+		
+		// view 페이지로 반환
+		return modelAndView;
+	}
+	
+	
+	@RequestMapping("/page_signup.do")
+	ModelAndView page_signup() {
+		
+		// view(.jsp) 설정
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.setViewName("page_signup");
+		
+		// view 페이지로 반환
+		return modelAndView;
+	}
+	
 	
 }

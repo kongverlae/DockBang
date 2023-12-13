@@ -61,7 +61,7 @@
 							data-bs-toggle="dropdown" aria-expanded="false"></button>
 
 						<ul class="dropdown-menu">
-							<li><button class="dropdown-item" type="button">로그인</button></li>
+							<li><button class="dropdown-item" type="button" onclick="location.href='page_login.do'">로그인</button></li>
 
 							<li><button class="dropdown-item" type="button">회원가입</button></li>
 						</ul>
