@@ -24,43 +24,6 @@
 
 	<!-- page content -->
 	<main>
-			<section
-			class="hero-section justify-content-center align-items-center">
-			<div class="container">
-				<div class="row">
-					<div class="mx-auto">
-
-						<form method="get" class="custom-form mt-4 pt-2 mb-lg-0 mb-5"
-							role="search" action="page_search.do">
-							<div class="input-group input-group-lg">
-								<span class="input-group-text bi-search" id="basic-addon1">
-
-								</span> <input name="keyword" type="search" class="form-control"
-									id="keyword" placeholder="수원시, 장안구, 정자동 등 주소 입력"
-									aria-label="Search">
-
-								<button type="submit" class="form-control">Search</button>
-							</div>
-						</form>
-					</div>
-				</div>
-			</div>
-	
-		</section>
-		
-		<div class="row">
-			<section class="section" id="section-3" >
-				<div id="map" style="width: 100%; height: 300px; margin: auto"></div>
-				<code id="snippet" class="snippet"></code>
-			</section>
-		</div>
-		<!-- 각자 발급받은 Client ID 값 넣기 -->
-		<script type="text/javascript"
-			src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=0xkngoqc6q"></script>
-		<script id="code">
-			var mapDiv = document.getElementById('map');
-			var map = new naver.maps.Map(mapDiv);
-		</script>
 	</main>	
 
 	<!-- footer page include -->
