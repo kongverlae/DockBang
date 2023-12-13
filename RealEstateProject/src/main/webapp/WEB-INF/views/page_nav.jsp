@@ -42,8 +42,8 @@
 				<ul class="dropdown-menu">
 					<li><button class="dropdown-item" type="button" onclick="window.location.href='page_memberLogin.do'">로그인</button></li>
 					<!-- <li><button class="dropdown-item" type="button" onclick href="page_memberLogin.do">로그인</button></li> -->
-
-					<li><button class="dropdown-item" type="button">회원가입</button></li>
+					<li><button class="dropdown-item" type="button" onclick="window.location.href='page_memberRegister.do'">회원가입</button></li>
+					<!-- <li><button class="dropdown-item" type="button">회원가입</button></li> -->
 				</ul>
 			</div>
 
