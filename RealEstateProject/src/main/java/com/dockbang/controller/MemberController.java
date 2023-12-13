@@ -1,6 +1,7 @@
 package com.dockbang.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -17,6 +18,12 @@ public class MemberController {
 	SaleDAO sdao;
 	@Autowired
 	BoardDAO bdao;
+	
+	// kakao api 관리자 키 
+	@Value("${kakao.client_id}")
+    private String client_id;
+    @Value("${kakao.redirect_uri}")
+    private String redirect_uri;
 
 	@RequestMapping("/page_memberLogin.do")
 	ModelAndView page_memberLogin() {
@@ -24,6 +31,11 @@ public class MemberController {
 		// view(.jsp) 설정
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.setViewName("page_memberLogin");
+		
+		// kakao 로그인 페이지 전송
+		String location = "https://kauth.kakao.com/oauth/authorize?response_type=code&client_id="+client_id+"&redirect_uri="+redirect_uri;
+		modelAndView.addObject("location", location);
+		
 		// 데이터 전송
 		// modelAndView.addObject("data_name", data);
 

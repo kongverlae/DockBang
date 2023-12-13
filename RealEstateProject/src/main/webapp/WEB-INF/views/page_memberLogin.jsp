@@ -131,6 +131,13 @@ main {
                     <p>Don't have an account? <a href="#">Sign up</a></p>
                 </div>
             </form>
+            <div>
+			  	<a href="${location}">
+			       <button type="button" style="border: none; outline: none; background: none; padding: 0;">
+			       		<img src="./images/kakao_login.png">
+			       </button>
+			   </a>
+            </div>
         </div>
 
         <!-- footer page include -->
