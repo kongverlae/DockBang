@@ -30,6 +30,7 @@ public class MemberController {
 		// view 페이지로 반환
 		return modelAndView;
 	}
+	
 
 	@RequestMapping("/page_memberRegister.do")
 	ModelAndView page_memberRegister() {
