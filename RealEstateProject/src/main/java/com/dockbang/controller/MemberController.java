@@ -1,15 +1,20 @@
 package com.dockbang.controller;
 
+import java.io.IOException;
+import java.util.HashMap;
+
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.dockbang.mapper.SqlMapperInter;
 import com.dockbang.model.BoardDAO;
+import com.dockbang.model.KakaoDAO;
 import com.dockbang.model.MemberDAO;
 import com.dockbang.model.SaleDAO;
 
@@ -30,12 +35,37 @@ public class MemberController {
 
 	@Autowired
 	private SqlMapperInter mapper;
+
+    @Autowired
+    private KakaoDAO kakaoService;    
 	
 	// kakao api 관리자 키 
 	@Value("${kakao.client_id}")
     private String client_id;
     @Value("${kakao.redirect_uri}")
     private String redirect_uri;
+    
+    // KakaoDAO에서 토큰을 받아와 getUserInfo에서 토큰을 통해 유저 정보를 가져와 반환하는 함수
+    @RequestMapping("/callback")
+    ModelAndView callback(@RequestParam("code") String code, HttpServletRequest request) throws IOException {
+        String accessToken = kakaoService.getAccessTokenFromKakao(client_id, code);
+        HashMap<String, Object> userInfo = kakaoService.getUserInfo(accessToken);        
+        // User 로그인, 또는 회원가입 로직 추가
+        int flag = kakaoService.setKakaoUser(userInfo);
+        
+        // 로그인이 정상적으로 되면 세션 생성
+        if(flag == 2||flag ==1) {
+        	HttpSession session = request.getSession();
+        	session.setAttribute("email",userInfo.get("email").toString());
+        	session.setAttribute("nickname",userInfo.get("nickname").toString());
+        }
+        
+        // view(.jsp) 설정
+ 		ModelAndView modelAndView = new ModelAndView();
+ 		modelAndView.setViewName("redirect:/page_main.do");
+        
+        return modelAndView;
+    }
 
 	@RequestMapping("/page_memberLogin.do")
 	ModelAndView page_memberLogin() {
