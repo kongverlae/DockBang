@@ -26,26 +26,16 @@ public class MemberController {
 	SaleDAO sdao;
 	
 	@Autowired
-<<<<<<< Updated upstream
-	BoardDAO bdao;
-<<<<<<< Updated upstream
-=======
-=======
 	BoardDAO bdao;	
 
 	@Autowired
 	private SqlMapperInter mapper;
->>>>>>> Stashed changes
 	
 	// kakao api 관리자 키 
 	@Value("${kakao.client_id}")
     private String client_id;
     @Value("${kakao.redirect_uri}")
     private String redirect_uri;
-<<<<<<< Updated upstream
-=======
->>>>>>> Stashed changes
->>>>>>> Stashed changes
 
 	@RequestMapping("/page_memberLogin.do")
 	ModelAndView page_memberLogin() {
@@ -65,10 +55,6 @@ public class MemberController {
 		return modelAndView;
 	}
 	
-<<<<<<< Updated upstream
-=======
-<<<<<<< Updated upstream
-=======
 	@RequestMapping("/act_memberLogin.do")
 	ModelAndView act_memberLogin(
 			@RequestParam("email") String email,
@@ -96,8 +82,7 @@ public class MemberController {
 		// view 페이지로 반환
 		return modelAndView;
 	}
-	
->>>>>>> Stashed changes
+
 	// 로그아웃시 세션 초기화
 	@RequestMapping("act_memberLogout.do")
 	ModelAndView act_memberLogout(HttpServletRequest request) {
@@ -112,10 +97,6 @@ public class MemberController {
 		return modelAndView;
 	}
 	
-<<<<<<< Updated upstream
-=======
->>>>>>> Stashed changes
->>>>>>> Stashed changes
 
 	@RequestMapping("/page_memberRegister.do")
 	ModelAndView page_memberRegister() {
