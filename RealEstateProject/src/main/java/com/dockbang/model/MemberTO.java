@@ -7,7 +7,7 @@ import lombok.Setter;
 @Setter
 public class MemberTO {
 	// member seq
-	private String mseq;
+	private String userseq;
 	
 	private String email;
 	private String password;

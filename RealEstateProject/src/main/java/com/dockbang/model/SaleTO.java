@@ -7,7 +7,7 @@ import lombok.Setter;
 @Setter
 public class SaleTO {
 	// sale seq
-	private String seq;
+	private String saleseq;
 	
 	private String name;
 	private String street;

@@ -27,7 +27,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
-
+ 
 @Slf4j
 @RestController
 @RequestMapping("")
@@ -43,6 +43,7 @@ public class KakaoLoginController {
 	@Autowired
 	private SqlMapperInter mapper;
 
+    // KakaoDAO에서 토큰을 받아와 getUserInfo에서 토큰을 통해 유저 정보를 가져와 반환하는 함수
     @GetMapping("/callback")
     ModelAndView callback(@RequestParam("code") String code, HttpServletRequest request) throws IOException {
         String accessToken = kakaoService.getAccessTokenFromKakao(client_id, code);
