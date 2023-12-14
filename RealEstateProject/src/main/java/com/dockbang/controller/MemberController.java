@@ -10,6 +10,9 @@ import com.dockbang.model.BoardDAO;
 import com.dockbang.model.MemberDAO;
 import com.dockbang.model.SaleDAO;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
+
 @Controller
 public class MemberController {
 	@Autowired
@@ -40,6 +43,20 @@ public class MemberController {
 		// modelAndView.addObject("data_name", data);
 
 		// view 페이지로 반환
+		return modelAndView;
+	}
+	
+	// 로그아웃시 세션 초기화
+	@RequestMapping("act_memberLogout.do")
+	ModelAndView act_memberLogout(HttpServletRequest request) {
+
+		// view(.jsp) 설정
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.setViewName("redirect:/page_main.do");
+		
+		HttpSession session = request.getSession(false);
+		session.invalidate();
+		
 		return modelAndView;
 	}
 	
