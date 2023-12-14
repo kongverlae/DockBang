@@ -29,5 +29,13 @@ public interface SqlMapperInter {
 //	@Update("update album_board2 set hit=hit+1 where seq=#{seq}")
 //	int view_hit(@Param("seq") String seq);
 	
+	// 카카오 로그인 api를 통한 유저 정보 저장
+	@Insert("insert into user(userseq, email, name, usercheck, social) values (0, #{email}, #{name}, '사용자', 'o')")
+	int insertKakaoUser(@Param("name") String name,
+			@Param("email") String email);
+	
+	// 카카오 로그인 api를 통한 유저 정보 저장
+	@Insert("select * from user where email=#{email}")
+	int selectKakaoUser(@Param("email") String email);
 	
 }
