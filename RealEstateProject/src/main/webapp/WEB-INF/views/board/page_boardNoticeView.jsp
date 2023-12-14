@@ -119,7 +119,7 @@
 
 <body>
 	<!-- header page include -->
-	<%@ include file="page_nav.jsp" %>
+	<%@ include file="../page_nav.jsp" %>
 <main>
 <!-- 상단 디자인 -->
 <!-- <div class="contents1">  -->
@@ -192,12 +192,12 @@
 		</div>
 		<div class="btn_area">
 			<div class="align_left">			
-				<input type="button" value="목록" class="btn_list btn_txt02" style="cursor: pointer;" onclick="location.href='page_boardFree.do '" />
+				<input type="button" value="목록" class="btn_list btn_txt02" style="cursor: pointer;" onclick="location.href='page_boardNotice.do '" />
 			</div>
 			<div class="align_right">
-				<input type="button" value="수정" class="btn_list btn_txt02" style="cursor: pointer;" onclick="location.href='page_boardFreeModify.do '" />
-				<input type="button" value="삭제" class="btn_list btn_txt02" style="cursor: pointer;" onclick="location.href='page_boardFreeDelete.do'" />
-				<input type="button" value="쓰기" class="btn_write btn_txt01" style="cursor: pointer;" onclick="location.href='page_boardFreeWrite.do '" />
+				<input type="button" value="수정" class="btn_list btn_txt02" style="cursor: pointer;" onclick="location.href='page_boardNoticeModify.do '" />
+				<input type="button" value="삭제" class="btn_list btn_txt02" style="cursor: pointer;" onclick="location.href='page_boardNoticeDelete.do'" />
+				<input type="button" value="쓰기" class="btn_write btn_txt01" style="cursor: pointer;" onclick="location.href='page_boardNoticeWrite.do '" />
 			</div>
 		</div>
 		<!--//게시판-->
@@ -206,7 +206,7 @@
 </div>
 </main>
 	<!-- footer page include -->
-	<%@ include file="page_footer.jsp" %>
+	<%@ include file="../page_footer.jsp" %>
 	
 	<!-- JAVASCRIPT FILES -->
 	<script src="js/jquery.min.js"></script>

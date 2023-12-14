@@ -95,7 +95,7 @@
 
 <body>
     <!-- header page include -->
-    <%@ include file="page_nav.jsp" %>
+    <%@ include file="../page_nav.jsp" %>
 
     <!-- page content -->
       <main class="main-content">
@@ -138,7 +138,7 @@
     </main>  
 
     <!-- footer page include -->
-    <%@ include file="page_footer.jsp" %>
+    <%@ include file="../page_footer.jsp" %>
     
     <!-- JAVASCRIPT FILES -->
     <script src="js/jquery.min.js"></script>

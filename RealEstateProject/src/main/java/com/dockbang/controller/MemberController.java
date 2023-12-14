@@ -72,7 +72,7 @@ public class MemberController {
 
 		// view(.jsp) 설정
 		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.setViewName("page_memberLogin");
+		modelAndView.setViewName("/member/page_memberLogin");
 		
 		// kakao 로그인 페이지 전송
 		String location = "https://kauth.kakao.com/oauth/authorize?response_type=code&client_id="+client_id+"&redirect_uri="+redirect_uri;
@@ -93,7 +93,7 @@ public class MemberController {
 
 		// view(.jsp) 설정
 		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.setViewName("act_memberLogin");
+		modelAndView.setViewName("/member/act_memberLogin");
 		
 		//유저 존재 여부 확인
 		int flag = mapper.selectUser(email);
@@ -133,7 +133,7 @@ public class MemberController {
 
 		// view(.jsp) 설정
 		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.setViewName("page_memberRegister");
+		modelAndView.setViewName("/member/page_memberRegister");
 		// 데이터 전송
 		// modelAndView.addObject("data_name", data);
 
@@ -153,7 +153,7 @@ public class MemberController {
 
 		// view(.jsp) 설정
 		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.setViewName("act_memberRegister");
+		modelAndView.setViewName("/member/act_memberRegister");
 		
 		//오류면 0 // 정상이면 1
 		int flag = mapper.insertUser(name, email, password);
@@ -178,7 +178,7 @@ public class MemberController {
 
 		// view(.jsp) 설정
 		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.setViewName("page_memberModify");
+		modelAndView.setViewName("/member/page_memberModify");
 		// 데이터 전송
 		// modelAndView.addObject("data_name", data);
 
@@ -192,7 +192,7 @@ public class MemberController {
 		
 		// view(.jsp) 설정
 		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.setViewName("page_memberModifyOk");
+		modelAndView.setViewName("/member/page_memberModifyOk");
 		// 데이터 전송
 		// modelAndView.addObject("data_name", data);
 		
@@ -206,7 +206,7 @@ public class MemberController {
 		
 		// view(.jsp) 설정
 		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.setViewName("page_memberDelete");
+		modelAndView.setViewName("/member/page_memberDelete");
 		// 데이터 전송
 		// modelAndView.addObject("data_name", data);
 		
@@ -220,7 +220,7 @@ public class MemberController {
 		
 		// view(.jsp) 설정
 		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.setViewName("page_memberDeleteOk");
+		modelAndView.setViewName("/member/page_memberDeleteOk");
 		// 데이터 전송
 		// modelAndView.addObject("data_name", data);
 		
@@ -234,7 +234,7 @@ public class MemberController {
 		
 		// view(.jsp) 설정
 		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.setViewName("page_surveyHistory");
+		modelAndView.setViewName("/member/page_surveyHistory");
 		// 데이터 전송
 		// modelAndView.addObject("data_name", data);
 		
@@ -248,7 +248,7 @@ public class MemberController {
 		
 		// view(.jsp) 설정
 		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.setViewName("page_memberInfo");
+		modelAndView.setViewName("/member/page_memberInfo");
 		// 데이터 전송
 		// modelAndView.addObject("data_name", data);
 		
@@ -262,7 +262,7 @@ public class MemberController {
 		
 		// view(.jsp) 설정
 		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.setViewName("page_bookmarkList");
+		modelAndView.setViewName("/member/page_bookmarkList");
 		// 데이터 전송
 		// modelAndView.addObject("data_name", data);
 		
@@ -276,7 +276,7 @@ public class MemberController {
 		
 		// view(.jsp) 설정
 		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.setViewName("page_bookmarkDelete");
+		modelAndView.setViewName("/member/page_bookmarkDelete");
 		// 데이터 전송
 		// modelAndView.addObject("data_name", data);
 		
@@ -290,7 +290,7 @@ public class MemberController {
 		
 		// view(.jsp) 설정
 		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.setViewName("page_bookmarkDeleteOk");
+		modelAndView.setViewName("/member/page_bookmarkDeleteOk");
 		// 데이터 전송
 		// modelAndView.addObject("data_name", data);
 		
@@ -304,7 +304,7 @@ public class MemberController {
 		
 		// view(.jsp) 설정
 		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.setViewName("page_searchHistory");
+		modelAndView.setViewName("/member/page_searchHistory");
 		// 데이터 전송
 		// modelAndView.addObject("data_name", data);
 		
@@ -318,7 +318,7 @@ public class MemberController {
 		
 		// view(.jsp) 설정
 		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.setViewName("page_searchHistoryDelete");
+		modelAndView.setViewName("/member/page_searchHistoryDelete");
 		// 데이터 전송
 		// modelAndView.addObject("data_name", data);
 		
@@ -332,7 +332,7 @@ public class MemberController {
 		
 		// view(.jsp) 설정
 		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.setViewName("page_searchHistoryDeleteOk");
+		modelAndView.setViewName("/member/page_searchHistoryDeleteOk");
 		// 데이터 전송
 		// modelAndView.addObject("data_name", data);
 		

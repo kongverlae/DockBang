@@ -38,7 +38,7 @@
 
 
 	<!-- header page include -->
-	<%@ include file="page_nav.jsp" %>
+	<%@ include file="../page_nav.jsp" %>
 	
 	<main>
 <!-- 상단 디자인 -->
@@ -87,7 +87,7 @@
 <!-- 하단 디자인 -->
 
 	<!-- footer page include -->
-	<%@ include file="page_footer.jsp" %>
+	<%@ include file="../page_footer.jsp" %>
 	
 	<!-- JAVASCRIPT FILES -->
 	<script src="js/jquery.min.js"></script>

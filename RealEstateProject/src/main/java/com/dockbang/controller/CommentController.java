@@ -17,7 +17,7 @@ public class CommentController {
 
 		// view(.jsp) 설정
 		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.setViewName("page_commentWriteOk");
+		modelAndView.setViewName("/board/page_commentWriteOk");
 		// 데이터 전송
 		// modelAndView.addObject("data_name", data);
 
@@ -31,7 +31,7 @@ public class CommentController {
 		
 		// view(.jsp) 설정
 		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.setViewName("page_commentModifyOk");
+		modelAndView.setViewName("/board/page_commentModifyOk");
 		// 데이터 전송
 		// modelAndView.addObject("data_name", data);
 		
@@ -45,7 +45,7 @@ public class CommentController {
 		
 		// view(.jsp) 설정
 		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.setViewName("page_commentDeleteOk");
+		modelAndView.setViewName("/board/page_commentDeleteOk");
 		// 데이터 전송
 		// modelAndView.addObject("data_name", data);
 		

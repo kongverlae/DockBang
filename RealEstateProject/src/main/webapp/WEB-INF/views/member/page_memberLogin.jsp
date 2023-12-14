@@ -108,7 +108,7 @@ main {
 
 <body>
     <!-- Nav page include -->
-    <%@ include file="page_nav.jsp"%>
+    <%@ include file="../page_nav.jsp"%>
 
     <!-- page content -->
     <main>
@@ -141,7 +141,7 @@ main {
         </div>
 
         <!-- footer page include -->
-        <%@ include file="page_footer.jsp"%>
+        <%@ include file="../page_footer.jsp"%>
     </main>
 
     <!-- JAVASCRIPT FILES -->

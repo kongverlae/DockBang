@@ -17,7 +17,7 @@ public class BoardController {
 
 		// view(.jsp) 설정
 		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.setViewName("page_boardNotice");
+		modelAndView.setViewName("/board/page_boardNotice");
 		// 데이터 전송
 		// modelAndView.addObject("data_name", data);
 
@@ -30,7 +30,7 @@ public class BoardController {
 
 		// view(.jsp) 설정
 		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.setViewName("page_boardFree");
+		modelAndView.setViewName("/board/page_boardFree");
 		// 데이터 전송
 		// modelAndView.addObject("data_name", data);
 
@@ -43,7 +43,7 @@ public class BoardController {
 
 		// view(.jsp) 설정
 		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.setViewName("page_boardNews");
+		modelAndView.setViewName("/board/page_boardNews");
 		// 데이터 전송
 		// modelAndView.addObject("data_name", data);
 
@@ -56,7 +56,7 @@ public class BoardController {
 
 		// view(.jsp) 설정
 		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.setViewName("page_boardNoticeWrite");
+		modelAndView.setViewName("/board/page_boardNoticeWrite");
 		// 데이터 전송
 		// modelAndView.addObject("data_name", data);
 
@@ -69,7 +69,7 @@ public class BoardController {
 
 		// view(.jsp) 설정
 		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.setViewName("page_boardFreeWrite");
+		modelAndView.setViewName("/board/page_boardFreeWrite");
 		// 데이터 전송
 		// modelAndView.addObject("data_name", data);
 
@@ -82,7 +82,7 @@ public class BoardController {
 
 		// view(.jsp) 설정
 		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.setViewName("page_boardNewsWrite");
+		modelAndView.setViewName("/board/page_boardNewsWrite");
 		// 데이터 전송
 		// modelAndView.addObject("data_name", data);
 
@@ -95,7 +95,7 @@ public class BoardController {
 
 		// view(.jsp) 설정
 		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.setViewName("page_boardNoticeView");
+		modelAndView.setViewName("/board/page_boardNoticeView");
 		// 데이터 전송
 		// modelAndView.addObject("data_name", data);
 
@@ -108,7 +108,7 @@ public class BoardController {
 
 		// view(.jsp) 설정
 		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.setViewName("page_boardFreeView");
+		modelAndView.setViewName("/board/page_boardFreeView");
 		// 데이터 전송
 		// modelAndView.addObject("data_name", data);
 
@@ -120,7 +120,7 @@ public class BoardController {
 
 		// view(.jsp) 설정
 		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.setViewName("page_boardNewsView");
+		modelAndView.setViewName("/board/page_boardNewsView");
 		// 데이터 전송
 		// modelAndView.addObject("data_name", data);
 
@@ -133,7 +133,7 @@ public class BoardController {
 
 		// view(.jsp) 설정
 		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.setViewName("page_boardNoticeModify");
+		modelAndView.setViewName("/board/page_boardNoticeModify");
 		// 데이터 전송
 		// modelAndView.addObject("data_name", data);
 
@@ -146,7 +146,7 @@ public class BoardController {
 
 		// view(.jsp) 설정
 		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.setViewName("page_boardFreeModify");
+		modelAndView.setViewName("/board/page_boardFreeModify");
 		// 데이터 전송
 		// modelAndView.addObject("data_name", data);
 
@@ -159,7 +159,7 @@ public class BoardController {
 
 		// view(.jsp) 설정
 		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.setViewName("page_boardNewsModify");
+		modelAndView.setViewName("/board/page_boardNewsModify");
 		// 데이터 전송
 		// modelAndView.addObject("data_name", data);
 
@@ -172,7 +172,7 @@ public class BoardController {
 
 		// view(.jsp) 설정
 		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.setViewName("page_boardModifyOk");
+		modelAndView.setViewName("/board/page_boardModifyOk");
 		// 데이터 전송
 		// modelAndView.addObject("data_name", data);
 
@@ -185,7 +185,7 @@ public class BoardController {
 
 		// view(.jsp) 설정
 		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.setViewName("page_boardNoticeDelete");
+		modelAndView.setViewName("/board/page_boardNoticeDelete");
 		// 데이터 전송
 		// modelAndView.addObject("data_name", data);
 
@@ -198,7 +198,7 @@ public class BoardController {
 
 		// view(.jsp) 설정
 		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.setViewName("page_boardFreeDelete");
+		modelAndView.setViewName("/board/page_boardFreeDelete");
 		// 데이터 전송
 		// modelAndView.addObject("data_name", data);
 
@@ -211,7 +211,7 @@ public class BoardController {
 
 		// view(.jsp) 설정
 		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.setViewName("page_boardNewsDelete");
+		modelAndView.setViewName("/board/page_boardNewsDelete");
 		// 데이터 전송
 		// modelAndView.addObject("data_name", data);
 
@@ -224,7 +224,7 @@ public class BoardController {
 
 		// view(.jsp) 설정
 		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.setViewName("page_boardView");
+		modelAndView.setViewName("/board/page_boardView");
 		// 데이터 전송
 		// modelAndView.addObject("data_name", data);
 
