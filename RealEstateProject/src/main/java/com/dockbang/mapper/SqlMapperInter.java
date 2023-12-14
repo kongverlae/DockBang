@@ -34,8 +34,8 @@ public interface SqlMapperInter {
 	int insertKakaoUser(@Param("name") String name,
 			@Param("email") String email);
 	
-	// 카카오 로그인 api를 통한 유저 정보 저장
-	@Insert("select * from user where email=#{email}")
+	// 카카오 로그인 api를 통한 유저 정보 출력
+	@Select("select count(*) from user where email=#{email}")
 	int selectKakaoUser(@Param("email") String email);
 	
 }
