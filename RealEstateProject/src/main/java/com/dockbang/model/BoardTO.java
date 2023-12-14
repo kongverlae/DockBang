@@ -7,12 +7,11 @@ import lombok.Setter;
 @Setter
 public class BoardTO {
 	// board seq
-	private String seq;
+	private String boardseq;
 	
 	private String subject;
 	private String writer;
 	private String mail;
-	private String password;
 	private String content;
 	private String filename;
 	private String filesize;
