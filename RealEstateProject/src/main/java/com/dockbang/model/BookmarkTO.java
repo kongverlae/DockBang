@@ -7,10 +7,10 @@ import lombok.Setter;
 @Setter
 public class BookmarkTO {
 	// bookmark seq
-	private String bseq;
+	private String useqseq;
 	
 	private String memo;
 	
 	// sale seq
-	private String sseq;
+	private String saleseq;
 }
