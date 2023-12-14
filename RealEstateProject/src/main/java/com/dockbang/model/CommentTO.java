@@ -7,17 +7,17 @@ import lombok.Setter;
 @Setter
 public class CommentTO {
 	// comment seq
-	private String seq;
+	private String commentseq;
 	
 	private String writer;
 	
-	// member seq
-	private String mseq;
+	// user seq
+	private String userseq;
 	
 	private String content;
 	
 	// parent(모글) seq
-	private String pseq;
+	private String boardseq;
 	
 	private String wdate;
 	
