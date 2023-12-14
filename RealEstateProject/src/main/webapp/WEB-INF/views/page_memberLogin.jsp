@@ -115,10 +115,10 @@ main {
         <!-- login-container -->
         <div class="login-container">
             <h2 style="color: #007bff;">Login</h2>
-            <form action="loginProcess.jsp" method="post">
+            <form action="act_memberLogin.do" method="post">
                 <div class="form-group">
-                    <label for="username">Username:</label>
-                    <input type="text" id="username" name="username" required>
+                    <label for="username">Email:</label>
+                    <input type="text" id="email" name="email" required>
                 </div>
                 <div class="form-group">
                     <label for="password">Password:</label>
