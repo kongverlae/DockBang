@@ -7,8 +7,8 @@ import lombok.Setter;
 @Setter
 public class RecordTO {
 	// record seq
-	private String rseq;
+	private String userseq;
 	
 	// sale seq
-	private String sseq;
+	private String saleseq;
 }
