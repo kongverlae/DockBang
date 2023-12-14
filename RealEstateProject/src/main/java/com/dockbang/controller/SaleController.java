@@ -3,6 +3,7 @@ package com.dockbang.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.dockbang.model.MemberDAO;
@@ -56,13 +57,13 @@ public class SaleController {
 	}
 
 	@RequestMapping("/page_search.do")
-	ModelAndView page_search() {
+	ModelAndView page_search(String keyword) {
 
 		// view(.jsp) 설정
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.setViewName("page_search");
 		// 데이터 전송
-		// modelAndView.addObject("data_name", data);
+		 modelAndView.addObject("keyword", keyword);
 
 		// view 페이지로 반환
 		return modelAndView;
