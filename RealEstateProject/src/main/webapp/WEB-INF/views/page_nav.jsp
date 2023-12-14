@@ -39,19 +39,19 @@
 		<div class="collapse navbar-collapse" id="navbarNav">
 			<ul class="navbar-nav ms-lg-5 me-lg-auto">
 				<li class="nav-item"><a class="nav-link"
-					href="page_main.do">Home</a></li>
+					href="page_main.do" >Home</a></li>
 
 				<li class="nav-item"><a class="nav-link"
-					href="page_search.do">지도</a></li>
+					href="page_search.do" style="color: var(--primary-color)">지도</a></li>
 
 				<li class="nav-item"><a class="nav-link"
-					href="#section_3">나만의 집 찾기</a></li>
+					href="#section_3" style="color: var(--primary-color)">나만의 집 찾기</a></li>
 
 				<li class="nav-item"><a class="nav-link"
-					href="#section_4">FAQs</a></li>
+					href="page_boardNotice.do" style="color: var(--primary-color)">게시판</a></li>
 
 				<li class="nav-item"><a class="nav-link"
-					href="#section_5">Contact</a></li>
+					href="#section_5" style="color: var(--primary-color)">Contact</a></li>
 
 			</ul>
 			<div class="dropdown">
