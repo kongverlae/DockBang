@@ -44,8 +44,8 @@ public interface SqlMapperInter {
 	int selectKakaoUser(@Param("email") String email);
 
 	// 일반 로그인 유저 정보 일치 확인
-	@Select("select count(*) from user where email=#{email}")
-	int selectUser(@Param("email") String email);
+	@Select("SELECT COUNT(*) FROM user WHERE email=#{email} AND password=#{password}")
+	int selectUser(@Param("email") String email, @Param("password") String password);
 	
 	// 일반 로그인 유저 이름 갖고 오기
 	@Select("select name from user where email=#{email}")
