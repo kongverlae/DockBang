@@ -1,8 +1,12 @@
 package com.dockbang.model;
 
+import com.dockbang.mapper.SqlMapperInter;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
+
+import org.mybatis.spring.annotation.MapperScan;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
@@ -15,8 +19,12 @@ import java.util.Map;
 
 @Slf4j
 @Service
+@MapperScan(basePackages = {"com.dockbang.mapper"})
 public class KakaoDAO {
 
+	@Autowired
+	private SqlMapperInter mapper;
+	
     public String getAccessTokenFromKakao(String client_id, String code) throws IOException {
         //------kakao POST 요청------
         String reqURL = "https://kauth.kakao.com/oauth/token?grant_type=authorization_code&client_id="+client_id+"&code=" + code;
@@ -107,4 +115,16 @@ public class KakaoDAO {
 
         return userInfo;
     }
+    
+    // flag 가 2이면 회원가입된 적 있고 로그인 완료 flag가 1이면 회원가입 flag가 0이면 회원가입 실패
+    public int setKakaoUser(HashMap<String, Object> userInfo) {
+    	int flag = 2;
+    	int check = mapper.selectKakaoUser(userInfo.get("email").toString());
+    	if(check == 0) {
+    		flag = mapper.insertKakaoUser(userInfo.get("nickname").toString(),
+        			userInfo.get("email").toString());
+    	}
+    	return flag;
+    }
+    
 }
