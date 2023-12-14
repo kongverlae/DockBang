@@ -27,8 +27,19 @@ public interface SqlMapperInter {
 //	List<BoardTO> list();
 
 //	@Update("update album_board2 set hit=hit+1 where seq=#{seq}")
-//	int view_hit(@Param("seq") String seq);
+//	int view_hit(@Param("seq") String seq);	
+
+	// 일반 회원가입을 통한 유저 정보 저장
+	@Insert("insert into user(userseq, email, password, name, usercheck, social) values (0, #{email}, #{password},#{name} , '사용자', 'x')")
+	int insertUser(@Param("name") String name,
+			@Param("email") String email,
+			@Param("password") String password);
 	
+<<<<<<< Updated upstream
+=======
+<<<<<<< Updated upstream
+=======
+>>>>>>> Stashed changes
 	// 카카오 로그인 api를 통한 유저 정보 저장
 	@Insert("insert into user(userseq, email, name, usercheck, social) values (0, #{email}, #{name}, '사용자', 'o')")
 	int insertKakaoUser(@Param("name") String name,
@@ -36,6 +47,19 @@ public interface SqlMapperInter {
 	
 	// 카카오 로그인 api를 통한 유저 정보 출력
 	@Select("select count(*) from user where email=#{email}")
+<<<<<<< Updated upstream
 	int selectKakaoUser(@Param("email") String email);
+=======
+	int selectKakaoUser(@Param("email") String email);	
+
+	// 일반 로그인 유저 정보 일치 확인
+	@Select("select count(*) from user where email=#{email}")
+	int selectUser(@Param("email") String email);
+	
+	// 일반 로그인 유저 이름 갖고 오기
+	@Select("select name from user where email=#{email}")
+	String selectUserNmae(@Param("email") String email);
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes
 	
 }
