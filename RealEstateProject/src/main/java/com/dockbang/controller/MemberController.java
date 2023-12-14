@@ -96,7 +96,7 @@ public class MemberController {
 		modelAndView.setViewName("/member/act_memberLogin");
 		
 		//유저 존재 여부 확인
-		int flag = mapper.selectUser(email);
+		int flag = mapper.selectUser(email,password);
 		
 		// 회원가입이 정상적으로 되면 세션 생성
 		if(flag==1) {
