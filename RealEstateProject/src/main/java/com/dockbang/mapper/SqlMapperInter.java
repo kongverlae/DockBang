@@ -1,12 +1,8 @@
 package com.dockbang.mapper;
 
-import java.util.List;
-
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
-import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 
 
@@ -49,6 +45,6 @@ public interface SqlMapperInter {
 	
 	// 일반 로그인 유저 이름 갖고 오기
 	@Select("select name from user where email=#{email}")
-	String selectUserNmae(@Param("email") String email);
+	String selectUserName(@Param("email") String email);
 	
 }
