@@ -1,9 +1,11 @@
+<%@page import="com.dockbang.model.BoardTO"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%
 	String category = (String)request.getAttribute("category");
+	List<BoardTO> boardList = (List)request.getAttribute("boardList");
 	String title = "";
 	if(category.equals("news")){
 		title = "뉴스게시판";
@@ -12,7 +14,21 @@
 	}else if(category.equals("free")){
 		title = "자유게시판";
 	}
+	
+	String html1 = "";
+	for(BoardTO to: boardList){
+		html1 += "<div class='board-post' onmouseover='highlightPost(this)' onmouseout='unhighlightPost(this)' onclick='location.href='page_boardView.do?category=${category}''>";
+		html1 += "<h6>" + to.getSubject() + "</h6>";
+		html1 += "<p>작성자: " + to.getWriter() + "</p>";
+		html1 += "<p>날짜: " + to.getWdate() +  "</p>";
+		html1 += " </div>";
+	}
+	
+   
+	
+	
 %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -127,13 +143,7 @@
 
    <!-- 게시물 목록 -->
     <div class="board-posts">
-        <% for (int i = 1; i <= 10; i++) { %>
-            <div class="board-post" onmouseover="highlightPost(this)" onmouseout="unhighlightPost(this)" onclick="location.href='page_boardView.do?category=${category}'">
-                <h6>제목<%= i %></h6>
-                <p>작성자: 작성자<%= i %></p>
-                <p>날짜: 2023-01-<%= i %> 15:45:00</p>
-            </div>
-        <% } %>
+        <%=html1 %>
     </div>
 
          <!-- 글쓰기 버튼 -->

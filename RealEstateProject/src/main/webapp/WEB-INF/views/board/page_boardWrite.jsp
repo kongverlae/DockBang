@@ -68,7 +68,7 @@
 <div class="contents1" style="margin-top: 150px;">
 	
 
-	<form action="write_ok.do" method="post" name="wfrm" enctype="multipart/form-data">
+	<form action="act_boardWrite.do?category=${category}" method="post" name="wfrm" enctype="multipart/form-data">
 		<div class="contents_sub">
 		<!--게시판-->
 			<div class="board_write">
@@ -82,10 +82,6 @@
 					<td colspan="3"><input type="text" name="subject" value="" class="board_view_input" /></td>
 				</tr>
 				<tr>
-					<th>비밀번호</th>
-					<td colspan="3"><input type="password" name="password" value="" class="board_view_input_mail"/></td>
-				</tr>
-				<tr>
 					<th>내용</th>
 					<td colspan="3">
 						<textarea name="content" class="board_editor_area"></textarea>
@@ -93,15 +89,9 @@
 				</tr>
 				<tr>
 					<th>이미지</th>
-					<td colspan="3">
+					<td>
 						<input type="file" name="upload" value="" class="board_view_input" /><br /><br />
-						위도 : <input type="text" name="latitude" value="" class="board_view_input_mail"/> / 
-						경도 : <input type="text" name="longitude" value="" class="board_view_input_mail"/>
 					</td>
-				</tr>
-				<tr>
-					<th>이메일</th>
-					<td colspan="3"><input type="text" name="mail1" value="" class="board_view_input_mail"/> @ <input type="text" name="mail2" value="" class="board_view_input_mail"/></td>
 				</tr>
 				</table>
 				
