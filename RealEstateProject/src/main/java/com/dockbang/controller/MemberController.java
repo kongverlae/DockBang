@@ -47,7 +47,7 @@ public class MemberController {
     
     // KakaoDAO에서 토큰을 받아와 getUserInfo에서 토큰을 통해 유저 정보를 가져와 반환하는 함수
     @RequestMapping("/callback")
-    ModelAndView callback(@RequestParam("code") String code, HttpServletRequest request) throws IOException {
+    ModelAndView act_callBack(@RequestParam("code") String code, HttpServletRequest request) throws IOException {
         String accessToken = kakaoService.getAccessTokenFromKakao(client_id, code);
         HashMap<String, Object> userInfo = kakaoService.getUserInfo(accessToken);        
         // User 로그인, 또는 회원가입 로직 추가
@@ -144,7 +144,7 @@ public class MemberController {
 	
 	// 유저 회원가입 함수
 	@RequestMapping("/act_memberRegister.do")
-	ModelAndView page_memberRegisterOk(
+	ModelAndView act_memberRegister(
 			@RequestParam("name") String name,
 			@RequestParam("email") String email,
 			@RequestParam("password") String password,
@@ -187,12 +187,12 @@ public class MemberController {
 	}
 	
 	
-	@RequestMapping("/page_memberModifyOk.do")
-	ModelAndView page_memberModifyOk() {
+	@RequestMapping("/act_memberModify.do")
+	ModelAndView act_memberModify() {
 		
 		// view(.jsp) 설정
 		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.setViewName("/member/page_memberModifyOk");
+		modelAndView.setViewName("/member/act_memberModify");
 		// 데이터 전송
 		// modelAndView.addObject("data_name", data);
 		
@@ -215,12 +215,12 @@ public class MemberController {
 	}
 	
 	
-	@RequestMapping("/page_memberDeleteOk.do")
-	ModelAndView page_memberDeleteOk() {
+	@RequestMapping("/act_memberDelete.do")
+	ModelAndView act_memberDelete() {
 		
 		// view(.jsp) 설정
 		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.setViewName("/member/page_memberDeleteOk");
+		modelAndView.setViewName("/member/act_memberDelete");
 		// 데이터 전송
 		// modelAndView.addObject("data_name", data);
 		
@@ -285,8 +285,8 @@ public class MemberController {
 	}
 	
 	
-	@RequestMapping("/page_bookmarkDeleteOk.do")
-	ModelAndView page_bookmarkDeleteOk() {
+	@RequestMapping("/act_bookmarkDelete.do")
+	ModelAndView act_bookmarkDelete() {
 		
 		// view(.jsp) 설정
 		ModelAndView modelAndView = new ModelAndView();
@@ -327,8 +327,8 @@ public class MemberController {
 	}
 	
 	
-	@RequestMapping("/page_searchHistoryDeleteOk.do")
-	ModelAndView page_searchHistoryDeleteOk() {
+	@RequestMapping("/act_searchHistoryDelete.do")
+	ModelAndView act_searchHistoryDelete() {
 		
 		// view(.jsp) 설정
 		ModelAndView modelAndView = new ModelAndView();
