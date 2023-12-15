@@ -8,9 +8,11 @@
         // 로그인 상태
         String name = (String) session.getAttribute("nickname");
         html = "<ul class=\"dropdown-menu\">" +
-                           "<li><button class=\"dropdown-item\" type=\"button\" onclick=\"window.location.href = 'act_memberLogout.do'\">로그아웃</button></li>" +
+                           
                            // "<li class=\"user-email\">" + name + "</li>" +
                            "<li class=\"dropdown-item\"><b>" + name + "</b></li>" +
+                        		   "<li><button class=\"dropdown-item\" type=\"button\" onclick=\"window.location.href = 'page_mypage.do'\">마이페이지</button></li>" +
+                           "<li><button class=\"dropdown-item\" type=\"button\" onclick=\"window.location.href = 'act_memberLogout.do'\">로그아웃</button></li>" +
                            "</ul>";
     } else {
         // 로그인되지 않은 상태
