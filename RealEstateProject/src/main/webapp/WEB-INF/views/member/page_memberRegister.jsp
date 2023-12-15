@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -36,7 +37,6 @@
     
   
 </style>
-
 <body>
 	<!-- header page include -->
 	<%@ include file="../page_nav.jsp" %>
@@ -57,28 +57,38 @@
                     <div class="mb-3">
                         <label for="email">이메일</label>
                         <input type="email" class="form-control" id="email" name="email" placeholder="" value="" required>
-<!--                         <div class="invalid-feedback"> -->
-<!--                             유효한 이메일 주소를 입력해주세요. -->
-<!--                         </div> -->
+						<div id="emailAvailabilityMessage"></div>                         
                     </div>
                 </div>
 
                 <div class="mb-3">
-                    <label for="password">비밀번호</label>
-                    <input type="password" class="form-control" id="password" name="password" placeholder="" value="" required>
-<!--                     <div class="invalid-feedback"> -->
-<!--                         비밀번호를 입력해주세요. -->
-<!--                     </div> -->
-                </div>
-
-                <div class="mb-3">
-                    <label for="confirmPassword">비밀번호 확인</label>
-                    <input type="password" class="form-control" id="confirmPassword" placeholder="" value="" required>
-<!--                     <div class="invalid-feedback"> -->
-<!--                         비밀번호를 다시 입력해주세요. -->
-<!--                     </div> -->
-                </div>
-
+			        <label for="password">비밀번호</label>
+			        <input type="password" class="form-control" id="password" name="password" placeholder="" value="" required>
+			    </div>
+			
+			    <div class="mb-3">
+			        <label for="confirmPassword">비밀번호 확인</label>
+			        <input type="password" class="form-control" id="confirmPassword" placeholder="" value="" required>
+			        <div id="passwordMatchMessage"></div>
+			        <div id="error" style="color: red; display: none;">
+			            비밀번호가 일치하지 않습니다.
+			        </div>
+			    </div>
+			    <script>
+			        const passwordInput = document.getElementById("password");
+			        const confirmPasswordInput = document.getElementById("confirmPassword");
+			        const errorDiv = document.getElementById("error");
+			        confirmPasswordInput.addEventListener("input", checkPasswordMatch);			
+			        function checkPasswordMatch() {
+			            const password = passwordInput.value;
+			            const confirmPassword = confirmPasswordInput.value;			
+			            if (password === confirmPassword) {
+			                errorDiv.style.display = 'none';
+			            } else {
+			                errorDiv.style.display = 'block';
+			            }
+			        }
+			    </script>			    
                 <button class="btn btn-primary btn-lg btn-block" type="submit">가입 완료</button>
             </form>
         </div>
