@@ -7,6 +7,9 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
+
+import com.dockbang.model.BoardTO;
+
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 
@@ -50,11 +53,28 @@ public interface SqlMapperInter {
 	
 	// 일반 로그인 유저 이름 갖고 오기
 	@Select("select name from user where email=#{email}")
-	String selectUserNmae(@Param("email") String email);
-	
+	String selectUserNmae(@Param("email") String email);	
 
 	// 로그인 유저 소셜 유무, 이메일, 이름 가져오기
-		@Select("SELECT social, email, name FROM user WHERE email=#{email}")
-		Map<String, String> selectUserInfo(@Param("email") String email);
+	@Select("SELECT social, email, name FROM user WHERE email=#{email}")
+	Map<String, String> selectUserInfo(@Param("email") String email);
+	
+	// 게시판 리스트 출력
+	@Select("select boardseq, subject, writer, wdate from board where category = #{category}")
+	List<BoardTO> selectBoard(@Param("category") String category);
+	
+	// 게시판 저장
+	@Insert("insert into board(boardseq, subject, writer, content, filename, filesize, hit, wip, wdate, mail, category) "
+			+ "values (0, #{subject}, #{writer}, #{content}, #{filename}, #{filesize}, 0, #{wip}, now(), #{email}, #{category})")
+	int insertBoard(@Param("subject") String subject,
+			@Param("writer") String writer,
+			@Param("content") String content,
+			@Param("filename") String filename,
+			@Param("filesize") long filesize,
+			@Param("wip") String wip,
+			@Param("email") String email,
+			@Param("category") String category);
+		
+		
 	
 }
