@@ -2,14 +2,15 @@ package com.dockbang.controller;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Map;
 
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.dockbang.mapper.SqlMapperInter;
@@ -102,7 +103,7 @@ public class MemberController {
 		if(flag==1) {
 			HttpSession session = request.getSession();
 	    	session.setAttribute("email",email);
-	    	String name = mapper.selectUserNmae(email);
+	    	String name = mapper.selectUserName(email);
 	    	session.setAttribute("nickname",name);
 		}
 		
@@ -338,6 +339,18 @@ public class MemberController {
 		
 		// view 페이지로 반환
 		return modelAndView;
+	}
+
+	@RequestMapping("/json_getUserCount.do")
+	@ResponseBody
+	Map<String, Integer> json_getUserCount(@RequestParam String email) {
+		Map<String, Integer> map = new HashMap<>();
+
+		// userCount: 해당 이메일을 가진 유저 수 (1 or 0)
+		int userCount = mapper.selectKakaoUser(email);
+		map.put("userCount", userCount);
+
+		return map;
 	}
 	
 

@@ -7,11 +7,10 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
-
-import com.dockbang.model.BoardTO;
-
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
+
+import com.dockbang.model.BoardTO;
 
 
 @Mapper
@@ -53,7 +52,8 @@ public interface SqlMapperInter {
 	
 	// 일반 로그인 유저 이름 갖고 오기
 	@Select("select name from user where email=#{email}")
-	String selectUserNmae(@Param("email") String email);	
+
+	String selectUserName(@Param("email") String email);
 
 	// 로그인 유저 소셜 유무, 이메일, 이름 가져오기
 	@Select("SELECT social, email, name FROM user WHERE email=#{email}")
