@@ -78,6 +78,12 @@
 		</dependency>
 		<!-- /jsp 사용 위한 설정 -->
 		
+		 <dependency>
+        <groupId>mysql</groupId> <!-- 여기서는 MySQL을 사용했지만, 사용하는 데이터베이스에 따라 다를 수 있습니다. -->
+        <artifactId>mysql-connector-java</artifactId>
+        <version>8.0.23</version> <!-- 사용하는 버전에 따라 변경하세요. -->
+    </dependency>
+		
 	</dependencies>
 
 	<build>
