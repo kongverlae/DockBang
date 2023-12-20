@@ -8,6 +8,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.dockbang.mapper.SqlMapperInter;
 import com.dockbang.model.BoardDAO;
+import com.dockbang.model.MemberTO;
 
 import java.util.Map;
 
@@ -35,7 +36,8 @@ public class MypageController {
 
         if (userEmail != null) {
             // 사용자 정보 조회
-            Map<String, String> userInfo = mapper.selectUserInfo(userEmail);
+//            Map<String, String> userInfo = mapper.selectUserInfo(userEmail);
+            MemberTO userInfo = mapper.selectUserInfo(userEmail);
 
             // 데이터 전송
             modelAndView.addObject("userInfo", userInfo);

@@ -11,6 +11,7 @@ import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 
 import com.dockbang.model.BoardTO;
+import com.dockbang.model.MemberTO;
 
 
 @Mapper
@@ -57,7 +58,7 @@ public interface SqlMapperInter {
 
 	// 로그인 유저 소셜 유무, 이메일, 이름 가져오기
 	@Select("SELECT social, email, name FROM user WHERE email=#{email}")
-	Map<String, String> selectUserInfo(@Param("email") String email);
+	MemberTO selectUserInfo(@Param("email") String email);
 	
 	// 게시판 리스트 출력
 	@Select("select boardseq, subject, writer, wdate from board where category = #{category}")

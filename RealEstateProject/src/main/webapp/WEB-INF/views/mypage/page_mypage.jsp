@@ -1,5 +1,7 @@
+<%@page import="com.dockbang.model.MemberTO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<% MemberTO to = (MemberTO)request.getAttribute("userInfo"); %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -91,9 +93,13 @@ nav a:hover {
  <script>
         // 서버에서 받아온 사용자 정보
         var userInfo = {
-            socialAccount: "<%= session.getAttribute("social") %>",
+            /*socialAccount: "<%= session.getAttribute("social") %>",
             email: "<%= session.getAttribute("email") %>",
-            name: "<%= session.getAttribute("nickname") %>"
+            name: "<%= session.getAttribute("nickname") %>"*/
+            
+            socialAccount: "<%= to.getSocial() %>",
+            email: "<%= to.getEmail() %>",
+            name: "<%= to.getName() %>"
         };
 
         // 페이지 로딩이 완료된 후 실행
