@@ -32,22 +32,21 @@
 			class="hero-section justify-content-center align-items-center">
 			<div class="container">
 				<div class="row">
-					<div class="mx-auto">
-
-						<!--  <form method="get" class="custom-form mt-4 pt-2 mb-lg-0 mb-5"
-		  					role="search" action="page_search.do">-->
-		  					<div class="custom-form mt-4 pt-2 mb-lg-0 mb-5"	role="search">
-								<div class="input-group input-group-lg">
-									<span class="input-group-text bi-search" id="basic-addon1">
-	
-									</span> <input name="keyword" type="search" class="form-control"
-										id="keyword" placeholder="수원시, 장안구, 정자동 등 주소 입력"
-										aria-label="Search">
-	
-									<button id="searchbtn" type="submit" class="form-control">Search</button>
-								</div>
+					<div class="col-lg-8 col-12 mx-auto">
+						<!-- 제목 -->
+						<h1 class="text-white text-center">독방</h1>
+						<!-- 부제목 -->
+						<h6 class="text-center">원하는 부동산을 더 쉽게 찾으세요</h6>
+						<form method="get" class="custom-form mt-4 pt-2 mb-lg-0 mb-5"
+							role="search" action="page_search.do">
+							<div class="input-group input-group-lg">
+								<span class="input-group-text bi-search" id="basic-addon1">
+								</span> <input name="keyword" type="search" class="form-control"
+									id="keyword" placeholder="수원시, 장안구, 정자동 등 주소 입력"
+									aria-label="Search">
+								<button type="submit" class="form-control">Search</button>
 							</div>
-						<!--  </form>-->
+						</form>
 					</div>
 				</div>
 			</div>
@@ -66,38 +65,92 @@
 		<script type="text/javascript"
 			src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=0xkngoqc6q&submodules=geocoder"></script>
 		<script id="code">
+			const markers = [
+		        { position: new naver.maps.LatLng(37.4550628, 127.0695079), message: '내곡동' },
+		        { position: new naver.maps.LatLng(37.4719823, 127.0374623), message: '양재동' },
+		        { position: new naver.maps.LatLng(37.4883869, 127.0167954), message: '서초동' },
+		        { position: new naver.maps.LatLng(37.4794939, 126.9931207), message: '방배동' },
+		        { position: new naver.maps.LatLng(37.5151065, 127.0137779), message: '잠원동' },
+		        { position: new naver.maps.LatLng(37.5039744, 127.0007494), message: '반포동' },
+		        { position: new naver.maps.LatLng(37.4802905, 127.0626272), message: '개포동' },
+		        { position: new naver.maps.LatLng(37.5136787, 127.0317124), message: '논현동' },
+		        { position: new naver.maps.LatLng(37.4991887, 127.0633458), message: '대치동' }
+		        // Add more markers as needed
+		    ];			
+		
 			$(document).ready(function(){
-				const keyword = '${keyword}';
+				
+				// 검색어를 받아오는 부분
+				let keyword = '${keyword}';
 				// console.log("keyword: " + keyword);
 				
+				// 기본 주소 설정
 				let defaultAddress = '강남구 역삼동 819-10';
 				
+				// 지도를 표시할 div 요소를 가져옴
 				let mapDiv = document.getElementById('map');
 				
-				// 지도 위치
+				// 네이버 지도 객체를 생성하고 설정
 				let map = new naver.maps.Map(mapDiv, {
 				    center: new naver.maps.LatLng(37.3595704, 127.105399),
-				    zoom: 15
+				    zoom: 13
 				    //, mapTypeControl: true
 				});
 				
-				// 마커 위치
-				let marker = new naver.maps.Marker({
-				    position: new naver.maps.LatLng(37.3595704, 127.105399),
-				    map: map
-				});
-				
-				// 마커 위치 변경 이벤트
+				 // 지도를 클릭할 때마다 마커 위치를 변경
 				naver.maps.Event.addListener(map, 'click', function(e) {
 				    marker.setPosition(e.coord);
 				    
 				});
 				
-				let infoWindow = new naver.maps.InfoWindow({
-				    anchorSkew: true
+			 	const infoWindows = [];
+
+			    markers.forEach(markerInfo => {
+			        const marker = new naver.maps.Marker({
+			            position: markerInfo.position,
+			            map: map
+			        });
+
+			        const infoWindow = new naver.maps.InfoWindow({
+			            content: markerInfo.message
+			        });
+
+			        infoWindows.push(infoWindow);
+
+			        naver.maps.Event.addListener(marker, 'click', function() {
+			            infoWindows.forEach(window => window.close());
+			            infoWindow.open(map, marker);
+			            map.panTo(markerInfo.position);
+
+			            // 클릭한 마커의 위치의 키워드로 설정
+			            keyword = markerInfo.message;
+			            console.log("aaaa", keyword);
+			            window.location.href = 'page_search.do?keyword=' + keyword;
+			        });
+			    });
+			    
+				// 검색한 동의 경계선 정보 받아 오기
+				let lats = ${lat};
+				let lons = ${lon};
+				let polygonCoords = lats.map(function(lat, index) {
+				    return new naver.maps.LatLng(lat, lons[index]);
 				});
-	
+				
+				// 경계선 그리기
+				let polygon = new naver.maps.Polygon({
+				    map: map,
+				    paths: [polygonCoords],
+				    strokeColor: '#f00',
+				    strokeWeight: 2,
+				    strokeOpacity: 0.7,
+				    fillColor: '#00f',
+				    fillOpacity: 0.3
+				});
+				
+				// 지도 커서를 손가락 모양으로 설정
 				map.setCursor('pointer');
+				 
+				// 좌표를 주소로 변환하는 함수
 				function searchCoordinateToAddress(latlng) {
 	
 				    infoWindow.close();
@@ -138,6 +191,7 @@
 				    });
 				}
 	
+				// 주소를 좌표로 변환하는 함수
 				function searchAddressToCoordinate(address) {
 				    naver.maps.Service.geocode({
 				        query: address
@@ -170,13 +224,6 @@
 	
 				        map.setCenter(point);
 				        
-				        // 마커를 검색위치로 새로 설정
-						marker.setMap(null);
-				        marker = new naver.maps.Marker({
-						    position: new naver.maps.LatLng(point),
-						    map: map
-						});
-				        
 				        /*
 				        infoWindow.setContent([
 				            '<div style="padding:10px;min-width:200px;line-height:150%;">',
@@ -188,12 +235,16 @@
 				        */
 				    });
 				}
-	
+			
+				// 지오코더 초기화 함수
 				function initGeocoder() {
+					
+					// 지도 클릭 이벤트 리스너 등록
 				    map.addListener('click', function(e) {
 				        searchCoordinateToAddress(e.coord);
 				    });
 	
+				    // 검색어 입력창에서 엔터 키 입력 이벤트 리스너 등록
 				    $('#keyword').on('keydown', function(e) {
 				    	let keyCode = e.which;
 	
@@ -202,6 +253,7 @@
 				        }
 				    });
 	
+				 	// 검색 버튼 클릭 이벤트 리스너 등록
 				    $('#searchbtn').on('click', function(e) {
 				    	// alert("searchbtn 클릭");
 				        e.preventDefault();
@@ -291,6 +343,7 @@
 				    return !!(addition && addition.value);
 				}
 				
+				// 지오코더 초기화 함수를 호출
 				naver.maps.onJSContentLoaded = initGeocoder;
 	
 			});
@@ -310,4 +363,4 @@
 	<script src="js/click-scroll.js"></script>
 	<script src="js/custom.js"></script>
 </body>
-</html>
+</html> 
