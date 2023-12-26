@@ -1,11 +1,14 @@
 package com.dockbang.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.dockbang.mapper.SqlMapperInter;
 import com.dockbang.model.MemberDAO;
 import com.dockbang.model.SaleDAO;
 
@@ -15,6 +18,9 @@ public class SaleController {
 	MemberDAO mdao;
 	@Autowired
 	SaleDAO sdao;
+
+	@Autowired
+	private SqlMapperInter mapper;
 	
 //	@RequestMapping("/index.do")
 //	ModelAndView index() {
@@ -62,9 +68,19 @@ public class SaleController {
 		// view(.jsp) 설정
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.setViewName("page_search");
-		// 데이터 전송
-		 modelAndView.addObject("keyword", keyword);
-
+		if(keyword.equals("")) {
+			modelAndView.addObject("lat", 37.3595704);
+			modelAndView.addObject("lon", 127.105399);
+			modelAndView.addObject("keyword", keyword);
+		}else {
+			List<String> lat = mapper.selectlat(keyword);
+			List<String> lon = mapper.selectlon(keyword);
+			// 데이터 전송
+			modelAndView.addObject("keyword", keyword);
+			modelAndView.addObject("lat", lat);
+			modelAndView.addObject("lon", lon);
+		}
+		
 		// view 페이지로 반환
 		return modelAndView;
 	}
