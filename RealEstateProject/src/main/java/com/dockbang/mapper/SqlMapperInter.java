@@ -64,6 +64,14 @@ public interface SqlMapperInter {
 	@Select("select boardseq, subject, writer, wdate from board where category = #{category}")
 	List<BoardTO> selectBoard(@Param("category") String category);
 	
+	// 게시판 리스트 출력
+	@Select("select lon from navermap where local like CONCAT('%', #{keyword})")
+	List<String> selectlon(@Param("keyword") String keyword);
+	
+	// 게시판 리스트 출력
+	@Select("select lat from navermap where local like CONCAT('%', #{keyword})")
+	List<String> selectlat(@Param("keyword") String keyword);
+	
 	// 게시판 저장
 	@Insert("insert into board(boardseq, subject, writer, content, filename, filesize, hit, wip, wdate, mail, category) "
 			+ "values (0, #{subject}, #{writer}, #{content}, #{filename}, #{filesize}, 0, #{wip}, now(), #{email}, #{category})")
