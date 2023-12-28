@@ -78,6 +78,12 @@ public class SaleController {
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.setViewName("page_search");
 		
+		// 매물 정보 저장
+		List<String> lats = mapper.getLat();
+		List<String> lons = mapper.getLon();
+		modelAndView.addObject("lats", lats);
+		modelAndView.addObject("lons", lons);
+		
 		// 예외에 null일 경우 추가 - 순서 중요
 		if(keyword == null || keyword.equals("")) {
 			modelAndView.addObject("lat", 37.3595704);
