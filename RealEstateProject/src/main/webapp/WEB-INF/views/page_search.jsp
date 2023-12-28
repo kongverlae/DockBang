@@ -321,7 +321,7 @@
 				    });
 
 					// 이전 페이지에서 검색어가 들어오면 해당 키워드로 검색
-					if(keyword == null || keyword === ''){
+					if(keyword === '' || keyword == null){
 				    	searchAddressToCoordinate(defaultAddress);
 					} else{
 				    	searchAddressToCoordinate(keyword);
