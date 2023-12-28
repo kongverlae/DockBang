@@ -58,7 +58,7 @@
 					<!-- <div class="col-lg-4 col-12 mb-4 mb-lg-0"> -->
 					<div class="col-lg-8 col-12 mb-4 mb-lg-0">
 						<div class="custom-block bg-white shadow-lg">
-							<a href="topics-detail.html">
+							<a href="page_survey.do">
 								<div class="d-flex">
 									<div>
 										<h5 class="mb-2">나만의 집 찾기</h5>
