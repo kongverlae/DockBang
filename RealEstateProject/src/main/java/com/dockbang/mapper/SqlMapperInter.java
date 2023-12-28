@@ -91,10 +91,16 @@ public interface SqlMapperInter {
 	// 역 정보 가져오기
 	@Select("select name, subway_line, latitude, longitude from subway_station;")
 	List<SubwayStationTO> getStations();
-	
+		
 	// 매물 정보 가져오기 (칼럼이 많음: saleTO 참조)
-	@Select("select title, lat, lon from sale")
-	List<SaleTO> getSales();
+	@Select("select lon from sale limit 10")
+	List<String> getLon();
+	
+	@Select("select lat from sale limit 10")
+	List<String> getLat();
+	
+	@Select("select title from sale limit 10")
+	List<String> getTitle();
 	
 	// 
 	@Insert("insert into sale_near_station values("
