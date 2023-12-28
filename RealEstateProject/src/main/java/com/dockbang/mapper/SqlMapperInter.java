@@ -12,6 +12,9 @@ import org.apache.ibatis.annotations.Insert;
 
 import com.dockbang.model.BoardTO;
 import com.dockbang.model.MemberTO;
+import com.dockbang.model.SaleNearStationTO;
+import com.dockbang.model.SaleTO;
+import com.dockbang.model.SubwayStationTO;
 
 
 @Mapper
@@ -83,7 +86,39 @@ public interface SqlMapperInter {
 			@Param("wip") String wip,
 			@Param("email") String email,
 			@Param("category") String category);
+	
+	
+	// 역 정보 가져오기
+	@Select("select name, subway_line, latitude, longitude from subway_station;")
+	List<SubwayStationTO> getStations();
+	
+	// saleTO 참고
+	@Select("select title, lat, lon from sale")
+	List<SaleTO> getSales();
 		
-		
+	// 매물 정보 가져오기 (칼럼이 많음: saleTO 참조)
+	@Select("select lon from sale limit 10")
+	List<String> getLon();
+	
+	@Select("select lat from sale limit 10")
+	List<String> getLat();
+	
+	@Select("select title from sale limit 10")
+	List<String> getTitle();
+	
+	// 
+	@Insert("insert into sale_near_station values("
+			+ "0, #{stationName}, #{stationLine}, #{saleName}, #{saleDistance}"
+			+ ")")
+	int insertDistanceStationSale(
+			String stationName,
+			String stationLine,
+			String saleName,
+			double saleDistance
+			);
+	
+	// 역 근처 매물 정보 가져오기
+	@Select("select id, station_name, station_line, sale_name, distance from sale_near_station")
+	List<SaleNearStationTO> getSalesNearStation();
 	
 }

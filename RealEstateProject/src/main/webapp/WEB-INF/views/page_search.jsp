@@ -1,3 +1,5 @@
+<%@page import="java.util.List"%>
+<%@page import="com.dockbang.model.SaleTO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     
@@ -72,10 +74,48 @@
 		        { position: new naver.maps.LatLng(37.5039744, 127.0007494), message: '반포동' },
 		        { position: new naver.maps.LatLng(37.4802905, 127.0626272), message: '개포동' },
 		        { position: new naver.maps.LatLng(37.5136787, 127.0317124), message: '논현동' },
-		        { position: new naver.maps.LatLng(37.4991887, 127.0633458), message: '대치동' }
+		        { position: new naver.maps.LatLng(37.4991887, 127.0633458), message: '대치동' },
+		        { position: new naver.maps.LatLng(37.4885906, 127.0452757), message: '도곡동' },
+		        { position: new naver.maps.LatLng(37.513975, 127.0561274), message: '삼성동' },
+		        { position: new naver.maps.LatLng(37.4863964, 127.1006971), message: '수서동' },
+		        { position: new naver.maps.LatLng(37.5271478, 127.0334517), message: '압구정동' },
+		        { position: new naver.maps.LatLng(37.5000776, 127.0385419), message: '역삼동' },
+		        { position: new naver.maps.LatLng(37.4880579, 127.0828672), message: '일원동' },
+		        { position: new naver.maps.LatLng(37.5233931, 127.0479736), message: '청담동' },
+		        { position: new naver.maps.LatLng(37.5067945, 127.0830482), message: '잠실동' },
+		        { position: new naver.maps.LatLng(37.5239227, 127.0989719), message: '신천동' },
+		        { position: new naver.maps.LatLng(37.5332133, 127.113992), message: '풍납동' },
+		        { position: new naver.maps.LatLng(37.5156746, 127.1253915), message: '방이동' },
+		        { position: new naver.maps.LatLng(37.5051072, 127.1135469), message: '송파동' },
+		        { position: new naver.maps.LatLng(37.5024352, 127.1026694), message: '석촌동' },
+		        { position: new naver.maps.LatLng(37.5019016, 127.0918885), message: '삼전동' },
+		        { position: new naver.maps.LatLng(37.4956865, 127.1184047), message: '가락동' },
+		        { position: new naver.maps.LatLng(37.5040047, 127.1340203), message: '오금동' },
+		        { position: new naver.maps.LatLng(37.4855846, 127.1225635), message: '문정동' },
+		        { position: new naver.maps.LatLng(37.4768715, 127.1320663), message: '장지동' },
+		        { position: new naver.maps.LatLng(37.4897279, 127.1449912), message: '거여동' },
+		        { position: new naver.maps.LatLng(37.4984934, 127.1527443), message: '마천동' },
+		        { position: new naver.maps.LatLng(37.5675265, 127.1729313), message: '강일동' },
+		        { position: new naver.maps.LatLng(37.5638217, 127.1582312), message: '고덕동' },
+		        { position: new naver.maps.LatLng(37.5578058, 127.1310675), message: '암사동' },
+		        { position: new naver.maps.LatLng(37.5443765, 127.1276202), message: '천호동' },
+		        { position: new naver.maps.LatLng(37.5490445, 127.1508229), message: '명일동' },
+		        { position: new naver.maps.LatLng(37.5396157, 127.1459293), message: '길동' },
+		        { position: new naver.maps.LatLng(37.5304933, 127.128992), message: '성내동' },
+		        { position: new naver.maps.LatLng(37.5282539, 127.1447139), message: '둔촌동' }
 		        // Add more markers as needed
-		    ];			
-		
+		    ];
+			
+			const latt = ${lats};
+			console.log(latt);
+			const lonn = ${lons};
+			console.log(lonn);
+			const markers1 = [];
+			for (let i = 0; i < latt.length; i++) {
+				markers1.push({ position: new naver.maps.LatLng(latt[i], lonn[i]), message: 'aa' });
+
+			}
+
 			$(document).ready(function(){
 				
 				// 검색어를 받아오는 부분
@@ -102,7 +142,7 @@
 				});
 				
 			 	const infoWindows = [];
-
+				
 			    markers.forEach(markerInfo => {
 			        const marker = new naver.maps.Marker({
 			            position: markerInfo.position,
@@ -124,6 +164,25 @@
 			            keyword = markerInfo.message;
 			            console.log("aaaa", keyword);
 			            window.location.href = 'page_search.do?keyword=' + keyword;
+			        });
+			    });
+			    
+			    markers1.forEach(markerInfo => {
+			        const marker = new naver.maps.Marker({
+			            position: markerInfo.position,
+			            map: map
+			        });
+
+			        const infoWindow = new naver.maps.InfoWindow({
+			            content: markerInfo.message
+			        });
+
+			        infoWindows.push(infoWindow);
+
+			        naver.maps.Event.addListener(marker, 'click', function() {
+			            infoWindows.forEach(window => window.close());
+			            infoWindow.open(map, marker);
+			            map.panTo(markerInfo.position);
 			        });
 			    });
 			    

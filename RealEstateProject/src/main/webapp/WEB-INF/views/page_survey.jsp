@@ -1,40 +1,31 @@
+<%@page import="com.dockbang.model.SaleNearStationTO"%>
+<%@page import="com.dockbang.model.SaleTO"%>
+<%@page import="com.dockbang.model.SubwayStationTO"%>
+<%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-<head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta name="description" content="">
-	<meta name="author" content="">
-	<title>독방</title>
 
-	<!-- CSS FILES -->        
-	<link rel="preconnect" href="https://fonts.googleapis.com">
-	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-	<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&family=Open+Sans&display=swap" rel="stylesheet">
-	<link href="css/bootstrap.min.css" rel="stylesheet">
-	<link href="css/bootstrap-icons.css" rel="stylesheet">
-	<link href="css/templatemo-topic-listing.css" rel="stylesheet">   
+<%
+	List<SaleNearStationTO> salesNearStation = (List)request.getAttribute("salesNearStation");
 
-</head>
+	// 테스트 출력용
+	out.println("<table border='1' width='800' cellspacing='0' style='text-align: center'>");
+	out.println("<tr>");
+	out.println("<td>역 이름</td>");
+	out.println("<td>역 호선</td>");
+	out.println("<td>매물 이름</td>");
+	out.println("<td>역과 매물간의 거리(km)</td>");
+	out.println("</tr>");
 
-<body>
-	<!-- header page include -->
-	<%@ include file="page_nav.jsp" %>
-
-	<!-- page content -->
-	<main>
-	</main>	
-
-	<!-- footer page include -->
-	<%@ include file="page_footer.jsp" %>
+	for(SaleNearStationTO sto:salesNearStation) {
+		out.println("<tr>");
+			out.println("<td>" + sto.getStation_name() + "</td>");
+			out.println("<td>" + sto.getStation_line() + "</td>");
+			out.println("<td>" + sto.getSale_name() + "</td>");
+			out.println("<td>" + sto.getDistance() + " km</td>");
+		out.println("</tr>");
+	}
+		
+	out.println("</table>");
 	
-	<!-- JAVASCRIPT FILES -->
-	<script src="js/jquery.min.js"></script>
-	<script src="js/bootstrap.bundle.min.js"></script>
-	<script src="js/jquery.sticky.js"></script>
-	<script src="js/click-scroll.js"></script>
-	<script src="js/custom.js"></script>
-</body>
-</html>
+%>
