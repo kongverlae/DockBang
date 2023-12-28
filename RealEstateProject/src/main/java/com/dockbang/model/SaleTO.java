@@ -7,19 +7,26 @@ import lombok.Setter;
 @Setter
 public class SaleTO {
 	// sale seq
-	private String saleseq;
+	private String sale_seq;
 	
-	private String name;
-	private String street;
-	private String si;
-	private String gun;
-	private String do_;
-	private String danji;
-	private String area;
+	private String title;
+	private String agency;
+	private String address;
+	private double lat;
+	private double lon;
+	private String sale_type;
 	private String price;
+	private String deposit;
+	private String monthly_fee;
+	private String manage_fee;
+	private String area;
+	private String built_date;
+	private String house_type;
+	private String house_usage;
+	private String num_parking;
+	private String loan_amount;
 	private String floor;
-	private String year;
-	private String remodel;
-	private String restaurant;
-	private String station;
+	private String height;
+	private String room;
+	private String bathroom;
 }

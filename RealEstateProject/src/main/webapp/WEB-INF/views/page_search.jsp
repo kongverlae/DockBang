@@ -37,7 +37,7 @@
 						<h1 class="text-white text-center">독방</h1>
 						<!-- 부제목 -->
 						<h6 class="text-center">원하는 부동산을 더 쉽게 찾으세요</h6>
-						<form method="get" class="custom-form mt-4 pt-2 mb-lg-0 mb-5"
+						<form method="GET" class="custom-form mt-4 pt-2 mb-lg-0 mb-5"
 							role="search" action="page_search.do">
 							<div class="input-group input-group-lg">
 								<span class="input-group-text bi-search" id="basic-addon1">
@@ -55,7 +55,7 @@
 		
 		<div class="row">
 			<section class="section" id="section-3" >
-				<div id="map" style="width: 100%; height: 300px; margin: auto"></div>
+				<div id="map" style="width: 100%; height: 600px; margin: auto"></div>
 				<code id="snippet" class="snippet"></code>
 			</section>
 		</div>
@@ -90,6 +90,7 @@
 				// 지도를 표시할 div 요소를 가져옴
 				let mapDiv = document.getElementById('map');
 				
+				
 				// 네이버 지도 객체를 생성하고 설정
 				let map = new naver.maps.Map(mapDiv, {
 				    center: new naver.maps.LatLng(37.3595704, 127.105399),
@@ -97,10 +98,22 @@
 				    //, mapTypeControl: true
 				});
 				
-				 // 지도를 클릭할 때마다 마커 위치를 변경
-				naver.maps.Event.addListener(map, 'click', function(e) {
-				    marker.setPosition(e.coord);
-				    
+				// 검색한 동의 경계선 정보 받아 오기
+				let lats = ${lat};
+				let lons = ${lon};
+				let polygonCoords = lats.map(function(lat, index) {
+				    return new naver.maps.LatLng(lat, lons[index]);
+				});
+				
+				// 경계선 그리기
+				let polygon = new naver.maps.Polygon({
+				    map: map,
+				    paths: [polygonCoords],
+				    strokeColor: '#f00',
+				    strokeWeight: 2,
+				    strokeOpacity: 0.7,
+				    fillColor: '#00f',
+				    fillOpacity: 0.3
 				});
 				
 			 	const infoWindows = [];
@@ -124,29 +137,17 @@
 
 			            // 클릭한 마커의 위치의 키워드로 설정
 			            keyword = markerInfo.message;
-			            console.log("aaaa", keyword);
+			            // console.log("aaaa", keyword);
 			            window.location.href = 'page_search.do?keyword=' + keyword;
 			        });
 			    });
+				
+				// 지도를 클릭할 때마다 마커 위치를 변경
+				naver.maps.Event.addListener(map, 'click', function(e) {
+				    marker.setPosition(e.coord);
+				});
+				
 			    
-				// 검색한 동의 경계선 정보 받아 오기
-				let lats = ${lat};
-				let lons = ${lon};
-				let polygonCoords = lats.map(function(lat, index) {
-				    return new naver.maps.LatLng(lat, lons[index]);
-				});
-				
-				// 경계선 그리기
-				let polygon = new naver.maps.Polygon({
-				    map: map,
-				    paths: [polygonCoords],
-				    strokeColor: '#f00',
-				    strokeWeight: 2,
-				    strokeOpacity: 0.7,
-				    fillColor: '#00f',
-				    fillOpacity: 0.3
-				});
-				
 				// 지도 커서를 손가락 모양으로 설정
 				map.setCursor('pointer');
 				 
@@ -262,7 +263,7 @@
 				    });
 
 					// 이전 페이지에서 검색어가 들어오면 해당 키워드로 검색
-					if(keyword === '' || keyword == null){
+					if(keyword == null || keyword === ''){
 				    	searchAddressToCoordinate(defaultAddress);
 					} else{
 				    	searchAddressToCoordinate(keyword);
