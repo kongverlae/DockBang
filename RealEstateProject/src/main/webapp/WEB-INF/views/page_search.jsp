@@ -24,22 +24,19 @@
 	<link href="css/templatemo-topic-listing.css" rel="stylesheet">   
 </head>
 
-<body>
+<body style="overflow: hidden;">
 	<!-- header page include -->
 	<%@ include file="page_nav.jsp" %>
 
 	<!-- page content -->
 	<main>
 			<section
-			class="hero-section justify-content-center align-items-center">
+			class="hero-section justify-content-center align-items-center" style="height: 200px">
 			<div class="container">
 				<div class="row">
-					<div class="col-lg-8 col-12 mx-auto">
-						<!-- 제목 -->
-						<h1 class="text-white text-center">독방</h1>
-						<!-- 부제목 -->
-						<h6 class="text-center">원하는 부동산을 더 쉽게 찾으세요</h6>
-						<form method="get" class="custom-form mt-4 pt-2 mb-lg-0 mb-5"
+					<div class="col-lg-8 col-12 mx-auto ">
+						<!-- <form method="get" class="custom-form mt-4 pt-2 mb-lg-0 mb-5" -->
+						<form method="get" class="custom-form "
 							role="search" action="page_search.do">
 							<div class="input-group input-group-lg">
 								<span class="input-group-text bi-search" id="basic-addon1">
@@ -55,9 +52,9 @@
 	
 		</section>
 		
-		<div class="row">
+		<div class="row" >
 			<section class="section" id="section-3" >
-				<div id="map" style="width: 100%; height: 300px; margin: auto"></div>
+				<div id="map" style="width: 100%; height: 90vh; margin: auto;"></div>
 				<code id="snippet" class="snippet"></code>
 			</section>
 		</div>
@@ -67,6 +64,7 @@
 		<script type="text/javascript"
 			src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=0xkngoqc6q&submodules=geocoder"></script>
 		<script id="code">
+			/* 코드 부분이였는데 */
 			const markers = [
 		        { position: new naver.maps.LatLng(37.4550628, 127.0695079), message: '내곡동' },
 		        { position: new naver.maps.LatLng(37.4719823, 127.0374623), message: '양재동' },
@@ -406,14 +404,11 @@
 				naver.maps.onJSContentLoaded = initGeocoder;
 	
 			});
-
-			
-			
 		</script>
 	</main>	
 
 	<!-- footer page include -->
-	<%@ include file="page_footer.jsp" %>
+	<%-- <%@ include file="page_footer.jsp" %> --%>
 	
 	<!-- JAVASCRIPT FILES -->
 	<script src="js/jquery.min.js"></script>
@@ -421,5 +416,12 @@
 	<script src="js/jquery.sticky.js"></script>
 	<script src="js/click-scroll.js"></script>
 	<script src="js/custom.js"></script>
+	<style>
+		@media (max-width: 767px) {
+			.hero-section {
+				height: 200px;
+			}
+		}
+	</style>
 </body>
 </html> 
