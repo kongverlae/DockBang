@@ -81,22 +81,18 @@ public class SaleController {
 		// 매물 정보 저장
 		List<String> lats = mapper.getLat();
 		List<String> lons = mapper.getLon();
-		modelAndView.addObject("lats", lats);
-		modelAndView.addObject("lons", lons);
+		modelAndView.addObject("saleLats", lats);
+		modelAndView.addObject("saleLons", lons);
 		
-		// 예외에 null일 경우 추가 - 순서 중요
-		if(keyword == null || keyword.equals("")) {
-			modelAndView.addObject("lat", 37.3595704);
-			modelAndView.addObject("lon", 127.105399);
-			modelAndView.addObject("keyword", keyword);
-		} else {
-			List<String> lat = mapper.selectlat(keyword);
-			List<String> lon = mapper.selectlon(keyword);
-			// 데이터 전송
-			modelAndView.addObject("keyword", keyword);
-			modelAndView.addObject("lat", lat);
-			modelAndView.addObject("lon", lon);
-		}
+		List<String> lat = mapper.selectlat();
+		List<String> lon = mapper.selectlon();
+		List<String> local = mapper.selectlocal();
+		
+		// 경계선 데이터 전송
+		modelAndView.addObject("keyword", keyword);
+		modelAndView.addObject("lineLat", lat);
+		modelAndView.addObject("lineLon", lon);
+		modelAndView.addObject("lineLocal", local);
 		
 		// view 페이지로 반환
 		return modelAndView;
