@@ -124,30 +124,48 @@ public class BoardController {
 		return modelAndView;
 	}
 	
+	/*
+	 * @RequestMapping("/page_boardView.do") ModelAndView
+	 * page_boardView(@RequestParam("category") String category) {
+	 * 
+	 * // view(.jsp) 설정 ModelAndView modelAndView = new ModelAndView();
+	 * modelAndView.setViewName("/board/page_boardView"); // 데이터 전송 //
+	 * modelAndView.addObject("data_name", data); modelAndView.addObject("category",
+	 * category);
+	 * 
+	 * // view 페이지로 반환 return modelAndView; }
+	 */
 	@RequestMapping("/page_boardView.do")
-	ModelAndView page_boardView(@RequestParam("category") String category) {
-
+	ModelAndView page_boardView() {
+		
 		// view(.jsp) 설정
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.setViewName("/board/page_boardView");
 		// 데이터 전송
-		// modelAndView.addObject("data_name", data);
-		modelAndView.addObject("category", category);
-
+		
 		// view 페이지로 반환
 		return modelAndView;
 	}
 	
+	/*
+	 * @RequestMapping("/page_boardModify.do") ModelAndView
+	 * page_boardFreeModify(@RequestParam("category") String category) {
+	 * 
+	 * // view(.jsp) 설정 ModelAndView modelAndView = new ModelAndView();
+	 * modelAndView.setViewName("/board/page_boardModify"); // 데이터 전송 //
+	 * modelAndView.addObject("data_name", data); modelAndView.addObject("category",
+	 * category);
+	 * 
+	 * // view 페이지로 반환 return modelAndView; }
+	 */
 	@RequestMapping("/page_boardModify.do")
-	ModelAndView page_boardFreeModify(@RequestParam("category") String category) {
-
+	ModelAndView page_boardFreeModify() {
+		
 		// view(.jsp) 설정
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.setViewName("/board/page_boardModify");
 		// 데이터 전송
-		// modelAndView.addObject("data_name", data);
-		modelAndView.addObject("category", category);
-
+		
 		// view 페이지로 반환
 		return modelAndView;
 	}

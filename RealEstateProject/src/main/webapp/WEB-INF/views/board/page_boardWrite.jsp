@@ -63,7 +63,8 @@
 				
 				                    <div class="col-lg-6 col-md-6 col-12"> 
 				                        <div class="form-floating">
-				                            <input type="email" name="email" id="email" pattern="[^ @]*@[^ @]*" class="form-control" placeholder="Email address" required="">
+				                            <!-- <input type="email" name="email" id="email" pattern="[^ @]*@[^ @]*" class="form-control" placeholder="Email address" required=""> -->
+				                            <input type="email" name="email" id="email" pattern="[^@]+@[^.]+\.[a-zA-Z]{2,}" class="form-control" placeholder="Email address" required="">
 				                            
 				                            <label for="floatingInput">이메일</label>
 				                        </div>
