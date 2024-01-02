@@ -54,7 +54,7 @@
 					href="page_survey.do" style="color: var(--primary-color)">나만의 집 찾기</a></li>
 
 				<li class="nav-item"><a class="nav-link"
-					href="page_boardList.do?category=notice" style="color: var(--primary-color)">게시판</a></li>
+					href="page_boardChoose.do" style="color: var(--primary-color)">게시판</a></li>
 
 				<li class="nav-item"><a class="nav-link"
 					href="#section_5" style="color: var(--primary-color)">Contact</a></li>

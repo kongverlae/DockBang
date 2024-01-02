@@ -24,15 +24,15 @@
 	<link href="css/templatemo-topic-listing.css" rel="stylesheet">   
 </head>
 
-<body style="overflow: hidden;">
+<body>
 	<!-- header page include -->
 	<%@ include file="page_nav.jsp" %>
 
 	<!-- page content -->
-	<main>
+	<main style="overflow: hidden;">
 			<section
-			class="hero-section justify-content-center align-items-center" style="height: 200px">
-			<div class="container">
+			class="hero-section justify-content-center align-items-center" style="height: 20vh">
+			<div class="container-xxl">
 				<div class="row">
 					<div class="col-lg-8 col-12 mx-auto ">
 						<!-- <form method="get" class="custom-form mt-4 pt-2 mb-lg-0 mb-5" -->
@@ -51,13 +51,12 @@
 			</div>
 	
 		</section>
-		
-		<div class="row" >
-			<section class="section" id="section-3" >
-				<div id="map" style="width: 100%; height: 90vh; margin: auto;"></div>
-				<code id="snippet" class="snippet"></code>
-			</section>
-		</div>
+			<div class="row" >
+				<section class="section" id="section-3" >
+					<div id="map" style="width: 100%; height: 80vh; margin: auto;"></div>
+					<code id="snippet" class="snippet"></code>
+				</section>
+			</div>
 		<!-- jquery -->
 		<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
 		<!-- 각자 발급받은 Client ID 값 넣기 -->
