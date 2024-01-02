@@ -106,13 +106,11 @@
 		        // Add more markers as needed
 		    ];
 			
-			const latt = ${lats};
-			console.log(latt);
-			const lonn = ${lons};
-			console.log(lonn);
+			const saleLats = ${saleLats};
+			const saleLons = ${saleLons};
 			const markers1 = [];
-			for (let i = 0; i < latt.length; i++) {
-				markers1.push({ position: new naver.maps.LatLng(latt[i], lonn[i]), message: 'aa' });
+			for (let i = 0; i < saleLats.length; i++) {
+				markers1.push({ position: new naver.maps.LatLng(saleLats[i], saleLons[i]), message: 'aa' });
 
 			}
 
@@ -121,6 +119,15 @@
 				// 검색어를 받아오는 부분
 				let keyword = '${keyword}';
 				// console.log("keyword: " + keyword);
+				
+				// 검색한 동의 경계선 정보 받아 오기
+				let local = '${lineLocal}';
+				let formattedLocal = local.replace(/\[|\]/g, '');
+				let localArray = formattedLocal.split(',').map(item => item.trim());
+				let lineLat = ${lineLat};
+				let lineLon = ${lineLon};
+				
+				let polygon;
 				
 				// 기본 주소 설정
 				let defaultAddress = '강남구 역삼동 819-10';
@@ -142,7 +149,6 @@
 				});
 				
 			 	const infoWindows = [];
-				
 			    markers.forEach(markerInfo => {
 			        const marker = new naver.maps.Marker({
 			            position: markerInfo.position,
@@ -162,8 +168,38 @@
 
 			            // 클릭한 마커의 위치의 키워드로 설정
 			            keyword = markerInfo.message;
-			            console.log("aaaa", keyword);
-			            window.location.href = 'page_search.do?keyword=' + keyword;
+			            
+			            
+			            if (polygon) {
+			                polygon.setMap(null);
+			            }
+			            
+			            let indices = [];
+			            for (let i = 0; i < localArray.length; i++) {
+			                if (localArray[i] === markerInfo.message) {
+			                    indices.push(i);
+			                }
+			            }
+
+			            if (indices.length > 0) {
+			                // 모든 인덱스에 대응하는 lineLat와 lineLon 추출
+			                let polygonCoords = indices.map(function(index) {
+			                    return new naver.maps.LatLng(lineLat[index], lineLon[index]);
+			                });
+
+			                // 경계선 그리기
+			                polygon = new naver.maps.Polygon({
+			                    map: map,
+			                    paths: polygonCoords,
+			                    strokeColor: '#f00',
+			                    strokeWeight: 2,
+			                    strokeOpacity: 0.7,
+			                    fillColor: '#00f',
+			                    fillOpacity: 0.3
+			                });
+			            } else {
+			                console.log('local 배열에서 해당 키워드를 찾을 수 없습니다.');
+			            }
 			        });
 			    });
 			    
@@ -186,28 +222,18 @@
 			        });
 			    });
 			    
-				// 검색한 동의 경계선 정보 받아 오기
-				let lats = ${lat};
-				let lons = ${lon};
-				let polygonCoords = lats.map(function(lat, index) {
-				    return new naver.maps.LatLng(lat, lons[index]);
-				});
+			    
+			    function searchCoordinateToAddress(latlng) {
+			    	
+			    	
+			    }
 				
-				// 경계선 그리기
-				let polygon = new naver.maps.Polygon({
-				    map: map,
-				    paths: [polygonCoords],
-				    strokeColor: '#f00',
-				    strokeWeight: 2,
-				    strokeOpacity: 0.7,
-				    fillColor: '#00f',
-				    fillOpacity: 0.3
-				});
+				
 				
 				// 지도 커서를 손가락 모양으로 설정
 				map.setCursor('pointer');
 				 
-				// 좌표를 주소로 변환하는 함수
+				// 좌표를 주소로 변환하는 함수s
 				function searchCoordinateToAddress(latlng) {
 	
 				    infoWindow.close();
@@ -399,6 +425,7 @@
 				function hasAddition (addition) {
 				    return !!(addition && addition.value);
 				}
+				
 				
 				// 지오코더 초기화 함수를 호출
 				naver.maps.onJSContentLoaded = initGeocoder;
