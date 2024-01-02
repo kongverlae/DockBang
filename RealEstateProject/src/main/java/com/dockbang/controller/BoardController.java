@@ -70,14 +70,17 @@ public class BoardController {
 	
 	
 	@RequestMapping("/page_boardWrite.do")
-	ModelAndView page_boardWrite(@RequestParam("category") String category) {
+	//ModelAndView page_boardWrite(@RequestParam("category") String category) {
+	ModelAndView page_boardWrite( ) {
 
 		// view(.jsp) 설정
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.setViewName("/board/page_boardWrite");
 		// 데이터 전송
 		// modelAndView.addObject("data_name", data);
-		modelAndView.addObject("category", category);
+		
+		// 임시로 지움
+		//modelAndView.addObject("category", category);
 
 		// view 페이지로 반환
 		return modelAndView;

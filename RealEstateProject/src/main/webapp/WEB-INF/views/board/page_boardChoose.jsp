@@ -48,11 +48,9 @@
 		<section class="section-padding">
 		    <div class="container">
 		        <div class="row">
-		
 		            <div class="col-lg-12 col-12 text-center">
 		                <h3 class="mb-4">게시판</h3>
 		            </div>
-		
 		            <div class="col-lg-8 col-12 mt-3 mx-auto">
 		                <div class="custom-block custom-block-topics-listing bg-white shadow-lg mb-5">
 		                    <div class="d-flex">
