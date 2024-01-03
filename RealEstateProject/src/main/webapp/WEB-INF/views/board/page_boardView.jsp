@@ -48,7 +48,7 @@
 				<div class="col-lg-12 col-12 text-center">
 		        	<h3 class="mb-4">글보기입니다 만지시면 안되요</h3>
 		        </div>
-	            <div class="col-lg-12 col-12 text-center mt-3">
+	            <div class="col-lg-8 col-12 text-center mt-3">
 					<div class="custom-block bg-white shadow-lg">
 						<div class="col-lg-12 col-12 text-start">
 							<div class="">
@@ -56,27 +56,32 @@
 							</div>
 							
 							<div class="mt-3">
-								<h6 class="m-0"><b>총강</b>( 192.168.0.1 | kong@ver.lae | 127.000 37.000 )</h6>
+								<h6 class="m-0"><b>총강든도</b>( 192.168.0.1 | kong@ver.lae | 127.000 37.000 )</h6>
 								<div class="m-0">2019.12.05. 10:56 | 89,994 읽음</div>
 							</div>
 							
 							<hr>
-							
-							<div class="col-lg-12 col-12 text-center">
+							<div class="row justify-content-center">
+							<div class="col-lg-11 col-12 text-center">
 								<img alt="thief with gun" src="../../../images/colleagues-working-cozy-office-medium-shot.jpg">
 			        		</div>
-							<div class="col-lg-12 col-12 text-start">
-								<div>안녕하세요 총강이에요</div>
+							<div class="col-lg-11 col-12 text-start">
+								<div>안녕하세요 총강든도에요</div>
 								<div>오늘은 독방의 나만의 집찾기 서비스에 대해서 알아볼 거에요</div>
 								<div>나만의 집 찾기 서비스란 조건에 따른 지역과 집을 추천해주는 서비스에요</div>
 								<div>잘 이용해서 좋은집을 찾아보자구요</div>
+								<!-- <p>안녕하세요 총강이에요</p>
+								<p>오늘은 독방의 나만의 집찾기 서비스에 대해서 알아볼 거에요</p>
+								<p>나만의 집 찾기 서비스란 조건에 따른 지역과 집을 추천해주는 서비스에요</p>
+								<p>잘 이용해서 좋은집을 찾아보자구요</p> -->
+			        		</div>
 			        		</div>
 			        		
 			        		<hr>
 			        		
 			        		<div class="d-flex justify-content-between mt-3">
 								<a href="page_boardList.do" class="btn custom-btn custom-border-btn col-3">목록</a>
-		                    	<div class="btn-group col-5" role="group" >
+		                    	<div class="btn-group col-lg-4 col-5" role="group" >
 								  	<button type="button" class="btn custom-btn custom-border-btn">수정</button>
 								  	<button type="button" class="btn custom-btn custom-border-btn">삭제</button>
 			                        <a href="page_boardWrite.do" class="btn custom-btn">쓰기</a>
@@ -88,18 +93,54 @@
 	            </div>
 	        </div>
 	        <div class="row justify-content-center">
-	            <div class="col-lg-12 col-12 text-center mt-3">
+		        <div class="col-lg-8 col-12 text-center mt-3">
 					<div class="custom-block bg-white shadow-lg">
-						<div class="col-lg-12 col-12 text-start">
-			        		<div class="d-flex justify-content-between mt-3">
-								<div class="col-lg-9 col-9 text-start">
-									글쓴이 비밀번호<br>
-									내용<br>
-				        		</div>
-			                    <input type="submit" class="btn custom-btn col-3" value="작성하기"></input>
+						<h6 class="text-start">총강든도</h6>
+						<form action="#" method="post" class="custom-form contact-form row" role="form">
+							<div class="col-lg-12 col-12 text-start px-2">
+		                        <div class="form-floating">
+		                            <textarea class="form-control h-25 mx-0 mb-0" rows="3" id="content" name="content" placeholder="댓글을 입력해주세요"></textarea>
+		                            <label for="floatingTextarea">바르고 고운말을 사용하여 올바른 인터넷 문화를 만들어 갑시다.</label>
+		                        </div>
 							</div>
-			        		
-			        	</div>
+						</form>
+						<div class="col-lg-12 col-12 m-0 mt-2 mb-2 row justify-content-end">
+							<input type="submit" class="btn custom-btn col-3" value="작성하기"></input>
+						</div>
+						<hr>
+						<div class="text-start">
+							<div class="d-flex justify-content-between">
+								<h6>총강든도</h6>
+								<div class="dropdown">
+									<button class="btn py-0 dropdown-togle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+									:
+									</button>
+									<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+									    <a class="dropdown-item" href="#">수정</a>
+									    <a class="dropdown-item" href="#">삭제</a>
+									</div>
+								</div>
+							</div>
+							다들 댓글 달아주셔서 감사합니다.<br>
+							<div class="text-muted mt-1">2024-01-03 10:31</div>
+							<hr>
+							<h6>칼강든도</h6>
+							이 글 보고 집 구했더니 정말로 만족스러운 집을 구했어요<br>
+							<div class="text-muted mt-1">2024-01-03 10:31</div>
+							<hr>
+							<h6>칼강든도</h6>
+							이 글 보고 집 구했더니 정말로 만족스러운 집을 구했어요<br>
+							<div class="text-muted mt-1">2024-01-03 10:31</div>
+							<hr>
+							<h6>칼강든도</h6>
+							이 글 보고 집 구했더니 정말로 만족스러운 집을 구했어요<br>
+							<div class="text-muted mt-1">2024-01-03 10:31</div>
+							<hr>
+							<h6>칼강든도</h6>
+							이 글 보고 집 구했더니 정말로 만족스러운 집을 구했어요<br>
+							<div class="text-muted mt-1">2024-01-03 10:31</div>
+							<hr>
+						</div>
 					</div>
 	            </div>
 	        </div>

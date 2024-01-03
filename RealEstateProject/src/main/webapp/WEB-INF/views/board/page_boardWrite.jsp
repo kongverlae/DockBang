@@ -48,7 +48,7 @@
 				<div class="col-lg-12 col-12 text-center">
 		        	<h3 class="mb-4">글쓰기입니다 대회는 아니구요</h3>
 		        </div>
-	            <div class="col-lg-12 col-12 text-center mt-3">
+	            <div class="col-lg-8 col-12 text-center mt-3">
 					<div class="custom-block bg-white shadow-lg">
 						<div class="col-lg-12 col-12">
 				            <form action="#" method="post" class="custom-form contact-form" role="form">

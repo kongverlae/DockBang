@@ -72,7 +72,7 @@
 				<div class="col-lg-12 col-12 text-center">
 		        	<h3 class="mb-4">공지 게시판</h3>
 		        </div>
-	            <div class="col-lg-12 col-12 text-center mt-3">
+	            <div class="col-lg-8 col-12 text-center mt-3">
 	            	<!-- justify-content-[ between, center, start, end] -->
 	                <!-- <h3 class="mb-4">
 	                	글목록
