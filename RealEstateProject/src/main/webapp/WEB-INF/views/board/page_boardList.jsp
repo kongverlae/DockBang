@@ -5,7 +5,7 @@
 	for( int i = 0 ; i < 10 ; i++ ) {
 		list += "<tr>" +
 	            "<td>" + i + "</td> <!-- 글번호 -->" +
-	            "<td><a href='page_boardView.do'>게시글 제목 " + i + "</a></td> <!-- 글제목 -->" +
+	            "<td><a href='#'>게시글 제목 " + i + "</a></td> <!-- 글제목 -->" +
 	            "<td>작성자" + i + "</td> <!-- 글쓴이 -->" +
 	            "<td>2023-01-01</td> <!-- 작성일자 -->" +
 	            "<!-- 기타 필요한 칼럼 값들 추가 -->" +
@@ -72,7 +72,7 @@
 				<div class="col-lg-12 col-12 text-center">
 		        	<h3 class="mb-4">공지 게시판</h3>
 		        </div>
-	            <div class="col-lg-12 col-12 text-center mt-3">
+	            <div class="col-lg-8 col-12 text-center mt-3">
 	            	<!-- justify-content-[ between, center, start, end] -->
 	                <!-- <h3 class="mb-4">
 	                	글목록

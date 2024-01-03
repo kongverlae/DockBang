@@ -48,12 +48,18 @@
 				<div class="col-lg-12 col-12 text-center">
 		        	<h3 class="mb-4">글쓰기입니다 대회는 아니구요</h3>
 		        </div>
-	            <div class="col-lg-12 col-12 text-center mt-3">
+	            <div class="col-lg-8 col-12 text-center mt-3">
 					<div class="custom-block bg-white shadow-lg">
 						<div class="col-lg-12 col-12">
+						<div class="mt-0 text-start">
+								<h6 class="m-0"><b>총강든도</b>( kong@ver.lae )</h6>
+								<!-- <div class="m-0">2019.12.05. 10:56 | 89,994 읽음</div> -->
+								<hr>
+							</div>
 				            <form action="#" method="post" class="custom-form contact-form" role="form">
 				                <div class="row">
-				                    <div class="col-lg-6 col-md-6 col-12">
+									<!-- 작성자와 이메일 체크 -->
+				                    <!-- <div class="col-lg-6 col-md-6 col-12">
 				                        <div class="form-floating">
 				                            <input type="text" name="name" id="name" class="form-control" placeholder="Name" required="">
 				                            
@@ -63,12 +69,15 @@
 				
 				                    <div class="col-lg-6 col-md-6 col-12"> 
 				                        <div class="form-floating">
-				                            <!-- <input type="email" name="email" id="email" pattern="[^ @]*@[^ @]*" class="form-control" placeholder="Email address" required=""> -->
+				                            <input type="email" name="email" id="email" pattern="[^ @]*@[^ @]*" class="form-control" placeholder="Email address" required="">
+<<<<<<< HEAD
 				                            <input type="email" name="email" id="email" pattern="[^@]+@[^.]+\.[a-zA-Z]{2,}" class="form-control" placeholder="Email address" required="">
+=======
+>>>>>>> parent of cb5055e (design: page_boardView 추가)
 				                            
 				                            <label for="floatingInput">이메일</label>
 				                        </div>
-				                    </div>
+				                    </div> -->
 				
 				                    <div class="col-lg-12 col-12">
 				                        <div class="form-floating">
@@ -116,7 +125,9 @@
 					                    </div>
 				                    <!-- </div> -->
 				                    <div class="d-flex justify-content-between mt-3">
-				                    	<a href="page_boardList.do" class="btn custom-btn custom-border-btn col-3">목록</a>
+				                    	<div class="align-items-center col-3">
+					                    	<a href="page_boardList.do" class="btn custom-btn custom-border-btn col-12">목록</a>
+				                    	</div>
 				                    	<div class="col-3">
 					                        <button type="submit" class="form-control">쓰기</button>
 				                    	</div>
