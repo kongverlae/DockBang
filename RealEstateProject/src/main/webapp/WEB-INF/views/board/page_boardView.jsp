@@ -1,7 +1,5 @@
 ﻿<%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-
-
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -19,7 +17,7 @@
 	<link href="css/bootstrap-icons.css" rel="stylesheet">
 	<link href="css/templatemo-topic-listing.css" rel="stylesheet">   
 
-<link rel="stylesheet" type="text/css" href="./css/board_view.css">
+<!--
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
 <script type="text/javascript">
 	/*
@@ -114,13 +112,12 @@
 		}
 		document.dfrm.submit();
 	};
-</script>
+</script> -->
 </head>
 
 <body>
 	<!-- header page include -->
 	<%@ include file="../page_nav.jsp" %>
-<<<<<<< HEAD
 	
 	<!-- header page -->
 	<header class="site-header d-flex flex-column justify-content-center align-items-center">
@@ -246,93 +243,6 @@
 	    </div>
 	</section>
 	</main>	
-=======
-<main>
-<!-- 상단 디자인 -->
-<!-- <div class="contents1">  -->
-<!-- 	<div class="con_title">  -->
-<!-- 		<p style="margin: 0px; text-align: right"> -->
-<!-- 			<img style="vertical-align: middle" alt="" src="./images/home_icon.gif" /> &gt; 커뮤니티 &gt; <strong>여행지리뷰</strong> -->
-<!-- 		</p> -->
-<!-- 	</div> -->
->>>>>>> parent of cb5055e (design: page_boardView 추가)
-
-	<div class="contents_sub">	
-	<!--게시판-->
-		<div class="board_view" style="margin-top:130px;">
-			<table>
-			<tr>
-				<th width="10%">제목</th>
-				<td width="60%">주제</td>
-				<th width="10%">등록일</th>
-				<td width="20%">날짜</td>
-			</tr>
-			<tr>
-				<th>글쓴이</th>
-				<td>writer + "(" + wip + "/" + mail + ")"</td>
-				<th>조회</th>
-				<td>hit </td>
-			</tr>
-			<tr>
-				<th>위치정보</th>
-				<td>
-					위도 : (latitude > / 경도 : (longitude )
-				</td>
-				<th></th>
-				<td></td>
-			</tr>		
-			<tr>
-				<td colspan="4" height="200" valign="top" style="padding:20px; line-height:160%">
-					<div id="bbs_file_wrap">
-						<div>
-							<img src="./upload/imagename " width="900" onerror="" /><br />
-						</div>
-					</div>
-					content 
-				</td>
-			</tr>			
-			</table>
-			
-			<table id="result">
-			</table>
-
-			<!-- <form action="#" method="post" name="cfrm"> -->
-			<input type="hidden" id="cpage" value="cpage " />
-			<input type="hidden" id="seq" value="seq " />
-			<table>
-			<tr>
-				<td width="94%" class="coment_re">
-					글쓴이 <input type="text" id="cwriter" maxlength="5" class="coment_input" />&nbsp;&nbsp;
-					비밀번호 <input type="password" id="cpassword" class="coment_input pR10" />&nbsp;&nbsp;
-				</td>
-				<td width="6%" class="bg01"></td>
-			</tr>
-			<tr>
-				<td class="bg01">
-					<textarea id="ccontent" cols="" rows="" class="coment_input_text"></textarea>
-				</td>
-				<td align="right" class="bg01">
-					<button type="button" id="btn1" class="btn_re btn_txt01">댓글등록</button>
-				</td>
-			</tr>
-			</table>
-			<!-- </form> -->
-		</div>
-		<div class="btn_area">
-			<div class="align_left">			
-				<input type="button" value="목록" class="btn_list btn_txt02" style="cursor: pointer;" onclick="location.href='page_boardList.do?category=${category}'" />
-			</div>
-			<div class="align_right">
-				<input type="button" value="수정" class="btn_list btn_txt02" style="cursor: pointer;" onclick="location.href='page_boardModify.do?category=${category}'" />
-				<input type="button" value="삭제" class="btn_list btn_txt02" style="cursor: pointer;" onclick="location.href='page_boardDelete.do?category=${category}'" />
-				<input type="button" value="쓰기" class="btn_write btn_txt01" style="cursor: pointer;" onclick="location.href='page_boardWrite.do?category=${category}'" />
-			</div>
-		</div>
-		<!--//게시판-->
-	</div>
-<!-- 하단 디자인 -->
-</div>
-</main>
 	<!-- footer page include -->
 	<%@ include file="../page_footer.jsp" %>
 	
