@@ -107,9 +107,12 @@
 			
 			const saleLats = ${saleLats};
 			const saleLons = ${saleLons};
+			const saleTitle = '${saleTitle}';
+			let formattedtitle = saleTitle.replace(/\[|\]/g, '');
+			let titleArray = formattedtitle.split(',').map(item => item.trim());
 			const markers1 = [];
 			for (let i = 0; i < saleLats.length; i++) {
-				markers1.push({ position: new naver.maps.LatLng(saleLats[i], saleLons[i]), message: 'aa' });
+				markers1.push({ position: new naver.maps.LatLng(saleLats[i], saleLons[i]), message: titleArray[i] });
 
 			}
 
@@ -147,11 +150,23 @@
 				    
 				});
 				
+				let bounds = map.getBounds(),
+			    southWest = bounds.getSW(),
+			    northEast = bounds.getNE(),
+			    lngSpan = northEast.lng() - southWest.lng(),
+			    latSpan = northEast.lat() - southWest.lat();
+				 
 			 	const infoWindows = [];
 			    markers.forEach(markerInfo => {
 			        const marker = new naver.maps.Marker({
 			            position: markerInfo.position,
-			            map: map
+			            map: map,
+			            icon: {
+			                // 마커 아이콘을 직사각형으로 설정
+							content: "<div style='border: 1px solid #000; background-color: white; padding: 5px; font-size: 12px;'>" + markerInfo.message + "</div>",
+			                size: new naver.maps.Size(30, 30), // 마커의 크기 조절
+			                anchor: new naver.maps.Point(15, 30) // 마커의 기준위치 설정
+			            }
 			        });
 
 			        const infoWindow = new naver.maps.InfoWindow({
@@ -202,11 +217,33 @@
 			        });
 			    });
 			    
+			    
+			    naver.maps.Event.addListener(map, 'zoom_changed', function() {
+			        const currentZoom = map.getZoom();
+
+			        markers1.forEach(markerInfo => {
+			            const marker = markerInfo.marker;
+
+		                console.log(currentZoom);
+			            // 원하는 조건에 따라 마커 표시 여부 결정
+			            if (currentZoom >= 17 ) {
+			                marker.setMap(map);
+			            } else {
+			            	num=0;
+			                // 최소 줌 레벨 미만에서는 마커 숨김
+			                marker.setMap(null);
+			            }
+			        });
+			    });
+
+			    // 마커 생성 및 이벤트 리스너 설정
 			    markers1.forEach(markerInfo => {
 			        const marker = new naver.maps.Marker({
 			            position: markerInfo.position,
-			            map: map
+			            map: null, // 초기에는 지도에 표시하지 않음
 			        });
+
+			        markerInfo.marker = marker; // 마커 정보에 실제 마커 객체 저장
 
 			        const infoWindow = new naver.maps.InfoWindow({
 			            content: markerInfo.message
