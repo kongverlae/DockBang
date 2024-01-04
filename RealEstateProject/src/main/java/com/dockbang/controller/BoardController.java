@@ -32,7 +32,7 @@ public class BoardController {
 		// view(.jsp) 설정
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.setViewName("/board/page_boardChoose");
-
+		
 		// 데이터 전송
 		// modelAndView.addObject("data_name", data);
 
@@ -56,11 +56,15 @@ public class BoardController {
 	 */
 	
 	@RequestMapping("/page_boardList.do")
-	ModelAndView page_boardList() {
+	ModelAndView page_boardList(@RequestParam("category") String category) {
 		
 		// view(.jsp) 설정
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.setViewName("/board/page_boardList");
+		
+		List<BoardTO> boardList = mapper.selectBoard(category);
+		modelAndView.addObject("category", category);
+		modelAndView.addObject("boardList", boardList);
 		
 		// 데이터 전송
 
@@ -71,7 +75,7 @@ public class BoardController {
 	
 	@RequestMapping("/page_boardWrite.do")
 	//ModelAndView page_boardWrite(@RequestParam("category") String category) {
-	ModelAndView page_boardWrite( ) {
+	ModelAndView page_boardWrite(@RequestParam("category") String category) {
 
 		// view(.jsp) 설정
 		ModelAndView modelAndView = new ModelAndView();
@@ -80,29 +84,35 @@ public class BoardController {
 		// modelAndView.addObject("data_name", data);
 		
 		// 임시로 지움
-		//modelAndView.addObject("category", category);
+		modelAndView.addObject("category", category);
 
 		// view 페이지로 반환
+		
+		
 		return modelAndView;
 	}
 	
 	@RequestMapping("/act_boardWrite.do")
 	ModelAndView act_boardWrite(MultipartFile upload, HttpServletRequest request, 
-			@RequestParam("category") String category,
 			@RequestParam("subject") String subject,
-			@RequestParam("writer") String writer,
-			@RequestParam("content") String content
+			@RequestParam("content") String content,
+			@RequestParam("category") String category
+			
 			) {		
 		int flag = 0;
+		//String category = request.getParameter("category");
 		try {
 			if(!upload.isEmpty()) {
 				String wip = InetAddress.getLocalHost().getHostAddress();
 				String filename = upload.getOriginalFilename();
 				long filesize = upload.getSize();
-				upload.transferTo(new File("C:\\DockBang\\RealEstateProject\\src\\main\\webapp\\images\\board",upload.getOriginalFilename()));
+				upload.transferTo(new File("C:\\project_dockbang\\DockBang\\RealEstateProject\\src\\main\\webapp\\images\\file",upload.getOriginalFilename()));
 				HttpSession session = request.getSession();
 		    	String email = (String)session.getAttribute("email");
-				flag = mapper.insertBoard(subject, writer, content, filename, filesize, wip, email, category);
+		    	String name = (String)session.getAttribute("nickname");
+		    	//String category1 = (String)session.getAttribute("category");
+		    System.out.println(category);
+				flag = mapper.insertBoard(subject, name, content, filename, filesize, wip, email, category);
 			}
 		} catch (IllegalStateException e) {
 			// TODO Auto-generated catch block

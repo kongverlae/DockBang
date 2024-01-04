@@ -1,6 +1,16 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@page import="com.dockbang.model.BoardTO"%>
+<%@page import="java.util.List"%>
+
 <!DOCTYPE html>
+<%
+
+String category = (String)request.getAttribute("category");
+String name2 = (String) session.getAttribute("nickname");
+String email2 = (String) session.getAttribute("email");
+%>
+
 <html>
 <head>
 	<meta charset="UTF-8">
@@ -52,11 +62,11 @@
 					<div class="custom-block bg-white shadow-lg">
 						<div class="col-lg-12 col-12">
 						<div class="mt-0 text-start">
-								<h6 class="m-0"><b>총강든도</b>( kong@ver.lae )</h6>
+								<h6 class="m-0"><b><%=name2 %></b><%=email2 %></h6>
 								<!-- <div class="m-0">2019.12.05. 10:56 | 89,994 읽음</div> -->
 								<hr>
 							</div>
-				            <form action="#" method="post" class="custom-form contact-form" role="form">
+				            <form action="act_boardWrite.do?category=${category}" method="post" class="custom-form contact-form" role="form" enctype="multipart/form-data">
 				                <div class="row">
 									<!-- 작성자와 이메일 체크 -->
 				                    <!-- <div class="col-lg-6 col-md-6 col-12">
@@ -126,7 +136,7 @@
 				                    <!-- </div> -->
 				                    <div class="d-flex justify-content-between mt-3">
 				                    	<div class="align-items-center col-3">
-					                    	<a href="page_boardList.do" class="btn custom-btn custom-border-btn col-12">목록</a>
+					                    	<a href="page_boardList.do?category=${category}" class="btn custom-btn custom-border-btn col-12">목록</a>
 				                    	</div>
 				                    	<div class="col-3">
 					                        <button type="submit" class="form-control">쓰기</button>

@@ -3,7 +3,7 @@
 <%
 	request.setCharacterEncoding("utf-8");
 
-	String category = request.getParameter("category");
+String category = (String)request.getAttribute("category");
 	
 	// int flag = (int)request.getAttribute("flag");
 	int flag = (Integer)request.getAttribute("flag");
@@ -12,7 +12,7 @@
 	if(flag == 1){
 		// 정상
 		out.println("alert('작성 완료');");
-		out.println("location.href = 'page_boardList.do?category=" + category + "'");	
+		out.println("location.href = 'page_boardList.do?category=" + category + "'");
 	} else if(flag == 0){
 		// 에러
 		out.println("alert('작성 실패');");

@@ -64,7 +64,7 @@ public interface SqlMapperInter {
 	MemberTO selectUserInfo(@Param("email") String email);
 	
 	// 게시판 리스트 출력
-	@Select("select boardseq, subject, writer, wdate from board where category = #{category}")
+	@Select("select boardseq, subject, writer, wdate from board where category = #{category} order by boardseq desc")
 	List<BoardTO> selectBoard(@Param("category") String category);
 	
 	// 지도 경계선 표시 
