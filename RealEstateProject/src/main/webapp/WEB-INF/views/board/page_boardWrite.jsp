@@ -101,7 +101,7 @@ String email2 = (String) session.getAttribute("email");
 				                            <label for="floatingTextarea">내용을 입력해주세요</label>
 				                        </div>
 				                    </div>
-				                    
+				                    <!-- 파일도 필수 입력 항목으로 저장해주세요 -->
 				                    <div class="col-lg-12 col-12">
 										<input type="file" name="upload" id="upload" class="form-control form-control-sm ">
 				                    </div>
