@@ -67,6 +67,14 @@ public interface SqlMapperInter {
 	@Select("select boardseq, subject, writer, wdate from board where category = #{category} order by boardseq desc")
 	List<BoardTO> selectBoard(@Param("category") String category);
 	
+	// 게시판 View 출력
+	@Select("select subject, writer, mail, wip, wdate, hit, content from board where boardseq =#{boardseq}")
+	List<BoardTO> selectView(@Param("boardseq") Integer boardseq);
+
+	// hit hit+1
+	@Update("update board set hit=hit+1 where boardseq =#{boardseq}")
+	void updateHit(@Param("boardseq") Integer boardseq);
+	
 	// 지도 경계선 표시 
 	@Select("select lon from navermap")
 	List<String> selectlon();

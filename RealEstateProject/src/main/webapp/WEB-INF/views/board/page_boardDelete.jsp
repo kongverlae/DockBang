@@ -1,6 +1,14 @@
 ﻿
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@page import="com.dockbang.model.BoardTO"%>
+<%@page import="java.util.List"%>
+<%
+
+String category = (String)request.getAttribute("category");
+String name3 = (String) session.getAttribute("nickname");
+
+%>
 
 <!DOCTYPE html>
 <html lang="ko">
@@ -57,11 +65,11 @@
 				<table>
 				<tr>
 					<th class="top">글쓴이</th>
-					<td class="top" colspan="3"><input type="text" name="writer" value="=writer " class="board_view_input_mail" maxlength="5" /></td>
+					<td class="top" colspan="3"><input type="text" name="writer" value="<%=name3 %>" class="board_view_input_mail" maxlength="5" /></td>
 				</tr>
 				<tr>
 					<th>제목</th>
-					<td colspan="3"><input type="text" name="subject" value="=subject " class="board_view_input" /></td>
+					<td colspan="3"><input type="text" name="subject" value="" class="board_view_input" /></td>
 				</tr>
 				<tr>
 					<th>비밀번호</th>

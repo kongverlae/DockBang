@@ -9,10 +9,39 @@
 String category = (String)request.getAttribute("category");
 String name2 = (String) session.getAttribute("nickname");
 String email2 = (String) session.getAttribute("email");
+
+
+// 로그인 상태 확인
+boolean isLoggedIn = name2 != null;
 %>
 
 <html>
 <head>
+
+   <script>
+    // 페이지 로드 시 실행
+    window.onload = function() {
+        // 로그인 상태 확인
+        var isLoggedIn = <%= isLoggedIn %>;
+
+        if(!isLoggedIn) {
+        	history.back();
+        }
+        // nickname이 null일 때 경고창 표시
+        if (!isLoggedIn) {
+        	 history.back();
+        	
+            var confirmMsg = "로그인 후 사용해주세요.";
+            if (confirm(confirmMsg)) {
+                // 경고 창 확인 시 페이지 이동
+                history.back(); // 이전 페이지로 이동
+            } else {
+                // 경고 창 취소 시 다른 처리 가능
+            }
+        }
+    }
+</script>
+    
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta name="description" content="">

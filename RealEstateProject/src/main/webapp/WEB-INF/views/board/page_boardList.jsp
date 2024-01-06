@@ -6,6 +6,10 @@
 
 String category = (String)request.getAttribute("category");
 List<BoardTO> boardList = (List)request.getAttribute("boardList");
+String name4 = (String) session.getAttribute("nickname");
+
+
+
 String title = "";
 if(category.equals("news")){
     title = "뉴스게시판";
@@ -32,17 +36,15 @@ int endIdx = Math.min(cpage * pageSize, totalBoardCount);
 String list = "";
 int j = 1;
 for (int i = startIdx; i < endIdx; i++) {
-	BoardTO to = boardList.get(i);
+    BoardTO to = boardList.get(i);
     list += "<tr>" +
             "<td>" + to.getBoardseq() + "</td>" +
-            "<td><a href='page_boardView.do?boardNo=" + j + "'>" + to.getSubject() + "</a></td>" +
+            "<td><a href=\"page_boardView.do?category=" + category + "&boardseq=" + to.getBoardseq() + "\">" + to.getSubject() + "</a></td>" +
             "<td>" + to.getWriter() + "</td>" +
             "<td>" + to.getWdate() + "</td>" +
             "<!-- 기타 필요한 칼럼 값들 추가 -->" +
             "</tr>";
-            j++;
-            
-            
+    j++;
 }
 
 %>

@@ -65,6 +65,7 @@ public class BoardController {
 		List<BoardTO> boardList = mapper.selectBoard(category);
 		modelAndView.addObject("category", category);
 		modelAndView.addObject("boardList", boardList);
+		 
 		
 		// 데이터 전송
 
@@ -135,16 +136,25 @@ public class BoardController {
 	}
 	
 	@RequestMapping("/page_boardView.do")
-	ModelAndView page_boardView() {
-
-		// view(.jsp) 설정
-		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.setViewName("/board/page_boardView");
-		// 데이터 전송
-		// modelAndView.addObject("data_name", data);
-
-		// view 페이지로 반환
-		return modelAndView;
+	ModelAndView page_boardView(HttpServletRequest request, @RequestParam("boardseq") Integer boardseq, @RequestParam("category") String category) {
+	    
+	    // view(.jsp) 설정
+	    ModelAndView modelAndView = new ModelAndView();
+	    modelAndView.setViewName("/board/page_boardView");
+	    
+	    // 게시글 조회
+	    List<BoardTO> boardView = mapper.selectView(boardseq);
+	    
+	    // 조회수 증가
+	    mapper.updateHit(boardseq);
+	    
+	    // 데이터 전송
+	    modelAndView.addObject("boardseq", boardseq);
+	    modelAndView.addObject("category", category);
+	    modelAndView.addObject("boardView", boardView);
+	    
+	    // view 페이지로 반환
+	    return modelAndView;
 	}
 
 	/*
@@ -159,11 +169,17 @@ public class BoardController {
 	 * // view 페이지로 반환 return modelAndView; }
 	 */	
 	@RequestMapping("/page_boardModify.do")
-	ModelAndView page_boardFreeModify() {
+	ModelAndView page_boardModify(HttpServletRequest request, @RequestParam("boardseq") Integer boardseq, @RequestParam("category") String category) {
 
 		// view(.jsp) 설정
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.setViewName("/board/page_boardModify");
+		List<BoardTO> boardView = mapper.selectView(boardseq);
+		
+		modelAndView.addObject("boardseq",boardseq);
+		modelAndView.addObject("category",category);
+		
+		modelAndView.addObject("boardView", boardView);
 		// 데이터 전송
 		// modelAndView.addObject("data_name", data);
 

@@ -1,5 +1,37 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ page import="com.dockbang.model.BoardTO" %>
+<%@ page import="java.util.List" %>
+<%@ page import="java.util.Optional" %>
+
+<%
+	List<BoardTO> boardView = (List) request.getAttribute("boardView");
+    String category = (String) request.getAttribute("category");
+    Integer boardseq = (Integer) request.getAttribute("boardseq");
+
+    
+ 
+    String subject = "";
+    String writer = "";
+    String mail = "";
+    String wip = "";
+    String wdate = "";
+    String hit = "";
+    String content = "";
+
+   
+  //  if (boardList != null && seq >= 0 && seq < boardList.size()) {
+        BoardTO to = boardView.get(0);
+        subject = to.getSubject();
+        writer = to.getWriter();
+        mail = to.getMail();
+        wip = to.getWip();
+        wdate = to.getWdate();
+        hit = to.getHit();
+        content = to.getContent();
+  //  }
+%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -52,7 +84,7 @@
 					<div class="custom-block bg-white shadow-lg">
 						<div class="col-lg-12 col-12">
 							<div class="mt-0 text-start">
-								<h6 class="m-0"><b>총강든도</b>( kong@ver.lae )</h6>
+								<h6 class="m-0"><b><%=writer %></b>( <%=mail %> )</h6>
 								<!-- <div class="m-0">2019.12.05. 10:56 | 89,994 읽음</div> -->
 								<hr>
 							</div>
@@ -78,16 +110,13 @@
 				
 				                    <div class="col-lg-12 col-12">
 				                        <div class="form-floating">
-				                            <input type="text" name="subject" id="name" class="form-control" placeholder="Name" required="" value="[독방] 나만의 집찾기를 소개할게요"></iput>
+				                           <input type="text" name="subject" id="name" class="form-control" placeholder="Name" required="" value="<%= subject %>">
 				                            
 				                            <label for="floatingInput">글제목</label>
 				                        </div>
 				
 				                        <div class="form-floating">
-				                            <textarea class="form-control" id="content" name="content" placeholder="Tell me about the project">안녕하세요 총강든도에요
-오늘은 독방의 나만의 집찾기 서비스에 대해서 알아볼 거에요
-나만의 집 찾기 서비스란 조건에 따른 지역과 집을 추천해주는 서비스에요
-잘 이용해서 좋은집을 찾아보자구요</textarea>
+				                            <textarea class="form-control" id="content" name="content" placeholder="Tell me about the project"><%=content %></textarea>
 				                            <label for="floatingTextarea">내용을 입력해주세요</label>
 				                        </div>
 				                    </div>
