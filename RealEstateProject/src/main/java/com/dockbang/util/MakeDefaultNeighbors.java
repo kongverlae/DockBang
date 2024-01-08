@@ -338,7 +338,7 @@ public class MakeDefaultNeighbors {
 		return nodes;
 	}
 	
-	public List<AStarNode> makeDefaults(List<AStarNode> nodes){
+//	public List<AStarNode> makeDefaults(List<AStarNode> nodes){
 		// 인접역 추가 (1 to many)
 		
 //		System.out.println("size: " + nodes.size());
@@ -658,8 +658,8 @@ public class MakeDefaultNeighbors {
 //		nodes.get(75).addNeighbors(nodes.get(23), nodes.get(44));
 		
 		
-		return nodes;
-	}
+//		return nodes;
+//	}
 	
 	public <T extends Node> T findElement(List<T> list, String target) {
         return list.stream()
