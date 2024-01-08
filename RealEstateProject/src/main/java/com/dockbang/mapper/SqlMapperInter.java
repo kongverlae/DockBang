@@ -11,7 +11,10 @@ import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 
 import com.dockbang.model.BoardTO;
+import com.dockbang.model.FoodTO;
 import com.dockbang.model.MemberTO;
+import com.dockbang.model.MovieTO;
+import com.dockbang.model.PoliceTO;
 import com.dockbang.model.SaleTO;
 import com.dockbang.model.SubwayStationTO;
 
@@ -55,7 +58,6 @@ public interface SqlMapperInter {
 	
 	// 일반 로그인 유저 이름 갖고 오기
 	@Select("select name from user where email=#{email}")
-
 	String selectUserName(@Param("email") String email);
 
 	// 로그인 유저 소셜 유무, 이메일, 이름 가져오기
@@ -66,11 +68,11 @@ public interface SqlMapperInter {
 	@Select("select boardseq, subject, writer, wdate from board where category = #{category}")
 	List<BoardTO> selectBoard(@Param("category") String category);
 	
-	// 게시판 리스트 출력
+	// 행정동 경계 경도 리스트
 	@Select("select lon from navermap where local like CONCAT('%', #{keyword})")
 	List<String> selectlon(@Param("keyword") String keyword);
 	
-	// 게시판 리스트 출력
+	// 행정동 경계 위도 리스트
 	@Select("select lat from navermap where local like CONCAT('%', #{keyword})")
 	List<String> selectlat(@Param("keyword") String keyword);
 	
@@ -121,12 +123,42 @@ public interface SqlMapperInter {
 			);
 	
 	// 컬럼: SaleTO 참고
+	// seq를 이용해 sale 가져오기
+	@Select("select * from sale where sale_seq = #{sale_seq}")
+	SaleTO getSale(String sale_seq);
+	
+	// 컬럼: SaleTO 참고
 	// 공간DB 이용 - 기준점으로부터 1km이내 매물 가져오기
 	@Select("select *, "
 			+ "ST_Distance_Sphere(Point(lon, lat), Point(#{lon}, #{lat})) distance "
 			+ "from sale "
-			+ "where ST_Distance_Sphere(Point(lon, lat), Point(#{lon}, #{lat})) < (#{distance} * 1000);")
-	List<SaleTO> getSalesNearStation(Double lon, Double lat, String distance);
+			+ "where ST_Distance_Sphere(Point(lon, lat), Point(#{lon}, #{lat})) < (#{distance} * 1000)")
+	List<SaleTO> getSalesNearStation(double lon, double lat, String distance);
+	
+	// 공간DB 이용 - 기준점으로부터 제일 가까운 편의시설(음식점) 하나 가져오기
+	@Select("select business_name, business_type, road_address, ST_Distance_Sphere(Point(lon, lat), Point(#{lon}, #{lat})) distance "
+			+ "from food "
+			+ "group by ST_Distance_Sphere(Point(lon, lat), Point(#{lon}, #{lat})) "
+			+ "having distance is not null "
+			+ "limit 1")
+	FoodTO getFoodNearPoint(double lon, double lat);
+	
+	// 공간DB 이용 - 기준점으로부터 제일 가까운 편의시설(영화관) 하나 가져오기
+	@Select("select business_name, ji_address, ST_Distance_Sphere(Point(lon, lat), Point(#{lon}, #{lat})) distance "
+			+ "from movie "
+			+ "group by ST_Distance_Sphere(Point(lon, lat), Point(#{lon}, #{lat})) "
+			+ "having distance is not null "
+			+ "limit 1")
+	MovieTO getMovieNearPoint(double lon, double lat);
+	
+	// 공간DB 이용 - 기준점으로부터 제일 가까운 편의시설(경찰서) 하나 가져오기
+	@Select("select division, address, ST_Distance_Sphere(Point(lon, lat), Point(#{lon}, #{lat})) distance "
+			+ "from police "
+			+ "group by ST_Distance_Sphere(Point(lon, lat), Point(#{lon}, #{lat})) "
+			+ "having distance is not null "
+			+ "limit 1")
+	PoliceTO getPopliceNearPoint(double lon, double lat);
+	
 	
 	// 역이름(중복x 정렬O) 가져오기
 	@Select("select name, subway_line, latitude, longitude from subway_station group by name")
