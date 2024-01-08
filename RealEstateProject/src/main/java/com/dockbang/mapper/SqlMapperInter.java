@@ -96,20 +96,18 @@ public interface SqlMapperInter {
 	@Select("select name, subway_line, latitude, longitude from subway_station;")
 	List<SubwayStationTO> getStations();
 	
+	// 역 정보 가져오기
+	@Select("select name, subway_line, latitude, longitude from subway_station group by name;")
+	List<SubwayStationTO> getStationsGroupByName();
+	
 	// saleTO 참고
 	@Select("select title, lat, lon from sale")
 	List<SaleTO> getSales();
+	
+	// saleTO 참고
+	@Select("select * from sale where title = #{title}")
+	List<SaleTO> getSalesinfo(@Param("title") String title);
 		
-	// 매물 정보 가져오기 (칼럼이 많음: saleTO 참조)
-	@Select("select lon from sale  where house_type != 'at'")
-	List<String> getLon();
-	
-	@Select("select lat from sale  where house_type != 'at'")
-	List<String> getLat();
-	
-	@Select("select title from sale  where house_type != 'at'")
-	List<String> getTitle();
-	
 	// 
 	@Insert("insert into sale_near_station values("
 			+ "0, #{stationName}, #{stationLine}, #{saleName}, #{saleDistance}"
