@@ -86,12 +86,20 @@ public class SaleController {
 		modelAndView.setViewName("page_search");
 		
 		// 매물 정보 저장
-		List<String> lats = mapper.getLat();
+		/*List<String> lats = mapper.getLat();
 		List<String> lons = mapper.getLon();
 		List<String> title = mapper.getTitle();
 		modelAndView.addObject("saleLats", lats);
 		modelAndView.addObject("saleLons", lons);
-		modelAndView.addObject("saleTitle", title);
+		modelAndView.addObject("saleTitle", title);*/
+		
+		//매줄 정보 저장 
+		List<SaleTO> sale = mapper.getSales();
+		modelAndView.addObject("sale", sale);
+		
+		//역 정보 저장
+		List<SubwayStationTO> station = mapper.getStationsGroupByName();
+		modelAndView.addObject("station", station);
 		
 		List<String> lat = mapper.selectlat();
 		List<String> lon = mapper.selectlon();
