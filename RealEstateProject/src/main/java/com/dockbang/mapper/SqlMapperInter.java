@@ -12,7 +12,6 @@ import org.apache.ibatis.annotations.Insert;
 
 import com.dockbang.model.BoardTO;
 import com.dockbang.model.MemberTO;
-import com.dockbang.model.SaleNearStationTO;
 import com.dockbang.model.SaleTO;
 import com.dockbang.model.SubwayStationTO;
 
@@ -88,7 +87,11 @@ public interface SqlMapperInter {
 			@Param("category") String category);
 	
 	
-	// 역 정보 가져오기
+	// 역 정보(단일) 가져오기
+	@Select("select name, subway_line, latitude, longitude from subway_station group by name having name = #{name};")
+	SubwayStationTO getStation(@Param("name") String name);
+	
+	// 역 정보(전체) 가져오기
 	@Select("select name, subway_line, latitude, longitude from subway_station;")
 	List<SubwayStationTO> getStations();
 	
@@ -117,8 +120,16 @@ public interface SqlMapperInter {
 			double saleDistance
 			);
 	
-	// 역 근처 매물 정보 가져오기
-	@Select("select id, station_name, station_line, sale_name, distance from sale_near_station")
-	List<SaleNearStationTO> getSalesNearStation();
+	// 컬럼: SaleTO 참고
+	// 공간DB 이용 - 기준점으로부터 1km이내 매물 가져오기
+	@Select("select *, "
+			+ "ST_Distance_Sphere(Point(lon, lat), Point(#{lon}, #{lat})) distance "
+			+ "from sale "
+			+ "where ST_Distance_Sphere(Point(lon, lat), Point(#{lon}, #{lat})) < (#{distance} * 1000);")
+	List<SaleTO> getSalesNearStation(Double lon, Double lat, String distance);
+	
+	// 역이름(중복x 정렬O) 가져오기
+	@Select("select name, subway_line, latitude, longitude from subway_station group by name")
+	List<SubwayStationTO> getStationsGroupByName();
 	
 }

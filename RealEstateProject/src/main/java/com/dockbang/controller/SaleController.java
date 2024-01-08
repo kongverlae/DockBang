@@ -1,6 +1,8 @@
 package com.dockbang.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,9 +13,9 @@ import org.springframework.web.servlet.ModelAndView;
 import com.dockbang.mapper.SqlMapperInter;
 import com.dockbang.model.MemberDAO;
 import com.dockbang.model.SaleDAO;
-import com.dockbang.model.SaleNearStationTO;
 import com.dockbang.model.SaleTO;
 import com.dockbang.model.SubwayStationTO;
+import com.dockbang.util.DijkstraAlgo;
 
 @Controller
 public class SaleController {
@@ -22,6 +24,7 @@ public class SaleController {
 	@Autowired
 	SaleDAO sdao;
 
+	// 나중에 DAO로 옮기기
 	@Autowired
 	private SqlMapperInter mapper;
 	
@@ -53,19 +56,44 @@ public class SaleController {
 	}
 
 	@RequestMapping("/page_survey.do")
-	ModelAndView page_survey() {
-
+	ModelAndView page_survey(@RequestParam String startStation) {
+		
 		// view(.jsp) 설정
 		ModelAndView modelAndView = new ModelAndView();
-//		List<SubwayStationTO> stations = sdao.getStations();
-//		List<SaleTO> sales = sdao.getSales();
 		
-//		sdao.saveSaleNearStation(); // DB에 저장할때만 실행
-		List<SaleNearStationTO> salesNearStation = sdao.getSaleNearStation();
+		// 전체 역 리스트
+		List<SubwayStationTO> stations = mapper.getStations();
+		// 출발점 기준 5분이내 도달가능한 역 리스트
+		List<SubwayStationTO> stationsNearStart = new DijkstraAlgo().getStationsNearStart(stations, startStation, 5);
+		
+		// Map<역이름, List<매물>> - 페이지로 반환할 결과
+		Map<String, List<SaleTO>> salesNearStationMap = new HashMap<>();
+		
+		// 역 하나하나 1km이내 매물리스트 찾아오기
+		for(SubwayStationTO stationTO:stationsNearStart) {
+			String stationName = stationTO.getName();
+			// 이름으로 지하철 역 정보 get
+			stationTO = mapper.getStation(stationName);
+//			System.out.println("stationTO: " + stationTO.getName());
+			
+			// 공간DB로 역 위치 기준 1km 이내 매물리스트
+			List<SaleTO> salesNearStation = sdao.getSaleNearStation(stationTO.getLongitude(), stationTO.getLatitude());
+			salesNearStationMap.put(stationName, salesNearStation);
+		}
+		
+		// 출력용
+//		for(Map.Entry<String, List<SaleTO>> entry:salesNearStationMap.entrySet()) {
+//			System.out.println(entry.getKey() + "역 근처 매물 리스트");
+//			// 역 하나에 대한 근처 매물 리스트
+//			for(SaleTO saleTO:entry.getValue()) {
+//				System.out.println(saleTO.getTitle());
+//			} System.out.println();
+//		}
+		
+
 		
 		modelAndView.setViewName("page_survey");
-//		modelAndView.addObject("stations", stations);
-		modelAndView.addObject("salesNearStation", salesNearStation);
+		modelAndView.addObject("salesNearStationMap", salesNearStationMap);
 
 		// view 페이지로 반환
 		return modelAndView;
