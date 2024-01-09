@@ -1,3 +1,4 @@
+<%@page import="com.dockbang.model.SubwayStationTO"%>
 <%@page import="java.util.List"%>
 <%@page import="com.dockbang.model.SaleTO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
@@ -24,15 +25,15 @@
 	<link href="css/templatemo-topic-listing.css" rel="stylesheet">   
 </head>
 
-<body style="overflow: hidden;">
+<body>
 	<!-- header page include -->
 	<%@ include file="page_nav.jsp" %>
 
 	<!-- page content -->
-	<main>
+	<main style="overflow: hidden;">
 			<section
-			class="hero-section justify-content-center align-items-center" style="height: 200px">
-			<div class="container">
+			class="hero-section justify-content-center align-items-center" style="height: 20vh">
+			<div class="container-xxl">
 				<div class="row">
 					<div class="col-lg-8 col-12 mx-auto ">
 						<!-- <form method="get" class="custom-form mt-4 pt-2 mb-lg-0 mb-5" -->
@@ -51,13 +52,12 @@
 			</div>
 	
 		</section>
-		
-		<div class="row" >
-			<section class="section" id="section-3" >
-				<div id="map" style="width: 100%; height: 90vh; margin: auto;"></div>
-				<code id="snippet" class="snippet"></code>
-			</section>
-		</div>
+			<div class="row" >
+				<section class="section" id="section-3" >
+					<div id="map" style="width: 100%; height: 80vh; margin: auto;"></div>
+					<code id="snippet" class="snippet"></code>
+				</section>
+			</div>
 		<!-- jquery -->
 		<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
 		<!-- 각자 발급받은 Client ID 값 넣기 -->
@@ -65,7 +65,9 @@
 			src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=0xkngoqc6q&submodules=geocoder"></script>
 		<script id="code">
 			/* 코드 부분이였는데 */
-			const markers = [
+			
+			// 동 위치 정보
+			const dongMarkers = [
 		        { position: new naver.maps.LatLng(37.4550628, 127.0695079), message: '내곡동' },
 		        { position: new naver.maps.LatLng(37.4719823, 127.0374623), message: '양재동' },
 		        { position: new naver.maps.LatLng(37.4883869, 127.0167954), message: '서초동' },
@@ -102,25 +104,72 @@
 		        { position: new naver.maps.LatLng(37.5490445, 127.1508229), message: '명일동' },
 		        { position: new naver.maps.LatLng(37.5396157, 127.1459293), message: '길동' },
 		        { position: new naver.maps.LatLng(37.5304933, 127.128992), message: '성내동' },
-		        { position: new naver.maps.LatLng(37.5282539, 127.1447139), message: '둔촌동' }
+		        { position: new naver.maps.LatLng(37.5282539, 127.1447139), message: '둔촌동' },
+		        { position: new naver.maps.LatLng(37.5235332, 127.0230659), message: '신사동' }
 		        // Add more markers as needed
 		    ];
 			
-			const latt = ${lats};
-			console.log(latt);
-			const lonn = ${lons};
-			console.log(lonn);
-			const markers1 = [];
-			for (let i = 0; i < latt.length; i++) {
-				markers1.push({ position: new naver.maps.LatLng(latt[i], lonn[i]), message: 'aa' });
+			// 매뭉 정보 불러오기
+			const saleLats = [];
+			const saleLons = [];
+			const saleTitleArray = [];
+			const saleDongArray = [];
+
+			<%
+			  // JSP 코드를 사용하여 SaleTO 목록에 접근
+			  List<SaleTO> saleList = (List<SaleTO>)request.getAttribute("sale");
+			  for (SaleTO saleItem : saleList) {
+			%>
+			  saleLats.push(<%= saleItem.getLat() %>);
+			  saleLons.push(<%= saleItem.getLon() %>);
+			  saleTitleArray.push('<%= saleItem.getTitle() %>');
+			  saleDongArray.push('<%= saleItem.getTitle().split(" ")[0] %>');
+			<%
+			  }
+			%>
+			const saleMarkers = [];
+			for (let i = 0; i < saleLats.length; i++) {
+				saleMarkers.push({ position: new naver.maps.LatLng(saleLats[i], saleLons[i]), message: saleTitleArray[i] });
 
 			}
+			
+			// 역 정보 불러오기
+			const stationLats = [];
+			const stationLons = [];
+			const stationTitleArray = [];
+
+			<%
+			  List<SubwayStationTO> station = (List<SubwayStationTO>)request.getAttribute("station");
+			  for (SubwayStationTO stationItem : station) {
+			%>
+			  stationLats.push(<%= stationItem.getLatitude() %>);
+			  stationLons.push(<%= stationItem.getLongitude() %>);
+			  stationTitleArray.push('<%= stationItem.getName() %>');
+			<%
+			  }
+			%>
+			
+			const stationMarkers = [];
+			for (let i = 0; i < stationLats.length; i++) {
+				stationMarkers.push({ position: new naver.maps.LatLng(stationLats[i], stationLons[i]), message: stationTitleArray[i] });
+
+			}
+			
 
 			$(document).ready(function(){
 				
 				// 검색어를 받아오는 부분
 				let keyword = '${keyword}';
 				// console.log("keyword: " + keyword);
+				
+				// 검색한 동의 경계선 정보 받아 오기
+				let local = '${lineLocal}';
+				let formattedLocal = local.replace(/\[|\]/g, '');
+				let localArray = formattedLocal.split(',').map(item => item.trim());
+				let lineLat = ${lineLat};
+				let lineLon = ${lineLon};
+				
+				let polygon;
 				
 				// 기본 주소 설정
 				let defaultAddress = '강남구 역삼동 819-10';
@@ -135,19 +184,112 @@
 				    //, mapTypeControl: true
 				});
 				
-				 // 지도를 클릭할 때마다 마커 위치를 변경
-				naver.maps.Event.addListener(map, 'click', function(e) {
-				    marker.setPosition(e.coord);
-				    
+				
+				 
+				// 동 마커 생성
+				const infoWindows = [];
+				function drawPolygon(keyword) {
+				    if (polygon) {
+				        polygon.setMap(null);
+				    }
+
+				    let indices = [];
+				    for (let i = 0; i < localArray.length; i++) {
+				        if (localArray[i] === keyword) {
+				            indices.push(i);
+				        }
+				    }
+
+				    if (indices.length > 0) {
+				        // 모든 인덱스에 대응하는 lineLat와 lineLon 추출
+				        let polygonCoords = indices.map(function(index) {
+				            return new naver.maps.LatLng(lineLat[index], lineLon[index]);
+				        });
+
+				        // 경계선 그리기
+				        polygon = new naver.maps.Polygon({
+				            map: map,
+				            paths: polygonCoords,
+				            strokeColor: '#f00',
+				            strokeWeight: 2,
+				            strokeOpacity: 0.7,
+				            fillColor: '#00f',
+				            fillOpacity: 0.3
+				        });
+				    } else {
+				        console.log('local 배열에서 해당 키워드를 찾을 수 없습니다.');
+				    }
+				}
+				
+				// 동 경계선
+				dongMarkers.forEach(markerInfo => {
+				    const marker = new naver.maps.Marker({
+				        position: markerInfo.position,
+				        map: map,
+				        icon: {
+				            content: "<div style='border: 1px solid #000; background-color: white; padding: 5px; font-size: 12px;'>" + markerInfo.message + "</div>",
+				            size: new naver.maps.Size(30, 30),
+				            anchor: new naver.maps.Point(15, 30)
+				        }
+				    });
+
+				    naver.maps.Event.addListener(marker, 'click', function() {
+				        map.panTo(markerInfo.position);
+				        
+				        // 편의성을 위한 클릭시 확대만 되게
+				        if(map.getZoom() < 14){
+					        map.setZoom(14);	
+				        }
+				        
+				        // 클릭한 마커의 위치의 키워드로 설정
+				        keyword = markerInfo.message;
+
+				        // 경계선 그리기 함수 호출
+				        drawPolygon(keyword);
+				    });
 				});
+			    
+			    // 줌 확대 따른 마커 ㅍ시
+			    naver.maps.Event.addListener(map, 'zoom_changed', function() {
+				    const currentZoom = map.getZoom();
 				
-			 	const infoWindows = [];
+				    console.log(currentZoom);
 				
-			    markers.forEach(markerInfo => {
+				    // 역 마커 표시 여부 설정
+				    stationMarkers.forEach(markerInfo => {
+				        const marker = markerInfo.marker;
+				
+				        if (currentZoom >= 14) {
+				            marker.setMap(map);
+				        } else {
+				            marker.setMap(null);
+				        }
+				    });
+				
+				    // 기존 정보 창 닫기
+				    infoWindows.forEach(window => window.close());
+				});
+
+			   
+			    let markers = [];
+
+			   let bounds; // bounds를 전역 변수로 선언
+				
+			   // 현재 지도가 보여주는 위치
+			   function initializeBounds() {
+			       bounds = map.getBounds();
+			   }
+	
+			   initializeBounds(); // 초기에 bounds 초기화
+				
+				// 매물 마커 생성
+			   saleMarkers.forEach(markerInfo => {
 			        const marker = new naver.maps.Marker({
 			            position: markerInfo.position,
-			            map: map
+			            map: null, // 초기에는 지도에 표시하지 않음
 			        });
+
+			        markerInfo.marker = marker; // 마커 정보에 실제 마커 객체 저장
 
 			        const infoWindow = new naver.maps.InfoWindow({
 			            content: markerInfo.message
@@ -156,53 +298,88 @@
 			        infoWindows.push(infoWindow);
 
 			        naver.maps.Event.addListener(marker, 'click', function() {
+			        	polygon.setMap(null);
 			            infoWindows.forEach(window => window.close());
 			            infoWindow.open(map, marker);
 			            map.panTo(markerInfo.position);
-
-			            // 클릭한 마커의 위치의 키워드로 설정
-			            keyword = markerInfo.message;
-			            console.log("aaaa", keyword);
-			            window.location.href = 'page_search.do?keyword=' + keyword;
 			        });
+			        
+			        // 마커들 저장
+			        markers.push(marker);
 			    });
+				
+			   // 맵 이동 이벤트 
+			   naver.maps.Event.addListener(map, 'idle', function() {
+				    bounds = map.getBounds(); // 맵의 이동이 있을 때마다 bounds 업데이트
+				    const currentZoom = map.getZoom();
+				    if (currentZoom >= 17) {
+					    updateMarkers(map, markers);
+			        }  else {
+			            hideAllMarkers(markers);
+			        }
+				});
+
+				function updateMarkers(map, markers) {
+					let mapBounds = bounds; // 업데이트된 bounds 사용
+				    let marker, position;
+
+				    for (let i = 0; i < markers.length; i++) {
+				        marker = markers[i];
+				        position = marker.getPosition();
+
+				        if (mapBounds.hasLatLng(position)) {
+				            showMarker(map, marker);
+				        } else {
+				            hideMarker(map, marker);
+				        }
+				    }
+				}
+
+				function showMarker(map, marker) {
+				    if (marker.getMap()) return;
+				    marker.setMap(map);
+				}
+
+				function hideMarker(map, marker) {
+				    if (!marker.getMap()) return;
+				    marker.setMap(null);
+				}
+				
+				function hideAllMarkers(markers) {
+				    for (let i = 0; i < markers.length; i++) {
+				        hideMarker(map, markers[i]);
+				    }
+				}
 			    
-			    markers1.forEach(markerInfo => {
+			   // 역 마커 생성
+			   stationMarkers.forEach(markerInfo => {
 			        const marker = new naver.maps.Marker({
 			            position: markerInfo.position,
-			            map: map
+			            map: null, // 초기에는 지도에 표시하지 않음
 			        });
-
+	
+			        markerInfo.marker = marker; // 마커 정보에 실제 마커 객체 저장
+	
 			        const infoWindow = new naver.maps.InfoWindow({
 			            content: markerInfo.message
 			        });
-
+	
 			        infoWindows.push(infoWindow);
-
+	
 			        naver.maps.Event.addListener(marker, 'click', function() {
+			        	polygon.setMap(null);
+			        	map.setZoom(16);
 			            infoWindows.forEach(window => window.close());
 			            infoWindow.open(map, marker);
 			            map.panTo(markerInfo.position);
 			        });
 			    });
-			    
-				// 검색한 동의 경계선 정보 받아 오기
-				let lats = ${lat};
-				let lons = ${lon};
-				let polygonCoords = lats.map(function(lat, index) {
-				    return new naver.maps.LatLng(lat, lons[index]);
-				});
-				
-				// 경계선 그리기
-				let polygon = new naver.maps.Polygon({
-				    map: map,
-				    paths: [polygonCoords],
-				    strokeColor: '#f00',
-				    strokeWeight: 2,
-				    strokeOpacity: 0.7,
-				    fillColor: '#00f',
-				    fillOpacity: 0.3
-				});
+			   
+			   
+			   
+			    function searchCoordinateToAddress(latlng) {	    	
+			    	
+			    }			
 				
 				// 지도 커서를 손가락 모양으로 설정
 				map.setCursor('pointer');
@@ -399,6 +576,7 @@
 				function hasAddition (addition) {
 				    return !!(addition && addition.value);
 				}
+				
 				
 				// 지오코더 초기화 함수를 호출
 				naver.maps.onJSContentLoaded = initGeocoder;

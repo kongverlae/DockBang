@@ -58,18 +58,34 @@ public class SaleController {
 		return modelAndView;
 	}
 
+	/* 였던것
+	 * @RequestMapping("/page_survey.do") ModelAndView page_survey() {
+	 * 
+	 * // view(.jsp) 설정 ModelAndView modelAndView = new ModelAndView(); //
+	 * List<SubwayStationTO> stations = sdao.getStations(); // List<SaleTO> sales =
+	 * sdao.getSales();
+	 * 
+	 * // sdao.saveSaleNearStation(); // DB에 저장할때만 실행 List<SaleNearStationTO>
+	 * salesNearStation = sdao.getSaleNearStation();
+	 * 
+	 * modelAndView.setViewName("page_survey"); //
+	 * modelAndView.addObject("stations", stations);
+	 * modelAndView.addObject("salesNearStation", salesNearStation);
+	 * 
+	 * // view 페이지로 반환 return modelAndView; }
+	 */
+
 	@RequestMapping("/page_survey.do")
 	ModelAndView page_survey() {
-
 		// view(.jsp) 설정
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.setViewName("page_survey");
-
 
 		// view 페이지로 반환
 		return modelAndView;
 	}
 	
+
 	// name을 반드시 startStation으로 줘야 인식
 	@RequestMapping(value = "/page_search.do", params = "startStation")
 	ModelAndView page_findSaleNearStation(@RequestParam(name = "startStation") String startStation) {
@@ -124,25 +140,25 @@ public class SaleController {
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.setViewName("page_search");
 
-		// 매물 정보 저장
-		List<String> lats = mapper.getLat();
-		List<String> lons = mapper.getLon();
-		modelAndView.addObject("lats", lats);
-		modelAndView.addObject("lons", lons);
+		
+		//매줄 정보 저장 
+		List<SaleTO> sale = mapper.getSales();
+		modelAndView.addObject("sale", sale);
+		
+		//역 정보 저장
+		List<SubwayStationTO> station = mapper.getStationsGroupByName();
+		modelAndView.addObject("station", station);
+		
+		List<String> lat = mapper.selectlat();
+		List<String> lon = mapper.selectlon();
+		List<String> local = mapper.selectlocal();
+		
+		// 경계선 데이터 전송
+		modelAndView.addObject("keyword", keyword);
+		modelAndView.addObject("lineLat", lat);
+		modelAndView.addObject("lineLon", lon);
+		modelAndView.addObject("lineLocal", local);
 
-		// 예외에 null일 경우 추가 - 순서 중요
-		if (keyword == null || keyword.equals("")) {
-			modelAndView.addObject("lat", 37.3595704);
-			modelAndView.addObject("lon", 127.105399);
-			modelAndView.addObject("keyword", keyword);
-		} else {
-			List<String> lat = mapper.selectlat(keyword);
-			List<String> lon = mapper.selectlon(keyword);
-			// 데이터 전송
-			modelAndView.addObject("keyword", keyword);
-			modelAndView.addObject("lat", lat);
-			modelAndView.addObject("lon", lon);
-		}
 		
 		
 

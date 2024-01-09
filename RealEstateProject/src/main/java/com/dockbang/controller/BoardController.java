@@ -27,18 +27,42 @@ public class BoardController {
 	@Autowired
 	private SqlMapperInter mapper;
 	
+	@RequestMapping("/page_boardChoose.do")
+	ModelAndView page_boardChoose() {
+		// view(.jsp) 설정
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.setViewName("/board/page_boardChoose");
+
+		// 데이터 전송
+		// modelAndView.addObject("data_name", data);
+
+		// view 페이지로 반환
+		return modelAndView;
+	}
+	
+	/* 였던것
+	 * @RequestMapping("/page_boardList.do") ModelAndView
+	 * page_boardList(@RequestParam("category") String category) {
+	 * 
+	 * // view(.jsp) 설정 ModelAndView modelAndView = new ModelAndView();
+	 * modelAndView.setViewName("/board/page_boardList");
+	 * 
+	 * List<BoardTO> boardList = mapper.selectBoard(category);
+	 * 
+	 * // 데이터 전송 modelAndView.addObject("category", category);
+	 * modelAndView.addObject("boardList", boardList);
+	 * 
+	 * // view 페이지로 반환 return modelAndView; }
+	 */
+	
 	@RequestMapping("/page_boardList.do")
-	ModelAndView page_boardList(@RequestParam("category") String category) {
+	ModelAndView page_boardList() {
 		
 		// view(.jsp) 설정
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.setViewName("/board/page_boardList");
 		
-		List<BoardTO> boardList = mapper.selectBoard(category);
-		
 		// 데이터 전송
-		modelAndView.addObject("category", category);
-		modelAndView.addObject("boardList", boardList);
 
 		// view 페이지로 반환
 		return modelAndView;
@@ -46,14 +70,17 @@ public class BoardController {
 	
 	
 	@RequestMapping("/page_boardWrite.do")
-	ModelAndView page_boardWrite(@RequestParam("category") String category) {
+	//ModelAndView page_boardWrite(@RequestParam("category") String category) {
+	ModelAndView page_boardWrite( ) {
 
 		// view(.jsp) 설정
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.setViewName("/board/page_boardWrite");
 		// 데이터 전송
 		// modelAndView.addObject("data_name", data);
-		modelAndView.addObject("category", category);
+		
+		// 임시로 지움
+		//modelAndView.addObject("category", category);
 
 		// view 페이지로 반환
 		return modelAndView;
@@ -98,33 +125,53 @@ public class BoardController {
 	}
 	
 	@RequestMapping("/page_boardView.do")
-	ModelAndView page_boardView(@RequestParam("category") String category) {
+	ModelAndView page_boardView() {
 
 		// view(.jsp) 설정
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.setViewName("/board/page_boardView");
 		// 데이터 전송
 		// modelAndView.addObject("data_name", data);
-		modelAndView.addObject("category", category);
 
 		// view 페이지로 반환
 		return modelAndView;
 	}
-	
+
+	/*
+	 * @RequestMapping("/page_boardView.do") ModelAndView
+	 * page_boardView(@RequestParam("category") String category) {
+	 * 
+	 * // view(.jsp) 설정 ModelAndView modelAndView = new ModelAndView();
+	 * modelAndView.setViewName("/board/page_boardView"); // 데이터 전송 //
+	 * modelAndView.addObject("data_name", data); modelAndView.addObject("category",
+	 * category);
+	 * 
+	 * // view 페이지로 반환 return modelAndView; }
+	 */	
 	@RequestMapping("/page_boardModify.do")
-	ModelAndView page_boardFreeModify(@RequestParam("category") String category) {
+	ModelAndView page_boardFreeModify() {
 
 		// view(.jsp) 설정
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.setViewName("/board/page_boardModify");
 		// 데이터 전송
 		// modelAndView.addObject("data_name", data);
-		modelAndView.addObject("category", category);
 
 		// view 페이지로 반환
 		return modelAndView;
 	}
-	
+
+	/*
+	 * @RequestMapping("/page_boardModify.do") ModelAndView
+	 * page_boardFreeModify(@RequestParam("category") String category) {
+	 * 
+	 * // view(.jsp) 설정 ModelAndView modelAndView = new ModelAndView();
+	 * modelAndView.setViewName("/board/page_boardModify"); // 데이터 전송 //
+	 * modelAndView.addObject("data_name", data); modelAndView.addObject("category",
+	 * category);
+	 * 
+	 * // view 페이지로 반환 return modelAndView; }
+	 */	
 	@RequestMapping("/page_boardDelete.do")
 	ModelAndView page_boardDelete(@RequestParam("category") String category) {
 

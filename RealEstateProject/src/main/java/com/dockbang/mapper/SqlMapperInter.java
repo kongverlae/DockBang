@@ -68,13 +68,17 @@ public interface SqlMapperInter {
 	@Select("select boardseq, subject, writer, wdate from board where category = #{category}")
 	List<BoardTO> selectBoard(@Param("category") String category);
 	
-	// 행정동 경계 경도 리스트
-	@Select("select lon from navermap where local like CONCAT('%', #{keyword})")
-	List<String> selectlon(@Param("keyword") String keyword);
+	// 지도 경계선 표시 
+	@Select("select lon from navermap")
+	List<String> selectlon();
 	
-	// 행정동 경계 위도 리스트
-	@Select("select lat from navermap where local like CONCAT('%', #{keyword})")
-	List<String> selectlat(@Param("keyword") String keyword);
+	// 지도 경계선 표시
+	@Select("select lat from navermap")
+	List<String> selectlat();
+	
+	// 지도 경계선 표시
+	@Select("select local from navermap")
+	List<String> selectlocal();
 	
 	// 게시판 저장
 	@Insert("insert into board(boardseq, subject, writer, content, filename, filesize, hit, wip, wdate, mail, category) "
@@ -97,20 +101,18 @@ public interface SqlMapperInter {
 	@Select("select name, subway_line, latitude, longitude from subway_station;")
 	List<SubwayStationTO> getStations();
 	
+	// 역 정보 가져오기
+	@Select("select name, subway_line, latitude, longitude from subway_station group by name;")
+	List<SubwayStationTO> getStationsGroupByName();
+	
 	// saleTO 참고
 	@Select("select title, lat, lon from sale")
 	List<SaleTO> getSales();
+	
+	// saleTO 참고
+	@Select("select * from sale where title = #{title}")
+	List<SaleTO> getSalesinfo(@Param("title") String title);
 		
-	// 매물 정보 가져오기 (칼럼이 많음: saleTO 참조)
-	@Select("select lon from sale limit 10")
-	List<String> getLon();
-	
-	@Select("select lat from sale limit 10")
-	List<String> getLat();
-	
-	@Select("select title from sale limit 10")
-	List<String> getTitle();
-	
 	// 
 	@Insert("insert into sale_near_station values("
 			+ "0, #{stationName}, #{stationLine}, #{saleName}, #{saleDistance}"

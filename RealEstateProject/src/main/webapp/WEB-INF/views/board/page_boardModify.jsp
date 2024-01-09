@@ -1,14 +1,9 @@
-﻿<%@page import="java.util.function.LongToIntFunction"%>
-
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-
-
-
-<html lang="ko">
+<html>
 <head>
-<meta charset="UTF-8">
+	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta name="description" content="">
 	<meta name="author" content="">
@@ -22,92 +17,101 @@
 	<link href="css/bootstrap-icons.css" rel="stylesheet">
 	<link href="css/templatemo-topic-listing.css" rel="stylesheet">   
 
-
-
-<link rel="stylesheet" type="text/css" href="./css/board_write.css">
-<script type="text/javascript">
-	window.onload = function(){
-		document.getElementById('mbtn').onclick = function(){
-			if(document.mfrm.password.value.trim()==''){
-				alert('비밀번호를 입력하셔야 합니다.');
-				return;
-			}
-			
-			document.mfrm.submit();
-			
-		};
-	};
-</script>
 </head>
 
 <body>
-
-	<!-- header page include -->
+	<!-- nav page include -->
 	<%@ include file="../page_nav.jsp" %>
 	
-	<main>
-<!-- 상단 디자인 -->
-<div class="contents1"> 
-	<div class="con_title"> 
-		<p style="margin: 0px; text-align: right">
-			<img style="vertical-align: middle" alt="" src="../../images/home_icon.gif" /> &gt; 커뮤니티 &gt; <strong>여행지리뷰</strong>
-		</p>
-	</div> 
-
-	<form action="./modify_ok.do?seq=seq " method="post" name="mfrm" enctype="multipart/form-data">
-		<div class="contents_sub">
-		<!--게시판-->
-			<div class="board_write">
-				<table>
-				<tr>
-					<th class="top">글쓴이</th>
-					<td class="top" colspan="3"><input type="text" name="writer" value="writer " class="board_view_input_mail" maxlength="5" /></td>
-				</tr>
-				<tr>
-					<th>제목</th>
-					<td colspan="3"><input type="text" name="subject" value="subject " class="board_view_input" /></td>
-				</tr>
-				<tr>
-					<th>비밀번호</th>
-					<td colspan="3"><input type="password" name="password" value="" class="board_view_input_mail"/></td>
-				</tr>
-				<tr>
-					<th>내용</th>
-					<td colspan="3">
-						<textarea name="content" class="board_editor_area">content </textarea>
-					</td>
-				</tr>
-				<tr>
-					<th>이미지</th>
-					<td colspan="3">
-						기존 이미지 : <br /><br />
-						<input type="file" name="upload" value="" /><br /><br />
-						위도 : <input type="text" name="latitude" value="latitude " class="board_view_input_mail"/> / 
-						경도 : <input type="text" name="longitude" value="longitude " class="board_view_input_mail"/>
-					</td>
-				</tr>
-				<tr>
-					<th>이메일</th>
-					<td colspan="3"><input type="text" name="mail1" value="mail[0] " class="board_view_input_mail"/> @ <input type="text" name="mail2" value="mail[1] " class="board_view_input_mail"/></td>
-				</tr>
-				</table>
-			</div>
-
-			<div class="btn_area">
-				<div class="align_left">			
-					<input type="button" value="목록" class="btn_list btn_txt02" style="cursor: pointer;" onclick="location.href='page_boardList.do?category=${category}'" />
-					<input type="button" value="보기" class="btn_list btn_txt02" style="cursor: pointer;" onclick="location.href='page_boardView.do?category=${category}'" />
-				</div>
-				<div class="align_right">			
-					<input type="button" value="수정" id="mbtn"class="btn_write btn_txt01" style="cursor: pointer;" />
-				</div>	
-			</div>	
-			<!--//게시판-->
+	<!-- header page -->
+	<header class="site-header d-flex flex-column justify-content-center align-items-center">
+		<div class="container">
+	        <div class="row align-items-center">
+	            <div class="col-lg-5 col-12">
+	                <nav aria-label="breadcrumb">
+	                    <ol class="breadcrumb">
+	                        <li class="breadcrumb-item"><a href="page_boardList.do">공지 게시판</a></li>
+	                        <li class="breadcrumb-item active" aria-current="page">글수정</li>
+	                    </ol>
+	                </nav>
+	                <h2 class="text-white">글수정</h2>
+	            </div>
+	        </div>
 		</div>
-	</form>
-</div>
-<!-- 하단 디자인 -->
-</main>
+	</header>
+	
+	<!-- page content -->
+	<main>
+	<section id="c1" class="section-padding">
+	    <div class="container">
+	        <div class="row justify-content-center">
+				<div class="col-lg-12 col-12 text-center">
+		        	<h3 class="mb-4">수정 주파 발진기는 각종 통신에서 주파수를 맞추기 위해 사용됩니다.</h3>
+		        </div>
+	            <div class="col-lg-8 col-12 text-center mt-3">
+					<div class="custom-block bg-white shadow-lg">
+						<div class="col-lg-12 col-12">
+							<div class="mt-0 text-start">
+								<h6 class="m-0"><b>총강든도</b>( kong@ver.lae )</h6>
+								<!-- <div class="m-0">2019.12.05. 10:56 | 89,994 읽음</div> -->
+								<hr>
+							</div>
+				            <form action="#" method="post" class="custom-form contact-form" role="form">
+				                <div class="row">
+				                	<!-- 작성자와 이메일 부분 -->
+				                    <!-- <div class="col-lg-6 col-md-6 col-12">
+				                        <div class="form-floating">
+				                            <input type="text" name="name" id="name" class="form-control" placeholder="Name" required="">
+				                            
+				                            <label for="floatingInput">작성자</label>
+				                        </div>
+				                    </div>
+				
+				                    <div class="col-lg-6 col-md-6 col-12"> 
+				                        <div class="form-floating">
+				                            <input type="email" name="email" id="email" pattern="[^ @]*@[^ @]*" class="form-control" placeholder="Email address" required="">
+				                            <input type="email" name="email" id="email" pattern="[^@]+@[^.]+\.[a-zA-Z]{2,}" class="form-control" placeholder="Email address" required="">
+				                            
+				                            <label for="floatingInput">이메일</label>
+				                        </div>
+				                    </div> -->
+				
+				                    <div class="col-lg-12 col-12">
+				                        <div class="form-floating">
+				                            <input type="text" name="subject" id="name" class="form-control" placeholder="Name" required="" value="[독방] 나만의 집찾기를 소개할게요"></iput>
+				                            
+				                            <label for="floatingInput">글제목</label>
+				                        </div>
+				
+				                        <div class="form-floating">
+				                            <textarea class="form-control" id="content" name="content" placeholder="Tell me about the project">안녕하세요 총강든도에요
+오늘은 독방의 나만의 집찾기 서비스에 대해서 알아볼 거에요
+나만의 집 찾기 서비스란 조건에 따른 지역과 집을 추천해주는 서비스에요
+잘 이용해서 좋은집을 찾아보자구요</textarea>
+				                            <label for="floatingTextarea">내용을 입력해주세요</label>
+				                        </div>
+				                    </div>
+				                    
+				                    <div class="col-lg-12 col-12">
+										<input type="file" name="upload" id="upload" class="form-control form-control-sm ">
+				                    </div>
+				                    <div class="d-flex justify-content-between mt-3">
+				                    	<div class="btn-group col-lg-3 col-3" role="group" >
+										  	<a href="page_boardList.do" class="btn custom-btn">목록</a>
+										  	<a href="page_boardView.do" class="btn custom-btn custom-border-btn">보기</a>
+				                    	</div>
+				                    	
+										<a href="page_boardList.do" class="btn custom-btn col-3">수정</a>
+									</div>
+				                </div>
+				            </form>
+			        	</div>
+					</div>	            
+	            </div>
+	        </div>
+	    </div>
+	</section>
+	</main>	
 
 	<!-- footer page include -->
 	<%@ include file="../page_footer.jsp" %>
@@ -118,6 +122,5 @@
 	<script src="js/jquery.sticky.js"></script>
 	<script src="js/click-scroll.js"></script>
 	<script src="js/custom.js"></script>
-
 </body>
 </html>
