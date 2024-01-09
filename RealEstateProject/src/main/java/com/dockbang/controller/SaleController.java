@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -85,56 +86,11 @@ public class SaleController {
 		return modelAndView;
 	}
 	
-
-	// name을 반드시 startStation으로 줘야 인식
-	@RequestMapping(value = "/page_search.do", params = "startStation")
-	ModelAndView page_findSaleNearStation(@RequestParam(name = "startStation") String startStation) {
-		
-		// view(.jsp) 설정
-		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.setViewName("page_search");
-
-		// 전체 역 리스트
-		List<SubwayStationTO> stations = mapper.getStations();
-		// 출발점 기준 5분이내 도달가능한 역 리스트
-		List<SubwayStationTO> stationsNearStart = new DijkstraAlgo().getStationsNearStart(stations, startStation, 5);
-
-		// Map<역이름, List<매물>> - 페이지로 반환할 결과
-		Map<String, List<SaleTO>> salesNearStationMap = new HashMap<>();
-
-		// 역 하나하나 1km이내 매물리스트 찾아오기
-		for (SubwayStationTO stationTO : stationsNearStart) {
-			String stationName = stationTO.getName();
-			// 이름으로 지하철 역 정보 get
-			stationTO = mapper.getStation(stationName);
-//			System.out.println("stationTO: " + stationTO.getName());
-
-			// 공간DB로 역 위치 기준 1km 이내 매물리스트
-			List<SaleTO> salesNearStation = sdao.getSaleNearStation(stationTO.getLongitude(), stationTO.getLatitude());
-			salesNearStationMap.put(stationName, salesNearStation);
-		}
-
-		// 출력용
-//		for(Map.Entry<String, List<SaleTO>> entry:salesNearStationMap.entrySet()) {
-//			System.out.println(entry.getKey() + "역 근처 매물 리스트");
-//			// 역 하나에 대한 근처 매물 리스트
-//			for(SaleTO saleTO:entry.getValue()) {
-//				System.out.println(saleTO.getTitle());
-//			} System.out.println();
-//		}
-		
-		// 출발점 기준 5분이내 도달가능한 역 위치 기준 1km 이내 매물리스트
-		modelAndView.addObject("salesNearStationMap", salesNearStationMap);
-		
-//		System.out.println(salesNearStationMap.get("서초").get(0).getTitle());
-		
-		return modelAndView;
-	}
 	
-	
-	// name을 반드시 keyword로 줘야 인식
-	@RequestMapping(value = "/page_search.do", params = "keyword")
-	ModelAndView page_search(@RequestParam(name = "keyword") String keyword) {
+	@RequestMapping("/page_search.do")
+	ModelAndView page_search(
+			@RequestParam(value = "keyword", defaultValue = "서울특별시 강남구 역삼동 819-10") String keyword, 
+			@Param(value = "startStation") String startStation) {
 
 		// view(.jsp) 설정
 		ModelAndView modelAndView = new ModelAndView();
@@ -160,6 +116,33 @@ public class SaleController {
 		modelAndView.addObject("lineLocal", local);
 
 		
+		// 출발역이 주어지면 - 역 이동시간 기반 검색이면
+		if(startStation != null && !startStation.equals("")) {
+			// 전체 역 리스트
+			List<SubwayStationTO> stations = mapper.getStations();
+			// 출발점 기준 5분이내 도달가능한 역 리스트
+			List<SubwayStationTO> stationsNearStart = new DijkstraAlgo().getStationsNearStart(stations, startStation, 5);
+			
+			// Map<역이름, List<매물>> - 페이지로 반환할 결과
+			Map<String, List<SaleTO>> salesNearStationMap = new HashMap<>();
+			
+			// 역 하나하나 1km이내 매물리스트 찾아오기
+			for (SubwayStationTO stationTO : stationsNearStart) {
+				String stationName = stationTO.getName();
+				// 이름으로 지하철 역 정보 get
+				stationTO = mapper.getStation(stationName);
+//			System.out.println("stationTO: " + stationTO.getName());
+				
+				// 공간DB로 역 위치 기준 1km 이내 매물리스트
+				List<SaleTO> salesNearStation = sdao.getSaleNearStation(stationTO.getLongitude(), stationTO.getLatitude());
+				salesNearStationMap.put(stationName, salesNearStation);
+			}
+			
+			// 출발점 기준 5분이내 도달가능한 역 위치 기준 1km 이내 매물리스트
+			modelAndView.addObject("salesNearStationMap", salesNearStationMap);
+			
+//			System.out.println(salesNearStationMap.get("서초").get(0).getTitle());
+		}
 		
 
 		// view 페이지로 반환
