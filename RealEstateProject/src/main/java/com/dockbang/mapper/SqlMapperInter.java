@@ -161,9 +161,4 @@ public interface SqlMapperInter {
 			+ "limit 1")
 	PoliceTO getPopliceNearPoint(double lon, double lat);
 	
-	
-	// 역이름(중복x 정렬O) 가져오기
-	@Select("select name, subway_line, latitude, longitude from subway_station group by name")
-	List<SubwayStationTO> getStationsGroupByName();
-	
 }
