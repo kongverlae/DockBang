@@ -1,7 +1,10 @@
 package com.dockbang.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -9,11 +12,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.dockbang.mapper.SqlMapperInter;
+import com.dockbang.model.FoodTO;
 import com.dockbang.model.MemberDAO;
+import com.dockbang.model.MovieTO;
+import com.dockbang.model.PoliceTO;
 import com.dockbang.model.SaleDAO;
-import com.dockbang.model.SaleNearStationTO;
 import com.dockbang.model.SaleTO;
 import com.dockbang.model.SubwayStationTO;
+import com.dockbang.util.DijkstraAlgo;
 
 @Controller
 public class SaleController {
@@ -22,9 +28,10 @@ public class SaleController {
 	@Autowired
 	SaleDAO sdao;
 
+	// 나중에 DAO로 옮기기
 	@Autowired
 	private SqlMapperInter mapper;
-	
+
 //	@RequestMapping("/index.do")
 //	ModelAndView index() {
 //
@@ -74,24 +81,29 @@ public class SaleController {
 		// view(.jsp) 설정
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.setViewName("page_survey");
+
 		// view 페이지로 반환
 		return modelAndView;
 	}
 	
+	
 	@RequestMapping("/page_search.do")
-	ModelAndView page_search(String keyword) {
+	ModelAndView page_search(
+			@RequestParam(value = "keyword", defaultValue = "서울특별시 강남구 역삼동 819-10") String keyword, 
+			@Param(value = "startStation") String startStation) {
 
 		// view(.jsp) 설정
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.setViewName("page_search");
+
 		
-		// 매물 정보 저장
-		List<String> lats = mapper.getLat();
-		List<String> lons = mapper.getLon();
-		List<String> title = mapper.getTitle();
-		modelAndView.addObject("saleLats", lats);
-		modelAndView.addObject("saleLons", lons);
-		modelAndView.addObject("saleTitle", title);
+		//매줄 정보 저장 
+		List<SaleTO> sale = mapper.getSales();
+		modelAndView.addObject("sale", sale);
+		
+		//역 정보 저장
+		List<SubwayStationTO> station = mapper.getStationsGroupByName();
+		modelAndView.addObject("station", station);
 		
 		List<String> lat = mapper.selectlat();
 		List<String> lon = mapper.selectlon();
@@ -102,19 +114,71 @@ public class SaleController {
 		modelAndView.addObject("lineLat", lat);
 		modelAndView.addObject("lineLon", lon);
 		modelAndView.addObject("lineLocal", local);
+
 		
+		// 출발역이 주어지면 - 역 이동시간 기반 검색이면
+		if(startStation != null && !startStation.equals("")) {
+			// 전체 역 리스트
+			List<SubwayStationTO> stations = mapper.getStations();
+			// 출발점 기준 5분이내 도달가능한 역 리스트
+			List<SubwayStationTO> stationsNearStart = new DijkstraAlgo().getStationsNearStart(stations, startStation, 5);
+			
+			// Map<역이름, List<매물>> - 페이지로 반환할 결과
+			Map<String, List<SaleTO>> salesNearStationMap = new HashMap<>();
+			
+			// 역 하나하나 1km이내 매물리스트 찾아오기
+			for (SubwayStationTO stationTO : stationsNearStart) {
+				String stationName = stationTO.getName();
+				// 이름으로 지하철 역 정보 get
+				stationTO = mapper.getStation(stationName);
+//			System.out.println("stationTO: " + stationTO.getName());
+				
+				// 공간DB로 역 위치 기준 1km 이내 매물리스트
+				List<SaleTO> salesNearStation = sdao.getSaleNearStation(stationTO.getLongitude(), stationTO.getLatitude());
+				salesNearStationMap.put(stationName, salesNearStation);
+			}
+			
+			// 출발점 기준 5분이내 도달가능한 역 위치 기준 1km 이내 매물리스트
+			modelAndView.addObject("salesNearStationMap", salesNearStationMap);
+			
+//			System.out.println(salesNearStationMap.get("서초").get(0).getTitle());
+		}
+		
+
 		// view 페이지로 반환
 		return modelAndView;
 	}
 
+	// 매물 상세정보 + 매물 주변 편의시설 정보 반환
 	@RequestMapping("/page_saleInfo.do")
-	ModelAndView page_saleInfo() {
+	ModelAndView page_saleInfo(@RequestParam String sale_seq) {
+		// 매물 상세정보
+		SaleTO saleTO = mapper.getSale(sale_seq);
 
+		// 매물 주변 편의시설 정보 - 음식점
+		FoodTO foodTO = mapper.getFoodNearPoint(saleTO.getLon(), saleTO.getLat());
+
+		// 매물 주변 편의시설 정보 - 영화관
+		MovieTO movieTO = mapper.getMovieNearPoint(saleTO.getLon(), saleTO.getLat());
+
+		// 매물 주변 편의시설 정보 - 경찰서
+		PoliceTO policeTO = mapper.getPopliceNearPoint(saleTO.getLon(), saleTO.getLat());
+
+		
+		
 		// view(.jsp) 설정
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.setViewName("page_saleInfo");
+		
 		// 데이터 전송
-		// modelAndView.addObject("data_name", data);
+		
+		// 매물 상세정보
+		modelAndView.addObject("saleTO", saleTO);
+		
+		// 매물 주변 편의시설 상세정보
+		modelAndView.addObject("foodTO", foodTO);
+		modelAndView.addObject("movieTO", movieTO);
+		modelAndView.addObject("policeTO", policeTO);
 
 		// view 페이지로 반환
 		return modelAndView;

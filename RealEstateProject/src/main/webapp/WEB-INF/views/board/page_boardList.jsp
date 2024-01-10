@@ -1,16 +1,52 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@page import="com.dockbang.model.BoardTO"%>
+<%@page import="java.util.List"%>
 <%
-	String list = "";
-	for( int i = 0 ; i < 10 ; i++ ) {
-		list += "<tr>" +
-	            "<td>" + i + "</td> <!-- 글번호 -->" +
-	            "<td><a href='page_boardView.do'>게시글 제목 " + i + "</a></td> <!-- 글제목 -->" +
-	            "<td>작성자" + i + "</td> <!-- 글쓴이 -->" +
-	            "<td>2023-01-01</td> <!-- 작성일자 -->" +
-	            "<!-- 기타 필요한 칼럼 값들 추가 -->" +
-	        	"</tr>";
-	}
+
+String category = (String)request.getAttribute("category");
+List<BoardTO> boardList = (List)request.getAttribute("boardList");
+String name4 = (String) session.getAttribute("nickname");
+
+
+
+String title = "";
+if(category.equals("news")){
+    title = "뉴스게시판";
+} else if(category.equals("notice")){
+    title = "공지게시판";
+} else if(category.equals("free")){
+    title = "자유게시판";
+}
+
+int pageSize = 10; // 페이지당 표시할 게시물 수
+int totalBoardCount = boardList.size(); // 전체 게시물 수
+
+// 전체 페이지 수 계산
+int totalPage = (totalBoardCount / pageSize) + ((totalBoardCount % pageSize) > 0 ? 1 : 0);
+
+// 현재 페이지의 게시물 시작과 끝 인덱스 계산
+int cpage = 1; // 기본 페이지
+if (request.getParameter("cpage") != null) {
+    cpage = Integer.parseInt(request.getParameter("cpage"));
+}
+int startIdx = (cpage - 1) * pageSize;
+int endIdx = Math.min(cpage * pageSize, totalBoardCount);
+
+String list = "";
+int j = 1;
+for (int i = startIdx; i < endIdx; i++) {
+    BoardTO to = boardList.get(i);
+    list += "<tr>" +
+            "<td>" + to.getBoardseq() + "</td>" +
+            "<td><a href=\"page_boardView.do?category=" + category + "&boardseq=" + to.getBoardseq() + "\">" + to.getSubject() + "</a></td>" +
+            "<td>" + to.getWriter() + "</td>" +
+            "<td>" + to.getWdate() + "</td>" +
+            "<!-- 기타 필요한 칼럼 값들 추가 -->" +
+            "</tr>";
+    j++;
+}
+
 %>
 <!DOCTYPE html>
 <html>
@@ -46,11 +82,11 @@
 	                    <ol class="breadcrumb">
 	                        <li class="breadcrumb-item"><a href="page_boardChoose.do">게시판</a></li>
 	
-	                        <li class="breadcrumb-item active" aria-current="page">공지 게시판</li>
+	                        <li class="breadcrumb-item active" aria-current="page"><%=title %></li>
 	                    </ol>
 	                </nav>
-	                <h2 class="text-white">공지 게시판</h2>
-	            </div>
+	                <h2 class="text-white"><%=title %></h2>
+	            </div><%@page import="java.util.List"%>
 	        </div>
 	    </div>
 	</header>
@@ -70,7 +106,7 @@
 	                </div>         
 	            </div> -->
 				<div class="col-lg-12 col-12 text-center">
-		        	<h3 class="mb-4">공지 게시판</h3>
+		        	<h3 class="mb-4"><%=title %></h3>
 		        </div>
 	            <div class="col-lg-8 col-12 text-center mt-3">
 	            	<!-- justify-content-[ between, center, start, end] -->
@@ -80,7 +116,7 @@
 	            
 	                <div class="custom-block bg-white shadow-lg">
 	                    <!-- 글 갯수 -->
-	                    <span class="badge bg-finance rounded-pill ms-auto">30</span>
+	                    <span class="badge bg-finance rounded-pill ms-auto"><%=totalBoardCount %></span>
 	                    <table class="table table-hover">
 						    <thead>
 						        <tr>
@@ -127,44 +163,49 @@
 	    	                <!-- 페이지 입력 끝 -->
 						</table>
 						<div class="col-12 justify-content-end text-end mt-3">
-		                    <a href="page_boardWrite.do" class="btn custom-btn col-3 mx-3">글작성</a>
+		                    <a href="page_boardWrite.do?category=<%=category%>" class="btn custom-btn col-3 mx-3">글작성</a>
 						</div>
 	                    <!-- 페이지 네비게이션 -->
 		                <nav aria-label="Page navigation example">
 		                    <ul class="pagination justify-content-center mb-0">
+		                    
+		                    <%
+                    int pageBlockSize = 5; // 한 블록당 페이지 수
+                    int startPage = ((cpage - 1) / pageBlockSize) * pageBlockSize + 1;
+                    int endPage = Math.min(startPage + pageBlockSize - 1, totalPage);
+                    if (startPage > 1) {
+
+                  %>
 		                        <li class="page-item">
-		                            <a class="page-link" href="#" aria-label="Previous">
+		                            <a class="page-link"  href="page_boardList.do?category=<%=category%>&cpage=<%=startPage-1%>" aria-label="Previous">
 		                                <span aria-hidden="true">Prev</span>
 		                            </a>
 		                        </li>
+		                        <%
+                    }
+                    for (int i = startPage; i <= endPage; i++) { 
+                        %>
 		
 		                        <li class="page-item active" aria-current="page">
-		                            <a class="page-link" href="#">1</a>
+		                            <a class="page-link" href="page_boardList.do?category=<%=category%>&cpage=<%=i%>" 
+                    class="<%= (i == cpage) ? "active" : "" %>"> <%=i%></a>
 		                        </li>
+		                         <%
+                    }
+                    if (endPage < totalPage) { 
+                        %>  
 		                        
 		                        <li class="page-item">
-		                            <a class="page-link" href="#">2</a>
-		                        </li>
-		                        
-		                        <li class="page-item">
-		                            <a class="page-link" href="#">3</a>
-		                        </li>
-		
-		                        <li class="page-item">
-		                            <a class="page-link" href="#">4</a>
-		                        </li>
-		
-		                        <li class="page-item">
-		                            <a class="page-link" href="#">5</a>
-		                        </li>
-		                        
-		                        <li class="page-item">
-		                            <a class="page-link" href="#" aria-label="Next">
+		                            <a class="page-link" href="page_boardList.do?category=<%=category%>&cpage=<%=endPage+1%>" aria-label="Next">
 		                                <span aria-hidden="true">Next</span>
 		                            </a>
+		                            <%
+                    }
+                %>
 		                        </li>
 		                    </ul>
 		                </nav>
+		                
 		                <!-- 페이지 네비게이션 종료 -->
 	                </div>    
 	            </div>
