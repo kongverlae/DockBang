@@ -194,6 +194,7 @@ public class BoardController {
 	    ModelAndView modelAndView = new ModelAndView();
 	    modelAndView.addObject("category", category);
 	    modelAndView.addObject("boardseq", boardseq);
+	    modelAndView.addObject("flag", flag);
 	    
 	    
 	    return modelAndView;

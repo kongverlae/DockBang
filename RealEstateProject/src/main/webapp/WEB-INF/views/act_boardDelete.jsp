@@ -8,7 +8,7 @@
 	String category = (String)request.getAttribute("category");
 	//String subject = (String)request.getAttribute("subject");
 	//String content = (String)request.getAttribute("content");
-	Integer boardseq = (Integer) request.getAttribute("boardseq");
+	//Integer boardseq = (Integer) request.getAttribute("boardseq");
 	
 
 	int flag = (Integer)request.getAttribute("flag");

@@ -6,9 +6,12 @@
 <%
 
 	String category = (String)request.getAttribute("category");
-	String subject = (String)request.getAttribute("subject");
-	String content = (String)request.getAttribute("content");
-	Integer boardseq = (Integer) request.getAttribute("boardseq");
+	String subject= (String)request.getAttribute("subject2");
+	String content = (String)request.getAttribute("content2");
+	//Integer boardseq = (Integer) request.getAttribute("boardseq");
+	
+	System.out.println("subject2: " + subject);
+    System.out.println("content2: " + content);
 	
 
 	int flag = (Integer)request.getAttribute("flag");
