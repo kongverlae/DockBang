@@ -22,44 +22,204 @@
 	<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&family=Open+Sans&display=swap" rel="stylesheet">
 	<link href="css/bootstrap.min.css" rel="stylesheet">
 	<link href="css/bootstrap-icons.css" rel="stylesheet">
-	<link href="css/templatemo-topic-listing.css" rel="stylesheet">   
+	<link href="css/templatemo-topic-listing.css" rel="stylesheet">  
+	<link href="css/jquery-ui.min.css" rel="stylesheet">
 </head>
 
-<body>
+<body style="overflow: hidden;">
 	<!-- header page include -->
 	<%@ include file="page_nav.jsp" %>
 
-	<!-- page content -->
-	<main style="overflow: hidden;">
-			<section
-			class="hero-section justify-content-center align-items-center" style="height: 20vh">
-			<div class="container-xxl">
-				<div class="row">
-					<div class="col-lg-8 col-12 mx-auto ">
-						<!-- <form method="get" class="custom-form mt-4 pt-2 mb-lg-0 mb-5" -->
-						<form method="get" class="custom-form "
-							role="search" action="page_search.do">
-							<div class="input-group input-group-lg">
-								<span class="input-group-text bi-search" id="basic-addon1">
-								</span> <input name="keyword" type="search" class="form-control"
-									id="keyword" placeholder="수원시, 장안구, 정자동 등 주소 입력"
-									aria-label="Search">
-								<button type="submit" class="form-control">Search</button>
-							</div>
-						</form>
+	<!-- 지역 검색 창 + 매물 상세 검색 -->
+	<!-- <section class="site-header d-flex flex-column justify-content-center align-items-center pt-5.5 pb-3" style="padding-top: 100px;"> -->
+	<section class="site-header d-flex flex-column justify-content-center align-items-center pt-5.5 pb-3" style="height:20vh;padding-top: 100px;">
+		<div class="container">
+	        <div class="row align-items-center">
+	        	
+	        	<!-- 지역 검색 창 시작 -->
+	        	<form method="get" class="custom-form col-lg-2 col-4" role="search" action="page_search.do">
+					<div class="input-group input-group-lg p-1">
+						<!-- <button type="submit" class="form-control">Search</button> -->
+						<input name="keyword" type="search" class="form-control m-0"
+							id="keyword" placeholder=""
+							aria-label="Search">
+						<!-- <button class="input-group-text  bi-search" id="basic-addon1"></button>  -->
+						<button type="submit" class="bi-search p-1"></button> 
 					</div>
-				</div>
-			</div>
+				</form>
+				<!-- 지역 검색 창 끝 -->
+						
+				<!-- 매물 상세 검색 그룹 -->	
+	            <div class="col-lg-10 col-8">
+	            	<!-- 지하철 역 이동 시간 기반 검색 -->
+					<div class="btn-group">
+				        <button type="button" class="btn custom-btn dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+				            지역검색
+				        </button>
+				        
+				        <ul class="dropdown-menu p-3" style="width:300%; z-index:1;">
+				            <!-- 드롭다운 메뉴의 항목들 -->
+				            <li>
+				            	<!-- 지하철역 검색(자동완성) -->
+				            	<h6>직장 검색(지하철역 검색)</h6>
+							    <input type="text" class="form-control" id="station-autocomplete" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							    <div id="suggestion" aria-labelledby="station-autocomplete" style="z-index:2;">
+							      <!-- Autocomplete suggestions will be placed here -->
+							    </div>
+								<hr>
+								
+								<h6>통근방식</h6>
+								<div class="form-check form-check-inline">
+								  <input class="form-check-input" type="radio" name="commuteWay" id="commuteWayRadio1" value="work" disabled>
+								  <label class="form-check-label" for="commuteWayRadio1">도보</label>
+								</div>
+								<div class="form-check form-check-inline">
+								  <input class="form-check-input" type="radio" name="commuteWay" id="commuteWayRadio2" value="subway" checked>
+								  <label class="form-check-label" for="commuteWayRadio2">지하철</label>
+								</div>
+								<div class="form-check form-check-inline">
+								  <input class="form-check-input" type="radio" name="commuteWay" id="commuteWayRadio3" value="car" disabled>
+								  <label class="form-check-label" for="commuteWayRadio3">자차</label>
+								</div>
+								<hr>
+								
+								<h6>통근 시간</h6>
+								<div id="commute-slider" class="mx-2 mb-2"></div>
+								<p>
+								  <label for="commute">통근 시간:</label>
+								  <label id="commute"></label>
+								</p>
+				            </li>
+				        </ul>
+    				</div>
+
+				    <div class="btn-group">
+				        <!-- 집유형 드롭다운 -->
+				        <button type="button" class="btn custom-btn dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">집유형</button>
+				        <ul class="dropdown-menu p-3" style="width:200%;">
+				            <!-- 드롭다운 메뉴의 항목들 -->
+				            <li>
+								<div class="form-check form-check-inline">
+								  <input class="form-check-input" type="checkbox" id="houseTypeOp" value="OP" checked>
+								  <label class="form-check-label" for="houseTypeOp">오피스텔</label>
+								</div>
+                                <div class="form-check form-check-inline">
+								  <input class="form-check-input" type="checkbox" id="houseTypeSh" value="SH" checked>
+								  <label class="form-check-label" for="houseTypeSh">주택</label>
+								</div>
+								<div class="form-check form-check-inline">
+								  <input class="form-check-input" type="checkbox" id="houseTypeOr" value="OR" checked>
+								  <label class="form-check-label" for="houseTypeOr">원룸</label>
+								</div>
+								<hr>
+					            <div class="form-check form-check-inline">
+								  <input class="form-check-input" type="checkbox" id="houseTypeAt" value="AT">
+								  <label class="form-check-label" for="houseTypeAt">아파트</label>
+								</div>
+								<hr>
+								<div>아파트는 다른 유형과 같이 선택할 수 없습니다.</div>
+				            </li>
+				        </ul>
+				    </div>
+
+				    <div class="btn-group">
+				        <!-- 가격 드롭다운 -->
+				        <button type="button" class="btn custom-btn dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">가격</button>
+				        <ul class="dropdown-menu p-3" style="width:400%;">
+				            <!-- 드롭다운 메뉴의 항목들 -->
+				            <li>
+				            	<h6>거래 유형 / 중복 선택: </h6>
+								<div class="form-check form-check-inline">
+								  <input class="form-check-input" type="checkbox" id="offerTypeL" value="L" checked>
+								  <label class="form-check-label" for="offerTypeL">전세</label>
+								</div>
+								<div class="form-check form-check-inline">
+								  <input class="form-check-input" type="checkbox" id="offerTypeM" value="M" checked>
+								  <label class="form-check-label" for="offerTypeM">월세</label>
+								</div>
+                                <div class="form-check form-check-inline">
+								  <input class="form-check-input" type="checkbox" id="offerTypeP" value="P" checked>
+								  <label class="form-check-label" for="offerTypeP">매매</label>
+								</div>
+								<hr>
+								
+								<h6>전세</h6>
+								<div id="l-deposit-slider" class="mx-2 mb-2"></div>
+								<p>
+								  <label for="l-deposit">보증금:</label>
+								  <label id="l-deposit"></label>
+								</p>
+								<hr>
+								
+								<h6>월세</h6>
+								<div id="m-deposit-slider" class="mx-2 mb-2"></div>
+								<p>
+								  <label for="m-deposit">보증금:</label>
+								  <label id="m-deposit"></label>
+								</p>
+								<div id="monthly-fee-slider" class="mx-2 mb-2"></div>
+								<p>
+								  <label for="monthly-fee">매매가:</label>
+								  <label id="monthly-fee"></label>
+								</p>
+								<hr>
+								
+								<h6>매매</h6>
+								<div id="price-slider" class="mx-2 mb-2"></div>
+								<p>
+								  <label for="price">매매가:</label>
+								  <label id="price"></label>
+								</p>
+								<hr>
+				            </li>
+				        </ul>
+				    </div>
+
+				    <div class="btn-group">
+				        <!-- 추가필터 드롭다운 -->
+				        <button type="button" class="btn custom-btn dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">추가필터</button>
+				        <ul class="dropdown-menu">
+				            <!-- 드롭다운 메뉴의 항목들 -->
+				            <li>
+								음식점<br>
+								영화관<br>
+								보안: 경찰<br>
+				            </li>
+				        </ul>
+				    </div>
+				 	
+	            </div> <!-- 드롭다운 메뉴 내용 종료 -->
+	            
+	        </div>
+	    </div>
+	</section>
+	<!-- page content -->
+	<main>
+		<div class="row" >
+			<section class="section" id="section-3" >
+				<div id="map" style="width: 100%; height: 80vh; margin: auto;"></div>
+				<code id="snippet" class="snippet"></code>
+			</section>
+		</div>
+	</main>	
+
+	<!-- footer page include -->
+	<%-- <%@ include file="page_footer.jsp" %> --%>
 	
-		</section>
-			<div class="row" >
-				<section class="section" id="section-3" >
-					<div id="map" style="width: 100%; height: 80vh; margin: auto;"></div>
-					<code id="snippet" class="snippet"></code>
-				</section>
-			</div>
-		<!-- jquery -->
-		<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+	<!-- JAVASCRIPT FILES -->
+	<!-- jquery -->
+	<!-- <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script> -->
+	<!-- <script src="js/jquery.min.js"></script> -->
+	<script src="js/jquery.js"></script>
+	<!-- <script src="js/bootstrap.bundle.min.js"></script> -->
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+	<script src="js/jquery.sticky.js"></script>
+	<script src="js/click-scroll.js"></script>
+	<script src="js/custom.js"></script>
+	<script src="js/jquery-ui.min.js"></script>
+	<!-- search page에서 사용하는 jquery ui 컴포넌트들을 제어하기 위한 js -->
+	<script src="js/search.js"></script>
+
 		<!-- 각자 발급받은 Client ID 값 넣기 -->
 		<script type="text/javascript"
 			src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=0xkngoqc6q&submodules=geocoder"></script>
@@ -152,9 +312,23 @@
 			const stationMarkers = [];
 			for (let i = 0; i < stationLats.length; i++) {
 				stationMarkers.push({ position: new naver.maps.LatLng(stationLats[i], stationLons[i]), message: stationTitleArray[i] });
+			            htmlAddresses.push((i+1) +'. '+ addrType +' '+ address);
+			        }
+					
+			        /*
+			        infoWindow.setContent([
+			            '<div style="padding:10px;min-width:200px;line-height:150%;">',
+			            '<h4 style="margin-top:5px;">검색 좌표</h4><br />',
+			            htmlAddresses.join('<br />'),
+			            '</div>'
+			        ].join('\n'));
 
+			        infoWindow.open(map, latlng);
+			        */
+			    });
 			}
 			
+
 
 			$(document).ready(function(){
 				
@@ -249,7 +423,7 @@
 				    });
 				});
 			    
-			    // 줌 확대 따른 마커 ㅍ시
+			    // 줌 확대 따른 마커 표시
 			    naver.maps.Event.addListener(map, 'zoom_changed', function() {
 				    const currentZoom = map.getZoom();
 				
@@ -295,7 +469,15 @@
 			            content: markerInfo.message
 			        });
 
-			        infoWindows.push(infoWindow);
+			        if (keyCode === 13) { // Enter Key
+			            searchAddressToCoordinate($('#keyword').val());
+			        }
+			    });
+
+			 	// 검색 버튼 클릭 이벤트 리스너 등록
+			    $('#searchbtn').on('click', function(e) {
+			    	// alert("searchbtn 클릭");
+			        e.preventDefault();
 
 			        naver.maps.Event.addListener(marker, 'click', function() {
 			        	polygon.setMap(null);
@@ -469,137 +651,20 @@
 				        */
 				    });
 				}
+
 			
-				// 지오코더 초기화 함수
-				function initGeocoder() {
-					
-					// 지도 클릭 이벤트 리스너 등록
-				    map.addListener('click', function(e) {
-				        searchCoordinateToAddress(e.coord);
-				    });
-	
-				    // 검색어 입력창에서 엔터 키 입력 이벤트 리스너 등록
-				    $('#keyword').on('keydown', function(e) {
-				    	let keyCode = e.which;
-	
-				        if (keyCode === 13) { // Enter Key
-				            searchAddressToCoordinate($('#keyword').val());
-				        }
-				    });
-	
-				 	// 검색 버튼 클릭 이벤트 리스너 등록
-				    $('#searchbtn').on('click', function(e) {
-				    	// alert("searchbtn 클릭");
-				        e.preventDefault();
-	
-				        searchAddressToCoordinate($('#keyword').val());
-				    });
+			
+			// 지오코더 초기화 함수를 호출
+			naver.maps.onJSContentLoaded = initGeocoder;
 
-					// 이전 페이지에서 검색어가 들어오면 해당 키워드로 검색
-					if(keyword === '' || keyword == null){
-				    	searchAddressToCoordinate(defaultAddress);
-					} else{
-				    	searchAddressToCoordinate(keyword);
-					}
-				}
-	
-				function makeAddress(item) {
-				    if (!item) {
-				        return;
-				    }
-	
-				    let name = item.name,
-				        region = item.region,
-				        land = item.land,
-				        isRoadAddress = name === 'roadaddr';
-	
-				    let sido = '', sigugun = '', dongmyun = '', ri = '', rest = '';
-	
-				    if (hasArea(region.area1)) {
-				        sido = region.area1.name;
-				    }
-	
-				    if (hasArea(region.area2)) {
-				        sigugun = region.area2.name;
-				    }
-	
-				    if (hasArea(region.area3)) {
-				        dongmyun = region.area3.name;
-				    }
-	
-				    if (hasArea(region.area4)) {
-				        ri = region.area4.name;
-				    }
-	
-				    if (land) {
-				        if (hasData(land.number1)) {
-				            if (hasData(land.type) && land.type === '2') {
-				                rest += '산';
-				            }
-	
-				            rest += land.number1;
-	
-				            if (hasData(land.number2)) {
-				                rest += ('-' + land.number2);
-				            }
-				        }
-	
-				        if (isRoadAddress === true) {
-				            if (checkLastString(dongmyun, '면')) {
-				                ri = land.name;
-				            } else {
-				                dongmyun = land.name;
-				                ri = '';
-				            }
-	
-				            if (hasAddition(land.addition0)) {
-				                rest += ' ' + land.addition0.value;
-				            }
-				        }
-				    }
-	
-				    return [sido, sigugun, dongmyun, ri, rest].join(' ');
-				}
-	
-				function hasArea(area) {
-				    return !!(area && area.name && area.name !== '');
-				}
-	
-				function hasData(data) {
-				    return !!(data && data !== '');
-				}
-	
-				function checkLastString (word, lastString) {
-				    return new RegExp(lastString + '$').test(word);
-				}
-	
-				function hasAddition (addition) {
-				    return !!(addition && addition.value);
-				}
-				
-				
-				// 지오코더 초기화 함수를 호출
-				naver.maps.onJSContentLoaded = initGeocoder;
-	
-			});
-		</script>
-	</main>	
-
-	<!-- footer page include -->
-	<%-- <%@ include file="page_footer.jsp" %> --%>
-	
-	<!-- JAVASCRIPT FILES -->
-	<script src="js/jquery.min.js"></script>
-	<script src="js/bootstrap.bundle.min.js"></script>
-	<script src="js/jquery.sticky.js"></script>
-	<script src="js/click-scroll.js"></script>
-	<script src="js/custom.js"></script>
-	<style>
+		});
+	</script>
+	<!-- <style>
 		@media (max-width: 767px) {
 			.hero-section {
 				height: 200px;
 			}
 		}
-	</style>
+	</style> -->
 </body>
 </html> 
