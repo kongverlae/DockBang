@@ -21,470 +21,618 @@
 	<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&family=Open+Sans&display=swap" rel="stylesheet">
 	<link href="css/bootstrap.min.css" rel="stylesheet">
 	<link href="css/bootstrap-icons.css" rel="stylesheet">
-	<link href="css/templatemo-topic-listing.css" rel="stylesheet">   
+	<link href="css/templatemo-topic-listing.css" rel="stylesheet">  
+	<link href="css/jquery-ui.min.css" rel="stylesheet">
 </head>
 
-<body>
+<body style="overflow: hidden;">
 	<!-- header page include -->
 	<%@ include file="page_nav.jsp" %>
 
-	<!-- page content -->
-	<main style="overflow: hidden;">
-			<section
-			class="hero-section justify-content-center align-items-center" style="height: 20vh">
-			<div class="container-xxl">
-				<div class="row">
-					<div class="col-lg-8 col-12 mx-auto ">
-						<!-- <form method="get" class="custom-form mt-4 pt-2 mb-lg-0 mb-5" -->
-						<form method="get" class="custom-form "
-							role="search" action="page_search.do">
-							<div class="input-group input-group-lg">
-								<span class="input-group-text bi-search" id="basic-addon1">
-								</span> <input name="keyword" type="search" class="form-control"
-									id="keyword" placeholder="수원시, 장안구, 정자동 등 주소 입력"
-									aria-label="Search">
-								<button type="submit" class="form-control">Search</button>
-							</div>
-						</form>
+	<!-- 지역 검색 창 + 매물 상세 검색 -->
+	<!-- <section class="site-header d-flex flex-column justify-content-center align-items-center pt-5.5 pb-3" style="padding-top: 100px;"> -->
+	<section class="site-header d-flex flex-column justify-content-center align-items-center pt-5.5 pb-3" style="height:20vh;padding-top: 100px;">
+		<div class="container">
+	        <div class="row align-items-center">
+	        	
+	        	<!-- 지역 검색 창 시작 -->
+	        	<form method="get" class="custom-form col-lg-2 col-4" role="search" action="page_search.do">
+					<div class="input-group input-group-lg p-1">
+						<!-- <button type="submit" class="form-control">Search</button> -->
+						<input name="keyword" type="search" class="form-control m-0"
+							id="keyword" placeholder=""
+							aria-label="Search">
+						<!-- <button class="input-group-text  bi-search" id="basic-addon1"></button>  -->
+						<button type="submit" class="bi-search p-1"></button> 
 					</div>
-				</div>
-			</div>
-	
-		</section>
-			<div class="row" >
-				<section class="section" id="section-3" >
-					<div id="map" style="width: 100%; height: 80vh; margin: auto;"></div>
-					<code id="snippet" class="snippet"></code>
-				</section>
-			</div>
-		<!-- jquery -->
-		<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
-		<!-- 각자 발급받은 Client ID 값 넣기 -->
-		<script type="text/javascript"
-			src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=0xkngoqc6q&submodules=geocoder"></script>
-		<script id="code">
-			/* 코드 부분이였는데 */
-			const markers = [
-		        { position: new naver.maps.LatLng(37.4550628, 127.0695079), message: '내곡동' },
-		        { position: new naver.maps.LatLng(37.4719823, 127.0374623), message: '양재동' },
-		        { position: new naver.maps.LatLng(37.4883869, 127.0167954), message: '서초동' },
-		        { position: new naver.maps.LatLng(37.4794939, 126.9931207), message: '방배동' },
-		        { position: new naver.maps.LatLng(37.5151065, 127.0137779), message: '잠원동' },
-		        { position: new naver.maps.LatLng(37.5039744, 127.0007494), message: '반포동' },
-		        { position: new naver.maps.LatLng(37.4802905, 127.0626272), message: '개포동' },
-		        { position: new naver.maps.LatLng(37.5136787, 127.0317124), message: '논현동' },
-		        { position: new naver.maps.LatLng(37.4991887, 127.0633458), message: '대치동' },
-		        { position: new naver.maps.LatLng(37.4885906, 127.0452757), message: '도곡동' },
-		        { position: new naver.maps.LatLng(37.513975, 127.0561274), message: '삼성동' },
-		        { position: new naver.maps.LatLng(37.4863964, 127.1006971), message: '수서동' },
-		        { position: new naver.maps.LatLng(37.5271478, 127.0334517), message: '압구정동' },
-		        { position: new naver.maps.LatLng(37.5000776, 127.0385419), message: '역삼동' },
-		        { position: new naver.maps.LatLng(37.4880579, 127.0828672), message: '일원동' },
-		        { position: new naver.maps.LatLng(37.5233931, 127.0479736), message: '청담동' },
-		        { position: new naver.maps.LatLng(37.5067945, 127.0830482), message: '잠실동' },
-		        { position: new naver.maps.LatLng(37.5239227, 127.0989719), message: '신천동' },
-		        { position: new naver.maps.LatLng(37.5332133, 127.113992), message: '풍납동' },
-		        { position: new naver.maps.LatLng(37.5156746, 127.1253915), message: '방이동' },
-		        { position: new naver.maps.LatLng(37.5051072, 127.1135469), message: '송파동' },
-		        { position: new naver.maps.LatLng(37.5024352, 127.1026694), message: '석촌동' },
-		        { position: new naver.maps.LatLng(37.5019016, 127.0918885), message: '삼전동' },
-		        { position: new naver.maps.LatLng(37.4956865, 127.1184047), message: '가락동' },
-		        { position: new naver.maps.LatLng(37.5040047, 127.1340203), message: '오금동' },
-		        { position: new naver.maps.LatLng(37.4855846, 127.1225635), message: '문정동' },
-		        { position: new naver.maps.LatLng(37.4768715, 127.1320663), message: '장지동' },
-		        { position: new naver.maps.LatLng(37.4897279, 127.1449912), message: '거여동' },
-		        { position: new naver.maps.LatLng(37.4984934, 127.1527443), message: '마천동' },
-		        { position: new naver.maps.LatLng(37.5675265, 127.1729313), message: '강일동' },
-		        { position: new naver.maps.LatLng(37.5638217, 127.1582312), message: '고덕동' },
-		        { position: new naver.maps.LatLng(37.5578058, 127.1310675), message: '암사동' },
-		        { position: new naver.maps.LatLng(37.5443765, 127.1276202), message: '천호동' },
-		        { position: new naver.maps.LatLng(37.5490445, 127.1508229), message: '명일동' },
-		        { position: new naver.maps.LatLng(37.5396157, 127.1459293), message: '길동' },
-		        { position: new naver.maps.LatLng(37.5304933, 127.128992), message: '성내동' },
-		        { position: new naver.maps.LatLng(37.5282539, 127.1447139), message: '둔촌동' }
-		        // Add more markers as needed
-		    ];
-			
-			const saleLats = ${saleLats};
-			const saleLons = ${saleLons};
-			const saleTitle = '${saleTitle}';
-			let formattedtitle = saleTitle.replace(/\[|\]/g, '');
-			let titleArray = formattedtitle.split(',').map(item => item.trim());
-			const markers1 = [];
-			for (let i = 0; i < saleLats.length; i++) {
-				markers1.push({ position: new naver.maps.LatLng(saleLats[i], saleLons[i]), message: titleArray[i] });
-
-			}
-
-			$(document).ready(function(){
-				
-				// 검색어를 받아오는 부분
-				let keyword = '${keyword}';
-				// console.log("keyword: " + keyword);
-				
-				// 검색한 동의 경계선 정보 받아 오기
-				let local = '${lineLocal}';
-				let formattedLocal = local.replace(/\[|\]/g, '');
-				let localArray = formattedLocal.split(',').map(item => item.trim());
-				let lineLat = ${lineLat};
-				let lineLon = ${lineLon};
-				
-				let polygon;
-				
-				// 기본 주소 설정
-				let defaultAddress = '강남구 역삼동 819-10';
-				
-				// 지도를 표시할 div 요소를 가져옴
-				let mapDiv = document.getElementById('map');
-				
-				// 네이버 지도 객체를 생성하고 설정
-				let map = new naver.maps.Map(mapDiv, {
-				    center: new naver.maps.LatLng(37.3595704, 127.105399),
-				    zoom: 13
-				    //, mapTypeControl: true
-				});
-				
-				 // 지도를 클릭할 때마다 마커 위치를 변경
-				naver.maps.Event.addListener(map, 'click', function(e) {
-				    marker.setPosition(e.coord);
-				    
-				});
-				
-				let bounds = map.getBounds(),
-			    southWest = bounds.getSW(),
-			    northEast = bounds.getNE(),
-			    lngSpan = northEast.lng() - southWest.lng(),
-			    latSpan = northEast.lat() - southWest.lat();
-				 
-			 	const infoWindows = [];
-			    markers.forEach(markerInfo => {
-			        const marker = new naver.maps.Marker({
-			            position: markerInfo.position,
-			            map: map,
-			            icon: {
-			                // 마커 아이콘을 직사각형으로 설정
-							content: "<div style='border: 1px solid #000; background-color: white; padding: 5px; font-size: 12px;'>" + markerInfo.message + "</div>",
-			                size: new naver.maps.Size(30, 30), // 마커의 크기 조절
-			                anchor: new naver.maps.Point(15, 30) // 마커의 기준위치 설정
-			            }
-			        });
-
-			        const infoWindow = new naver.maps.InfoWindow({
-			            content: markerInfo.message
-			        });
-
-			        infoWindows.push(infoWindow);
-
-			        naver.maps.Event.addListener(marker, 'click', function() {
-			            infoWindows.forEach(window => window.close());
-			            infoWindow.open(map, marker);
-			            map.panTo(markerInfo.position);
-
-			            // 클릭한 마커의 위치의 키워드로 설정
-			            keyword = markerInfo.message;
-			            
-			            
-			            if (polygon) {
-			                polygon.setMap(null);
-			            }
-			            
-			            let indices = [];
-			            for (let i = 0; i < localArray.length; i++) {
-			                if (localArray[i] === markerInfo.message) {
-			                    indices.push(i);
-			                }
-			            }
-
-			            if (indices.length > 0) {
-			                // 모든 인덱스에 대응하는 lineLat와 lineLon 추출
-			                let polygonCoords = indices.map(function(index) {
-			                    return new naver.maps.LatLng(lineLat[index], lineLon[index]);
-			                });
-
-			                // 경계선 그리기
-			                polygon = new naver.maps.Polygon({
-			                    map: map,
-			                    paths: polygonCoords,
-			                    strokeColor: '#f00',
-			                    strokeWeight: 2,
-			                    strokeOpacity: 0.7,
-			                    fillColor: '#00f',
-			                    fillOpacity: 0.3
-			                });
-			            } else {
-			                console.log('local 배열에서 해당 키워드를 찾을 수 없습니다.');
-			            }
-			        });
-			    });
-			    
-			    
-			    naver.maps.Event.addListener(map, 'zoom_changed', function() {
-			        const currentZoom = map.getZoom();
-
-			        markers1.forEach(markerInfo => {
-			            const marker = markerInfo.marker;
-
-		                console.log(currentZoom);
-			            // 원하는 조건에 따라 마커 표시 여부 결정
-			            if (currentZoom >= 17 ) {
-			                marker.setMap(map);
-			            } else {
-			            	num=0;
-			                // 최소 줌 레벨 미만에서는 마커 숨김
-			                marker.setMap(null);
-			            }
-			        });
-			    });
-
-			    // 마커 생성 및 이벤트 리스너 설정
-			    markers1.forEach(markerInfo => {
-			        const marker = new naver.maps.Marker({
-			            position: markerInfo.position,
-			            map: null, // 초기에는 지도에 표시하지 않음
-			        });
-
-			        markerInfo.marker = marker; // 마커 정보에 실제 마커 객체 저장
-
-			        const infoWindow = new naver.maps.InfoWindow({
-			            content: markerInfo.message
-			        });
-
-			        infoWindows.push(infoWindow);
-
-			        naver.maps.Event.addListener(marker, 'click', function() {
-			            infoWindows.forEach(window => window.close());
-			            infoWindow.open(map, marker);
-			            map.panTo(markerInfo.position);
-			        });
-			    });
-			    
-			    
-			    function searchCoordinateToAddress(latlng) {
-			    	
-			    	
-			    }
-				
-				
-				
-				// 지도 커서를 손가락 모양으로 설정
-				map.setCursor('pointer');
-				 
-				// 좌표를 주소로 변환하는 함수s
-				function searchCoordinateToAddress(latlng) {
-	
-				    infoWindow.close();
-	
-				    naver.maps.Service.reverseGeocode({
-				        coords: latlng,
-				        orders: [
-				            naver.maps.Service.OrderType.ADDR,
-				            naver.maps.Service.OrderType.ROAD_ADDR
-				        ].join(',')
-				    }, function(status, response) {
-				        if (status === naver.maps.Service.Status.ERROR) {
-				            return alert('Something Wrong!');
-				        }
-	
-				        let items = response.v2.results,
-				            address = '',
-				            htmlAddresses = [];
-	
-				        for (let i=0, ii=items.length, item, addrType; i<ii; i++) {
-				            item = items[i];
-				            address = makeAddress(item) || '';
-				            addrType = item.name === 'roadaddr' ? '[도로명 주소]' : '[지번 주소]';
-	
-				            htmlAddresses.push((i+1) +'. '+ addrType +' '+ address);
-				        }
+				</form>
+				<!-- 지역 검색 창 끝 -->
 						
-				        /*
-				        infoWindow.setContent([
-				            '<div style="padding:10px;min-width:200px;line-height:150%;">',
-				            '<h4 style="margin-top:5px;">검색 좌표</h4><br />',
-				            htmlAddresses.join('<br />'),
-				            '</div>'
-				        ].join('\n'));
-	
-				        infoWindow.open(map, latlng);
-				        */
-				    });
-				}
-	
-				// 주소를 좌표로 변환하는 함수
-				function searchAddressToCoordinate(address) {
-				    naver.maps.Service.geocode({
-				        query: address
-				    }, function(status, response) {
-				        if (status === naver.maps.Service.Status.ERROR) {
-				            return alert('Something Wrong!');
-				        }
-	
-				        if (response.v2.meta.totalCount === 0) {
-				            // return alert('검색 결과: ' + response.v2.meta.totalCount);
-				            return alert('검색 결과가 없습니다.');
-				        }
-	
-				        let htmlAddresses = [],
-				            item = response.v2.addresses[0],
-				            point = new naver.maps.Point(item.x, item.y);
-	
-				        if (item.roadAddress) {
-				            htmlAddresses.push('[도로명 주소] ' + item.roadAddress);
-				        }
-	
-				        if (item.jibunAddress) {
-				            htmlAddresses.push('[지번 주소] ' + item.jibunAddress);
-				        }
-	
-				        if (item.englishAddress) {
-				            htmlAddresses.push('[영문명 주소] ' + item.englishAddress);
-				        }
-	
-	
-				        map.setCenter(point);
+				<!-- 매물 상세 검색 그룹 -->	
+	            <div class="col-lg-10 col-8">
+	            	<!-- 지하철 역 이동 시간 기반 검색 -->
+					<div class="btn-group">
+				        <button type="button" class="btn custom-btn dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+				            지역검색
+				        </button>
 				        
-				        /*
-				        infoWindow.setContent([
-				            '<div style="padding:10px;min-width:200px;line-height:150%;">',
-				            '<h4 style="margin-top:5px;">검색 주소 : '+ address +'</h4><br />',
-				            htmlAddresses.join('<br />'),
-				            '</div>'
-				        ].join('\n'));
-				        infoWindow.open(map, point);
-				        */
-				    });
-				}
-			
-				// 지오코더 초기화 함수
-				function initGeocoder() {
-					
-					// 지도 클릭 이벤트 리스너 등록
-				    map.addListener('click', function(e) {
-				        searchCoordinateToAddress(e.coord);
-				    });
-	
-				    // 검색어 입력창에서 엔터 키 입력 이벤트 리스너 등록
-				    $('#keyword').on('keydown', function(e) {
-				    	let keyCode = e.which;
-	
-				        if (keyCode === 13) { // Enter Key
-				            searchAddressToCoordinate($('#keyword').val());
-				        }
-				    });
-	
-				 	// 검색 버튼 클릭 이벤트 리스너 등록
-				    $('#searchbtn').on('click', function(e) {
-				    	// alert("searchbtn 클릭");
-				        e.preventDefault();
-	
-				        searchAddressToCoordinate($('#keyword').val());
-				    });
+				        <ul class="dropdown-menu p-3" style="width:300%; z-index:1;">
+				            <!-- 드롭다운 메뉴의 항목들 -->
+				            <li>
+				            	<!-- 지하철역 검색(자동완성) -->
+				            	<h6>직장 검색(지하철역 검색)</h6>
+							    <input type="text" class="form-control" id="station-autocomplete" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							    <div id="suggestion" aria-labelledby="station-autocomplete" style="z-index:2;">
+							      <!-- Autocomplete suggestions will be placed here -->
+							    </div>
+								<hr>
+								
+								<h6>통근방식</h6>
+								<div class="form-check form-check-inline">
+								  <input class="form-check-input" type="radio" name="commuteWay" id="commuteWayRadio1" value="work" disabled>
+								  <label class="form-check-label" for="commuteWayRadio1">도보</label>
+								</div>
+								<div class="form-check form-check-inline">
+								  <input class="form-check-input" type="radio" name="commuteWay" id="commuteWayRadio2" value="subway" checked>
+								  <label class="form-check-label" for="commuteWayRadio2">지하철</label>
+								</div>
+								<div class="form-check form-check-inline">
+								  <input class="form-check-input" type="radio" name="commuteWay" id="commuteWayRadio3" value="car" disabled>
+								  <label class="form-check-label" for="commuteWayRadio3">자차</label>
+								</div>
+								<hr>
+								
+								<h6>통근 시간</h6>
+								<div id="commute-slider" class="mx-2 mb-2"></div>
+								<p>
+								  <label for="commute">통근 시간:</label>
+								  <label id="commute"></label>
+								</p>
+				            </li>
+				        </ul>
+    				</div>
 
-					// 이전 페이지에서 검색어가 들어오면 해당 키워드로 검색
-					if(keyword === '' || keyword == null){
-				    	searchAddressToCoordinate(defaultAddress);
-					} else{
-				    	searchAddressToCoordinate(keyword);
-					}
-				}
-	
-				function makeAddress(item) {
-				    if (!item) {
-				        return;
-				    }
-	
-				    let name = item.name,
-				        region = item.region,
-				        land = item.land,
-				        isRoadAddress = name === 'roadaddr';
-	
-				    let sido = '', sigugun = '', dongmyun = '', ri = '', rest = '';
-	
-				    if (hasArea(region.area1)) {
-				        sido = region.area1.name;
-				    }
-	
-				    if (hasArea(region.area2)) {
-				        sigugun = region.area2.name;
-				    }
-	
-				    if (hasArea(region.area3)) {
-				        dongmyun = region.area3.name;
-				    }
-	
-				    if (hasArea(region.area4)) {
-				        ri = region.area4.name;
-				    }
-	
-				    if (land) {
-				        if (hasData(land.number1)) {
-				            if (hasData(land.type) && land.type === '2') {
-				                rest += '산';
-				            }
-	
-				            rest += land.number1;
-	
-				            if (hasData(land.number2)) {
-				                rest += ('-' + land.number2);
-				            }
-				        }
-	
-				        if (isRoadAddress === true) {
-				            if (checkLastString(dongmyun, '면')) {
-				                ri = land.name;
-				            } else {
-				                dongmyun = land.name;
-				                ri = '';
-				            }
-	
-				            if (hasAddition(land.addition0)) {
-				                rest += ' ' + land.addition0.value;
-				            }
-				        }
-				    }
-	
-				    return [sido, sigugun, dongmyun, ri, rest].join(' ');
-				}
-	
-				function hasArea(area) {
-				    return !!(area && area.name && area.name !== '');
-				}
-	
-				function hasData(data) {
-				    return !!(data && data !== '');
-				}
-	
-				function checkLastString (word, lastString) {
-				    return new RegExp(lastString + '$').test(word);
-				}
-	
-				function hasAddition (addition) {
-				    return !!(addition && addition.value);
-				}
-				
-				
-				// 지오코더 초기화 함수를 호출
-				naver.maps.onJSContentLoaded = initGeocoder;
-	
-			});
-		</script>
+				    <div class="btn-group">
+				        <!-- 집유형 드롭다운 -->
+				        <button type="button" class="btn custom-btn dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">집유형</button>
+				        <ul class="dropdown-menu p-3" style="width:200%;">
+				            <!-- 드롭다운 메뉴의 항목들 -->
+				            <li>
+								<div class="form-check form-check-inline">
+								  <input class="form-check-input" type="checkbox" id="houseTypeOp" value="OP" checked>
+								  <label class="form-check-label" for="houseTypeOp">오피스텔</label>
+								</div>
+                                <div class="form-check form-check-inline">
+								  <input class="form-check-input" type="checkbox" id="houseTypeSh" value="SH" checked>
+								  <label class="form-check-label" for="houseTypeSh">주택</label>
+								</div>
+								<div class="form-check form-check-inline">
+								  <input class="form-check-input" type="checkbox" id="houseTypeOr" value="OR" checked>
+								  <label class="form-check-label" for="houseTypeOr">원룸</label>
+								</div>
+								<hr>
+					            <div class="form-check form-check-inline">
+								  <input class="form-check-input" type="checkbox" id="houseTypeAt" value="AT">
+								  <label class="form-check-label" for="houseTypeAt">아파트</label>
+								</div>
+								<hr>
+								<div>아파트는 다른 유형과 같이 선택할 수 없습니다.</div>
+				            </li>
+				        </ul>
+				    </div>
+
+				    <div class="btn-group">
+				        <!-- 가격 드롭다운 -->
+				        <button type="button" class="btn custom-btn dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">가격</button>
+				        <ul class="dropdown-menu p-3" style="width:400%;">
+				            <!-- 드롭다운 메뉴의 항목들 -->
+				            <li>
+				            	<h6>거래 유형 / 중복 선택: </h6>
+								<div class="form-check form-check-inline">
+								  <input class="form-check-input" type="checkbox" id="offerTypeL" value="L" checked>
+								  <label class="form-check-label" for="offerTypeL">전세</label>
+								</div>
+								<div class="form-check form-check-inline">
+								  <input class="form-check-input" type="checkbox" id="offerTypeM" value="M" checked>
+								  <label class="form-check-label" for="offerTypeM">월세</label>
+								</div>
+                                <div class="form-check form-check-inline">
+								  <input class="form-check-input" type="checkbox" id="offerTypeP" value="P" checked>
+								  <label class="form-check-label" for="offerTypeP">매매</label>
+								</div>
+								<hr>
+								
+								<h6>전세</h6>
+								<div id="l-deposit-slider" class="mx-2 mb-2"></div>
+								<p>
+								  <label for="l-deposit">보증금:</label>
+								  <label id="l-deposit"></label>
+								</p>
+								<hr>
+								
+								<h6>월세</h6>
+								<div id="m-deposit-slider" class="mx-2 mb-2"></div>
+								<p>
+								  <label for="m-deposit">보증금:</label>
+								  <label id="m-deposit"></label>
+								</p>
+								<div id="monthly-fee-slider" class="mx-2 mb-2"></div>
+								<p>
+								  <label for="monthly-fee">매매가:</label>
+								  <label id="monthly-fee"></label>
+								</p>
+								<hr>
+								
+								<h6>매매</h6>
+								<div id="price-slider" class="mx-2 mb-2"></div>
+								<p>
+								  <label for="price">매매가:</label>
+								  <label id="price"></label>
+								</p>
+								<hr>
+				            </li>
+				        </ul>
+				    </div>
+
+				    <div class="btn-group">
+				        <!-- 추가필터 드롭다운 -->
+				        <button type="button" class="btn custom-btn dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">추가필터</button>
+				        <ul class="dropdown-menu">
+				            <!-- 드롭다운 메뉴의 항목들 -->
+				            <li>
+								음식점<br>
+								영화관<br>
+								보안: 경찰<br>
+				            </li>
+				        </ul>
+				    </div>
+				 	
+	            </div> <!-- 드롭다운 메뉴 내용 종료 -->
+	            
+	        </div>
+	    </div>
+	</section>
+	<!-- page content -->
+	<main>
+		<div class="row" >
+			<section class="section" id="section-3" >
+				<div id="map" style="width: 100%; height: 80vh; margin: auto;"></div>
+				<code id="snippet" class="snippet"></code>
+			</section>
+		</div>
 	</main>	
 
 	<!-- footer page include -->
 	<%-- <%@ include file="page_footer.jsp" %> --%>
 	
 	<!-- JAVASCRIPT FILES -->
-	<script src="js/jquery.min.js"></script>
-	<script src="js/bootstrap.bundle.min.js"></script>
+	<!-- jquery -->
+	<!-- <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script> -->
+	<!-- <script src="js/jquery.min.js"></script> -->
+	<script src="js/jquery.js"></script>
+	<!-- <script src="js/bootstrap.bundle.min.js"></script> -->
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 	<script src="js/jquery.sticky.js"></script>
 	<script src="js/click-scroll.js"></script>
 	<script src="js/custom.js"></script>
-	<style>
+	<script src="js/jquery-ui.min.js"></script>
+	<!-- search page에서 사용하는 jquery ui 컴포넌트들을 제어하기 위한 js -->
+	<script src="js/search.js"></script>
+	<!-- 각자 발급받은 Client ID 값 넣기 -->
+	<script type="text/javascript"
+		src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=0xkngoqc6q&submodules=geocoder"></script>
+	<script id="code">
+		/* 코드 부분이였는데 */
+		const markers = [
+	        { position: new naver.maps.LatLng(37.4550628, 127.0695079), message: '내곡동' },
+	        { position: new naver.maps.LatLng(37.4719823, 127.0374623), message: '양재동' },
+	        { position: new naver.maps.LatLng(37.4883869, 127.0167954), message: '서초동' },
+	        { position: new naver.maps.LatLng(37.4794939, 126.9931207), message: '방배동' },
+	        { position: new naver.maps.LatLng(37.5151065, 127.0137779), message: '잠원동' },
+	        { position: new naver.maps.LatLng(37.5039744, 127.0007494), message: '반포동' },
+	        { position: new naver.maps.LatLng(37.4802905, 127.0626272), message: '개포동' },
+	        { position: new naver.maps.LatLng(37.5136787, 127.0317124), message: '논현동' },
+	        { position: new naver.maps.LatLng(37.4991887, 127.0633458), message: '대치동' },
+	        { position: new naver.maps.LatLng(37.4885906, 127.0452757), message: '도곡동' },
+	        { position: new naver.maps.LatLng(37.513975, 127.0561274), message: '삼성동' },
+	        { position: new naver.maps.LatLng(37.4863964, 127.1006971), message: '수서동' },
+	        { position: new naver.maps.LatLng(37.5271478, 127.0334517), message: '압구정동' },
+	        { position: new naver.maps.LatLng(37.5000776, 127.0385419), message: '역삼동' },
+	        { position: new naver.maps.LatLng(37.4880579, 127.0828672), message: '일원동' },
+	        { position: new naver.maps.LatLng(37.5233931, 127.0479736), message: '청담동' },
+	        { position: new naver.maps.LatLng(37.5067945, 127.0830482), message: '잠실동' },
+	        { position: new naver.maps.LatLng(37.5239227, 127.0989719), message: '신천동' },
+	        { position: new naver.maps.LatLng(37.5332133, 127.113992), message: '풍납동' },
+	        { position: new naver.maps.LatLng(37.5156746, 127.1253915), message: '방이동' },
+	        { position: new naver.maps.LatLng(37.5051072, 127.1135469), message: '송파동' },
+	        { position: new naver.maps.LatLng(37.5024352, 127.1026694), message: '석촌동' },
+	        { position: new naver.maps.LatLng(37.5019016, 127.0918885), message: '삼전동' },
+	        { position: new naver.maps.LatLng(37.4956865, 127.1184047), message: '가락동' },
+	        { position: new naver.maps.LatLng(37.5040047, 127.1340203), message: '오금동' },
+	        { position: new naver.maps.LatLng(37.4855846, 127.1225635), message: '문정동' },
+	        { position: new naver.maps.LatLng(37.4768715, 127.1320663), message: '장지동' },
+	        { position: new naver.maps.LatLng(37.4897279, 127.1449912), message: '거여동' },
+	        { position: new naver.maps.LatLng(37.4984934, 127.1527443), message: '마천동' },
+	        { position: new naver.maps.LatLng(37.5675265, 127.1729313), message: '강일동' },
+	        { position: new naver.maps.LatLng(37.5638217, 127.1582312), message: '고덕동' },
+	        { position: new naver.maps.LatLng(37.5578058, 127.1310675), message: '암사동' },
+	        { position: new naver.maps.LatLng(37.5443765, 127.1276202), message: '천호동' },
+	        { position: new naver.maps.LatLng(37.5490445, 127.1508229), message: '명일동' },
+	        { position: new naver.maps.LatLng(37.5396157, 127.1459293), message: '길동' },
+	        { position: new naver.maps.LatLng(37.5304933, 127.128992), message: '성내동' },
+	        { position: new naver.maps.LatLng(37.5282539, 127.1447139), message: '둔촌동' }
+	        // Add more markers as needed
+	    ];
+		
+		const saleLats = ${saleLats};
+		const saleLons = ${saleLons};
+		const saleTitle = '${saleTitle}';
+		let formattedtitle = saleTitle.replace(/\[|\]/g, '');
+		let titleArray = formattedtitle.split(',').map(item => item.trim());
+		const markers1 = [];
+		for (let i = 0; i < saleLats.length; i++) {
+			markers1.push({ position: new naver.maps.LatLng(saleLats[i], saleLons[i]), message: titleArray[i] });
+
+		}
+
+		$(document).ready(function(){
+			
+			// 검색어를 받아오는 부분
+			let keyword = '${keyword}';
+			// console.log("keyword: " + keyword);
+			
+			// 검색한 동의 경계선 정보 받아 오기
+			let local = '${lineLocal}';
+			let formattedLocal = local.replace(/\[|\]/g, '');
+			let localArray = formattedLocal.split(',').map(item => item.trim());
+			let lineLat = ${lineLat};
+			let lineLon = ${lineLon};
+			
+			let polygon;
+			
+			// 기본 주소 설정
+			let defaultAddress = '강남구 역삼동 819-10';
+			
+			// 지도를 표시할 div 요소를 가져옴
+			let mapDiv = document.getElementById('map');
+			
+			// 네이버 지도 객체를 생성하고 설정
+			let map = new naver.maps.Map(mapDiv, {
+			    center: new naver.maps.LatLng(37.3595704, 127.105399),
+			    zoom: 13
+			    //, mapTypeControl: true
+			});
+			
+			 // 지도를 클릭할 때마다 마커 위치를 변경
+			naver.maps.Event.addListener(map, 'click', function(e) {
+			    marker.setPosition(e.coord);
+			    
+			});
+			
+			let bounds = map.getBounds(),
+		    southWest = bounds.getSW(),
+		    northEast = bounds.getNE(),
+		    lngSpan = northEast.lng() - southWest.lng(),
+		    latSpan = northEast.lat() - southWest.lat();
+			 
+		 	const infoWindows = [];
+		    markers.forEach(markerInfo => {
+		        const marker = new naver.maps.Marker({
+		            position: markerInfo.position,
+		            map: map,
+		            icon: {
+		                // 마커 아이콘을 직사각형으로 설정
+						content: "<div style='border: 1px solid #000; background-color: white; padding: 5px; font-size: 12px;'>" + markerInfo.message + "</div>",
+		                size: new naver.maps.Size(30, 30), // 마커의 크기 조절
+		                anchor: new naver.maps.Point(15, 30) // 마커의 기준위치 설정
+		            }
+		        });
+
+		        const infoWindow = new naver.maps.InfoWindow({
+		            content: markerInfo.message
+		        });
+
+		        infoWindows.push(infoWindow);
+
+		        naver.maps.Event.addListener(marker, 'click', function() {
+		            infoWindows.forEach(window => window.close());
+		            infoWindow.open(map, marker);
+		            map.panTo(markerInfo.position);
+
+		            // 클릭한 마커의 위치의 키워드로 설정
+		            keyword = markerInfo.message;
+		            
+		            
+		            if (polygon) {
+		                polygon.setMap(null);
+		            }
+		            
+		            let indices = [];
+		            for (let i = 0; i < localArray.length; i++) {
+		                if (localArray[i] === markerInfo.message) {
+		                    indices.push(i);
+		                }
+		            }
+
+		            if (indices.length > 0) {
+		                // 모든 인덱스에 대응하는 lineLat와 lineLon 추출
+		                let polygonCoords = indices.map(function(index) {
+		                    return new naver.maps.LatLng(lineLat[index], lineLon[index]);
+		                });
+
+		                // 경계선 그리기
+		                polygon = new naver.maps.Polygon({
+		                    map: map,
+		                    paths: polygonCoords,
+		                    strokeColor: '#f00',
+		                    strokeWeight: 2,
+		                    strokeOpacity: 0.7,
+		                    fillColor: '#00f',
+		                    fillOpacity: 0.3
+		                });
+		            } else {
+		                console.log('local 배열에서 해당 키워드를 찾을 수 없습니다.');
+		            }
+		        });
+		    });
+		    
+		    
+		    naver.maps.Event.addListener(map, 'zoom_changed', function() {
+		        const currentZoom = map.getZoom();
+
+		        markers1.forEach(markerInfo => {
+		            const marker = markerInfo.marker;
+
+	                console.log(currentZoom);
+		            // 원하는 조건에 따라 마커 표시 여부 결정
+		            if (currentZoom >= 17 ) {
+		                marker.setMap(map);
+		            } else {
+		            	num=0;
+		                // 최소 줌 레벨 미만에서는 마커 숨김
+		                marker.setMap(null);
+		            }
+		        });
+		    });
+
+		    // 마커 생성 및 이벤트 리스너 설정
+		    markers1.forEach(markerInfo => {
+		        const marker = new naver.maps.Marker({
+		            position: markerInfo.position,
+		            map: null, // 초기에는 지도에 표시하지 않음
+		        });
+
+		        markerInfo.marker = marker; // 마커 정보에 실제 마커 객체 저장
+
+		        const infoWindow = new naver.maps.InfoWindow({
+		            content: markerInfo.message
+		        });
+
+		        infoWindows.push(infoWindow);
+
+		        naver.maps.Event.addListener(marker, 'click', function() {
+		            infoWindows.forEach(window => window.close());
+		            infoWindow.open(map, marker);
+		            map.panTo(markerInfo.position);
+		        });
+		    });
+		    
+		    
+		    function searchCoordinateToAddress(latlng) {
+		    	
+		    	
+		    }
+			
+			
+			
+			// 지도 커서를 손가락 모양으로 설정
+			map.setCursor('pointer');
+			 
+			// 좌표를 주소로 변환하는 함수s
+			function searchCoordinateToAddress(latlng) {
+
+			    infoWindow.close();
+
+			    naver.maps.Service.reverseGeocode({
+			        coords: latlng,
+			        orders: [
+			            naver.maps.Service.OrderType.ADDR,
+			            naver.maps.Service.OrderType.ROAD_ADDR
+			        ].join(',')
+			    }, function(status, response) {
+			        if (status === naver.maps.Service.Status.ERROR) {
+			            return alert('Something Wrong!');
+			        }
+
+			        let items = response.v2.results,
+			            address = '',
+			            htmlAddresses = [];
+
+			        for (let i=0, ii=items.length, item, addrType; i<ii; i++) {
+			            item = items[i];
+			            address = makeAddress(item) || '';
+			            addrType = item.name === 'roadaddr' ? '[도로명 주소]' : '[지번 주소]';
+
+			            htmlAddresses.push((i+1) +'. '+ addrType +' '+ address);
+			        }
+					
+			        /*
+			        infoWindow.setContent([
+			            '<div style="padding:10px;min-width:200px;line-height:150%;">',
+			            '<h4 style="margin-top:5px;">검색 좌표</h4><br />',
+			            htmlAddresses.join('<br />'),
+			            '</div>'
+			        ].join('\n'));
+
+			        infoWindow.open(map, latlng);
+			        */
+			    });
+			}
+
+			// 주소를 좌표로 변환하는 함수
+			function searchAddressToCoordinate(address) {
+			    naver.maps.Service.geocode({
+			        query: address
+			    }, function(status, response) {
+			        if (status === naver.maps.Service.Status.ERROR) {
+			            return alert('Something Wrong!');
+			        }
+
+			        if (response.v2.meta.totalCount === 0) {
+			            // return alert('검색 결과: ' + response.v2.meta.totalCount);
+			            return alert('검색 결과가 없습니다.');
+			        }
+
+			        let htmlAddresses = [],
+			            item = response.v2.addresses[0],
+			            point = new naver.maps.Point(item.x, item.y);
+
+			        if (item.roadAddress) {
+			            htmlAddresses.push('[도로명 주소] ' + item.roadAddress);
+			        }
+
+			        if (item.jibunAddress) {
+			            htmlAddresses.push('[지번 주소] ' + item.jibunAddress);
+			        }
+
+			        if (item.englishAddress) {
+			            htmlAddresses.push('[영문명 주소] ' + item.englishAddress);
+			        }
+
+
+			        map.setCenter(point);
+			        
+			        /*
+			        infoWindow.setContent([
+			            '<div style="padding:10px;min-width:200px;line-height:150%;">',
+			            '<h4 style="margin-top:5px;">검색 주소 : '+ address +'</h4><br />',
+			            htmlAddresses.join('<br />'),
+			            '</div>'
+			        ].join('\n'));
+			        infoWindow.open(map, point);
+			        */
+			    });
+			}
+		
+			// 지오코더 초기화 함수
+			function initGeocoder() {
+				
+				// 지도 클릭 이벤트 리스너 등록
+			    map.addListener('click', function(e) {
+			        searchCoordinateToAddress(e.coord);
+			    });
+
+			    // 검색어 입력창에서 엔터 키 입력 이벤트 리스너 등록
+			    $('#keyword').on('keydown', function(e) {
+			    	let keyCode = e.which;
+
+			        if (keyCode === 13) { // Enter Key
+			            searchAddressToCoordinate($('#keyword').val());
+			        }
+			    });
+
+			 	// 검색 버튼 클릭 이벤트 리스너 등록
+			    $('#searchbtn').on('click', function(e) {
+			    	// alert("searchbtn 클릭");
+			        e.preventDefault();
+
+			        searchAddressToCoordinate($('#keyword').val());
+			    });
+
+				// 이전 페이지에서 검색어가 들어오면 해당 키워드로 검색
+				if(keyword === '' || keyword == null){
+			    	searchAddressToCoordinate(defaultAddress);
+				} else{
+			    	searchAddressToCoordinate(keyword);
+				}
+			}
+
+			function makeAddress(item) {
+			    if (!item) {
+			        return;
+			    }
+
+			    let name = item.name,
+			        region = item.region,
+			        land = item.land,
+			        isRoadAddress = name === 'roadaddr';
+
+			    let sido = '', sigugun = '', dongmyun = '', ri = '', rest = '';
+
+			    if (hasArea(region.area1)) {
+			        sido = region.area1.name;
+			    }
+
+			    if (hasArea(region.area2)) {
+			        sigugun = region.area2.name;
+			    }
+
+			    if (hasArea(region.area3)) {
+			        dongmyun = region.area3.name;
+			    }
+
+			    if (hasArea(region.area4)) {
+			        ri = region.area4.name;
+			    }
+
+			    if (land) {
+			        if (hasData(land.number1)) {
+			            if (hasData(land.type) && land.type === '2') {
+			                rest += '산';
+			            }
+
+			            rest += land.number1;
+
+			            if (hasData(land.number2)) {
+			                rest += ('-' + land.number2);
+			            }
+			        }
+
+			        if (isRoadAddress === true) {
+			            if (checkLastString(dongmyun, '면')) {
+			                ri = land.name;
+			            } else {
+			                dongmyun = land.name;
+			                ri = '';
+			            }
+
+			            if (hasAddition(land.addition0)) {
+			                rest += ' ' + land.addition0.value;
+			            }
+			        }
+			    }
+
+			    return [sido, sigugun, dongmyun, ri, rest].join(' ');
+			}
+
+			function hasArea(area) {
+			    return !!(area && area.name && area.name !== '');
+			}
+
+			function hasData(data) {
+			    return !!(data && data !== '');
+			}
+
+			function checkLastString (word, lastString) {
+			    return new RegExp(lastString + '$').test(word);
+			}
+
+			function hasAddition (addition) {
+			    return !!(addition && addition.value);
+			}
+			
+			
+			// 지오코더 초기화 함수를 호출
+			naver.maps.onJSContentLoaded = initGeocoder;
+
+		});
+	</script>
+	<!-- <style>
 		@media (max-width: 767px) {
 			.hero-section {
 				height: 200px;
 			}
 		}
-	</style>
+	</style> -->
 </body>
 </html> 
