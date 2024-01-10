@@ -1,38 +1,5 @@
-﻿<%@page import="java.io.Console"%>
-<%@page import="ch.qos.logback.core.recovery.ResilientSyslogOutputStream"%>
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="com.dockbang.model.BoardTO" %>
-<%@ page import="java.util.List" %>
-<%@ page import="java.util.Optional" %>
-
-<%
-	List<BoardTO> boardView = (List) request.getAttribute("boardView");
-    String category = (String) request.getAttribute("category");
-    Integer boardseq = (Integer) request.getAttribute("boardseq");
-  
-
-    
- 
-    String subject = "";
-    String writer = "";
-    String mail = "";
-    String wip = "";
-    String wdate = "";
-    String hit = "";
-    String content = "";
-
-   
-  //  if (boardList != null && seq >= 0 && seq < boardList.size()) {
-        BoardTO to = boardView.get(0);
-        subject = to.getSubject();
-        writer = to.getWriter();
-        mail = to.getMail();
-        wip = to.getWip();
-        wdate = to.getWdate();
-        hit = to.getHit();
-        content = to.getContent();
-  //  }
-%>
+﻿<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -50,7 +17,102 @@
 	<link href="css/bootstrap-icons.css" rel="stylesheet">
 	<link href="css/templatemo-topic-listing.css" rel="stylesheet">   
 
+<!--
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+<script type="text/javascript">
+	/*
+	window.onload = function() {
+		document.getElementById('submit2').onclick = function() {
+			if(document.cfrm.cwriter.value.trim() == "") {
+				alert('이름을 입력하셔야 합니다.');
+				return false;				
+			}
+			if(document.cfrm.cpassword.value.trim() == "") {
+				alert('비밀번호를 입력하셔야 합니다.');
+				return false;				
+			}
+			if(document.cfrm.ccontent.value.trim() == "") {
+				alert('내용을 입력하셔야 합니다.');
+				return false;				
+			}
+			document.cfrm.submit();
+		};
+	};
+	*/
+	$( document ).ready( function() {
+		$( '#btn1' ).on( 'click', function() {
+			alert( 'button click' );
+			// 검사
+			writeServer();
+		});
+		
+		readServer();
+	});
+	
+	const readServer = function() {
+		$.ajax({
+			url: 'cmt_list.do',
+			type: 'get',
+			data: {
+				seq: seq
+			},
+			dataType: 'json',
+			success: function(json) {
+				
+				let html = '';
+				$.each( json.data, function(index, value) {
+					html += '<tr>';
+					html += '	<td class="coment_re" width="20%">';
+					html += '		<strong>' + value.writer + '</strong> (' + value.wdate + ')';
+					html += '		<div class="coment_re_txt">' + value.content + '</div>';
+					html += '	</td>';
+					html += '</tr>';					
+				});
 
+				$( '#result' ).html( html );
+				
+			},
+			error: function() {
+				
+			}
+		});
+	};
+
+	const writeServer = function() {
+		$.ajax({
+			url: 'cmt_write_ok.do',
+			type: 'get',
+			data: {
+				seq: $( '#seq' ).val(),
+				writer: $( '#cwriter' ).val(),
+				password: $( '#cpassword' ).val(),
+				content: $( '#ccontent' ).val()
+			},
+			dataType: 'json',
+			success: function(json) {
+				
+				if(json.flag == 0 ) {
+					alert( '입력 성공' );
+					readServer();
+				} else {
+					alert( '입력 실패' );
+				}				
+			},
+			error: function() {
+				
+			}
+		});
+	};
+
+	
+	document.getElementById('image1').onclick = function() {
+		if(document.dfrm.password.value.trim() == "") {
+			alert('비밀번호를 입력하셔야 합니다.');
+			return false;				
+		}
+		document.dfrm.submit();
+	};
+</script> -->
 </head>
 
 <body>
@@ -86,12 +148,12 @@
 					<div class="custom-block bg-white shadow-lg">
 						<div class="col-lg-12 col-12 text-start">
 							<div class="">
-								<h3>[제목] <%=to.getSubject() %> </h3>
+								<h3>[독방] 나만의 집찾기를 소개할게요</h3>
 							</div>
-						
+							
 							<div class="mt-3">
-								<h6 class="m-0"><b><%=to.getWriter() %></b>( 192.168.0.1 | <%=to.getMail() %> | 127.000 37.000 )</h6>
-								<div class="m-0"><%=to.getWdate() %> | <%=to.getHit() %></div>
+								<h6 class="m-0"><b>총강든도</b>( 192.168.0.1 | kong@ver.lae | 127.000 37.000 )</h6>
+								<div class="m-0">2019.12.05. 10:56 | 89,994 읽음</div>
 							</div>
 							
 							<hr>
@@ -100,11 +162,10 @@
 								<img alt="thief with gun" src="../../../images/colleagues-working-cozy-office-medium-shot.jpg">
 			        		</div>
 							<div class="col-lg-11 col-12 text-start">
-								<div><%=to.getContent() %>
-								<!-- <div>안녕하세요 총강든도에요</div>
+								<div>안녕하세요 총강든도에요</div>
 								<div>오늘은 독방의 나만의 집찾기 서비스에 대해서 알아볼 거에요</div>
 								<div>나만의 집 찾기 서비스란 조건에 따른 지역과 집을 추천해주는 서비스에요</div>
-								<div>잘 이용해서 좋은집을 찾아보자구요</div> -->
+								<div>잘 이용해서 좋은집을 찾아보자구요</div>
 								<!-- <p>안녕하세요 총강이에요</p>
 								<p>오늘은 독방의 나만의 집찾기 서비스에 대해서 알아볼 거에요</p>
 								<p>나만의 집 찾기 서비스란 조건에 따른 지역과 집을 추천해주는 서비스에요</p>
@@ -115,10 +176,10 @@
 			        		<hr>
 			        		
 			        		<div class="d-flex justify-content-between mt-3">
-								<a href="page_boardList.do?category=<%=category %>" class="btn custom-btn custom-border-btn col-3">목록</a>
+								<a href="page_boardList.do" class="btn custom-btn custom-border-btn col-3">목록</a>
 		                    	<div class="btn-group col-lg-4 col-5" role="group" >
-								  	<a href="page_boardModify.do?category=<%=category %>&boardseq=<%=boardseq %>" class="btn custom-btn custom-border-btn">수정</a>
-								 	<a href="page_boardDelete.do?category=<%=category %>&boardseq=<%=boardseq %>" class="btn custom-btn custom-border-btn">삭제</a>
+								  	<a href="page_boardModify.do" class="btn custom-btn custom-border-btn">수정</a>
+								  	<a href="#" class="btn custom-btn custom-border-btn">삭제</a>
 			                        <a href="page_boardWrite.do" class="btn custom-btn">쓰기</a>
 		                    	</div>
 							</div>

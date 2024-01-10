@@ -65,8 +65,16 @@ public interface SqlMapperInter {
 	MemberTO selectUserInfo(@Param("email") String email);
 	
 	// 게시판 리스트 출력
-	@Select("select boardseq, subject, writer, wdate from board where category = #{category}")
+	@Select("select boardseq, subject, writer, wdate from board where category = #{category} order by boardseq desc")
 	List<BoardTO> selectBoard(@Param("category") String category);
+	
+	// 게시판 View 출력
+	@Select("select subject, writer, mail, wip, wdate, hit, content from board where boardseq =#{boardseq}")
+	List<BoardTO> selectView(@Param("boardseq") Integer boardseq);
+
+	// hit hit+1
+	@Update("update board set hit=hit+1 where boardseq =#{boardseq}")
+	void updateHit(@Param("boardseq") Integer boardseq);
 	
 	// 지도 경계선 표시 
 	@Select("select lon from navermap")
@@ -92,7 +100,19 @@ public interface SqlMapperInter {
 			@Param("email") String email,
 			@Param("category") String category);
 	
-	
+	// 게시판 수정
+	@Update("update board set subject = #{subject}, content = #{content}, filename = #{filename}, filesize = #{filesize} where category = #{category} AND boardseq = #{boardseq}")
+	int updateBoard(@Param("subject") String subject,
+	        @Param("content") String content,
+	        @Param("filename") String filename,
+	        @Param("filesize") long filesize,
+	        @Param("category") String category,
+	        @Param("boardseq") int boardseq);
+	// 게시글 삭제
+	@Delete("delete from board where category = #{category} AND boardseq = #{boardseq}")
+	int deleteBoard(@Param("category") String category,
+			@Param("boardseq") int boardseq);
+
 	// 역 정보(단일) 가져오기
 	@Select("select name, subway_line, latitude, longitude from subway_station group by name having name = #{name};")
 	SubwayStationTO getStation(@Param("name") String name);

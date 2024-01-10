@@ -1,8 +1,47 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@page import="com.dockbang.model.BoardTO"%>
+<%@page import="java.util.List"%>
+
 <!DOCTYPE html>
+<%
+
+String category = (String)request.getAttribute("category");
+String name2 = (String) session.getAttribute("nickname");
+String email2 = (String) session.getAttribute("email");
+
+
+// 로그인 상태 확인
+boolean isLoggedIn = name2 != null;
+%>
+
 <html>
 <head>
+
+   <script>
+    // 페이지 로드 시 실행
+    window.onload = function() {
+        // 로그인 상태 확인
+        var isLoggedIn = <%= isLoggedIn %>;
+
+        if(!isLoggedIn) {
+        	history.back();
+        }
+        // nickname이 null일 때 경고창 표시
+        if (!isLoggedIn) {
+        	 history.back();
+        	
+            var confirmMsg = "로그인 후 사용해주세요.";
+            if (confirm(confirmMsg)) {
+                // 경고 창 확인 시 페이지 이동
+                history.back(); // 이전 페이지로 이동
+            } else {
+                // 경고 창 취소 시 다른 처리 가능
+            }
+        }
+    }
+</script>
+    
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta name="description" content="">
@@ -52,11 +91,11 @@
 					<div class="custom-block bg-white shadow-lg">
 						<div class="col-lg-12 col-12">
 						<div class="mt-0 text-start">
-								<h6 class="m-0"><b>총강든도</b>( kong@ver.lae )</h6>
+								<h6 class="m-0"><b><%=name2 %></b><%=email2 %></h6>
 								<!-- <div class="m-0">2019.12.05. 10:56 | 89,994 읽음</div> -->
 								<hr>
 							</div>
-				            <form action="#" method="post" class="custom-form contact-form" role="form">
+				            <form action="act_boardWrite.do?category=${category}" method="post" class="custom-form contact-form" role="form" enctype="multipart/form-data">
 				                <div class="row">
 									<!-- 작성자와 이메일 체크 -->
 				                    <!-- <div class="col-lg-6 col-md-6 col-12">
@@ -91,7 +130,7 @@
 				                            <label for="floatingTextarea">내용을 입력해주세요</label>
 				                        </div>
 				                    </div>
-				                    
+				                    <!-- 파일도 필수 입력 항목으로 저장해주세요 -->
 				                    <div class="col-lg-12 col-12">
 										<input type="file" name="upload" id="upload" class="form-control form-control-sm ">
 				                    </div>
@@ -126,7 +165,7 @@
 				                    <!-- </div> -->
 				                    <div class="d-flex justify-content-between mt-3">
 				                    	<div class="align-items-center col-3">
-					                    	<a href="page_boardList.do" class="btn custom-btn custom-border-btn col-12">목록</a>
+					                    	<a href="page_boardList.do?category=${category}" class="btn custom-btn custom-border-btn col-12">목록</a>
 				                    	</div>
 				                    	<div class="col-3">
 					                        <button type="submit" class="form-control">쓰기</button>

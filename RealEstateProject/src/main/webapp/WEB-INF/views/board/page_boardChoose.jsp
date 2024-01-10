@@ -1,5 +1,22 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@page import="com.dockbang.model.BoardTO"%>
+<%@page import="java.text.SimpleDateFormat"%>
+<%@page import="java.util.List"%>
+
+<%
+/*
+String category = (String)request.getAttribute("category");
+List<BoardTO> boardChoose = (List)request.getAttribute("boardChoose");
+String title = "";
+if(category.equals("news")){
+    title = "뉴스게시판";
+} else if(category.equals("notice")){
+    title = "공지게시판";
+} else if(category.equals("free")){
+    title = "자유게시판";
+}*/
+   %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -62,7 +79,7 @@
 		
 		                                <p class="mb-0">독방 운영 관련 내용들을 제시하는 게시판</p>
 		
-		                                <a href="page_boardList.do" class="btn custom-btn mt-3 mt-lg-4">Learn More</a>
+		                                <a href="page_boardList.do?category=notice" class="btn custom-btn mt-3 mt-lg-4">Learn More</a>
 		                            </div>
 		
 		                            <span class="badge bg-design rounded-pill ms-auto">14</span>
@@ -80,7 +97,7 @@
 		
 		                                <p class="mb-0">당신을 위해 다양한 부동산 정보들을 모아놓았어요 머시기 머시기 머시기 </p>
 		
-		                                <a href="page_boardList.do" class="btn custom-btn mt-3 mt-lg-4">Learn More</a>
+		                                <a href="page_boardList.do?category=news" class="btn custom-btn mt-3 mt-lg-4">Learn More</a>
 		                            </div>
 		
 		                            <span class="badge bg-advertising rounded-pill ms-auto">30</span>
@@ -98,7 +115,7 @@
 		
 		                                <p class="mb-0">자유로운 주제를 가지고 사용할 수 있는 게시판</p>
 		
-		                                <a href="page_boardList.do" class="btn custom-btn mt-3 mt-lg-4">Learn More</a>
+		                                <a href="page_boardList.do?category=free" class="btn custom-btn mt-3 mt-lg-4">Learn More</a>
 		                            </div>
 		
 		                            <span class="badge bg-music rounded-pill ms-auto">20</span>
