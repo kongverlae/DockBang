@@ -15,4 +15,7 @@ public class FoodTO {
 	private String business_type;
 	private double lon;
 	private double lat;
+	
+	// 특정 지점과의 거리 반환값을 받기 위함
+	private double distance;
 }

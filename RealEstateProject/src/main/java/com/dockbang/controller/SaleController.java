@@ -155,8 +155,14 @@ public class SaleController {
 		// 매물 상세정보
 		SaleTO saleTO = mapper.getSale(sale_seq);
 
+		// 매물 주변 편의시설 정보 - 편의점
+		FoodTO convTO = mapper.getFoodNearPoint(saleTO.getLon(), saleTO.getLat(), "편의점");
+		
 		// 매물 주변 편의시설 정보 - 음식점
-		FoodTO foodTO = mapper.getFoodNearPoint(saleTO.getLon(), saleTO.getLat());
+		FoodTO foodTO = mapper.getFoodNearPoint(saleTO.getLon(), saleTO.getLat(), "기타 휴게음식점");
+		
+		// 매물 주변 편의시설 정보 - 카페
+		FoodTO cafeTO = mapper.getFoodNearPoint(saleTO.getLon(), saleTO.getLat(), "커피숍");
 
 		// 매물 주변 편의시설 정보 - 영화관
 		MovieTO movieTO = mapper.getMovieNearPoint(saleTO.getLon(), saleTO.getLat());
@@ -176,7 +182,9 @@ public class SaleController {
 		modelAndView.addObject("saleTO", saleTO);
 		
 		// 매물 주변 편의시설 상세정보
+		modelAndView.addObject("convTO", convTO);
 		modelAndView.addObject("foodTO", foodTO);
+		modelAndView.addObject("cafeTO", cafeTO);
 		modelAndView.addObject("movieTO", movieTO);
 		modelAndView.addObject("policeTO", policeTO);
 

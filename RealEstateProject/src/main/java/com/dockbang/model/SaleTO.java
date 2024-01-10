@@ -32,7 +32,7 @@ public class SaleTO {
 	    private String main_street;
 	    private String parking_ok;
 	    private String pet_ok;
-	    private String bad;
+	    private String bed;
 	    private String desk;
 	    private String closet;
 	    private String built_in_closet;
@@ -68,5 +68,6 @@ public class SaleTO {
 	    private String water;
 	    private String internet;
 	    private String tv_license;
+	    private String new_built;
 	
 }
