@@ -8,10 +8,13 @@ import java.util.Map;
 public class DijkstraNode implements Node{
     String name;
     DijkstraNode parent;
-//    String line;
+    
     // 환승 시간체크를 위해 리스트로 구현
+    // String line;
     List<String> lines;
-    Map<DijkstraNode, Integer> neighbors; // 이웃 노드와 가중치를 저장하는 맵
+    
+    // 이웃 노드와 가중치를 저장하는 맵
+    Map<DijkstraNode, Integer> neighbors; 
 
     public DijkstraNode() {
     	this.neighbors = new HashMap<>();

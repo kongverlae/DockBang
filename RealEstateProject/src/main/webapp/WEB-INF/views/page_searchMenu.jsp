@@ -1,5 +1,36 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%
+	/* how to get java String from javascript or html text ?? 
+		//출발역이 주어지면 - 역 이동시간 기반 검색이면
+		if(startStation != null && !startStation.equals("")) {
+			// 전체 역 리스트
+			List<SubwayStationTO> stations = mapper.getStations();
+			// 출발점 기준 5분이내 도달가능한 역 리스트
+			List<SubwayStationTO> stationsNearStart = new DijkstraAlgo().getStationsNearStart(stations, startStation, 5);
+			
+			// Map<역이름, List<매물>> - 페이지로 반환할 결과
+			Map<String, List<SaleTO>> salesNearStationMap = new HashMap<>();
+			
+			// 역 하나하나 1km이내 매물리스트 찾아오기
+			for (SubwayStationTO stationTO : stationsNearStart) {
+				String stationName = stationTO.getName();
+				// 이름으로 지하철 역 정보 get
+				stationTO = mapper.getStation(stationName);
+//			System.out.println("stationTO: " + stationTO.getName());
+				
+				// 공간DB로 역 위치 기준 1km 이내 매물리스트
+				List<SaleTO> salesNearStation = sdao.getSaleNearStation(stationTO.getLongitude(), stationTO.getLatitude());
+				salesNearStationMap.put(stationName, salesNearStation);
+			}
+			
+			// 출발점 기준 5분이내 도달가능한 역 위치 기준 1km 이내 매물리스트
+			
+//			System.out.println(salesNearStationMap.get("서초").get(0).getTitle());
+		} */
+%>
 <!-- 지역 검색 창 + 매물 상세 검색 -->
-<section class="site-header d-flex flex-column justify-content-center align-items-center pt-5.5 pb-3" style="padding-top: 100px;">
+<section class="site-header d-flex flex-column justify-content-center align-items-center pt-5.5 pb-3" style="height: 20vh; padding-top: 100px;">
 	<div class="container">
         <div class="row align-items-center">
         	
