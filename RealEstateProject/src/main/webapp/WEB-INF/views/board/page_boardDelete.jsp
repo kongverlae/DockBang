@@ -2,12 +2,36 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@page import="com.dockbang.model.BoardTO"%>
+<%@ page import="com.dockbang.model.BoardTO" %>
 <%@page import="java.util.List"%>
 <%
+	List<BoardTO> boardView = (List) request.getAttribute("boardView");
+    String category = (String) request.getAttribute("category");
+    Integer boardseq = (Integer) request.getAttribute("boardseq");
+    String name3 = (String) session.getAttribute("nickname");
+    String password3 = (String) session.getAttribute("password");
 
-String category = (String)request.getAttribute("category");
-String name3 = (String) session.getAttribute("nickname");
+    
+ 
+    String subject = "";
+    String writer = "";
+    String mail = "";
+    String wip = "";
+    String wdate = "";
+    String hit = "";
+    String content = "";
 
+   
+  //  if (boardList != null && seq >= 0 && seq < boardList.size()) {
+        BoardTO to = boardView.get(0);
+        subject = to.getSubject();
+        writer = to.getWriter();
+        mail = to.getMail();
+        wip = to.getWip();
+        wdate = to.getWdate();
+        hit = to.getHit();
+        content = to.getContent();
+  //  }
 %>
 
 <!DOCTYPE html>
@@ -57,7 +81,7 @@ String name3 = (String) session.getAttribute("nickname");
 <!-- 		</p> -->
 <!-- 	</div>  -->
 
-	<form action="./delete_ok.do" method="post" name="dfrm" style="margin-top:130px;">
+	<form action="./act_boardDelete.do?category=<%=category %>&boardseq=<%=boardseq %>" method="post" name="dfrm" style="margin-top:130px;">
 	<input type="hidden" name="seq" value="=seq %" />
 		<div class="contents_sub">
 		<!--게시판-->
@@ -69,7 +93,7 @@ String name3 = (String) session.getAttribute("nickname");
 				</tr>
 				<tr>
 					<th>제목</th>
-					<td colspan="3"><input type="text" name="subject" value="" class="board_view_input" /></td>
+					<td colspan="3"><input type="text" name="subject" value="<%=subject %>" class="board_view_input" /></td>
 				</tr>
 				<tr>
 					<th>비밀번호</th>
@@ -84,7 +108,7 @@ String name3 = (String) session.getAttribute("nickname");
 					<input type="button" value="보기" class="btn_list btn_txt02" style="cursor: pointer;" onclick="location.href='page_boardView.do?category=${category}'" />
 				</div>
 				<div class="align_right">			
-					<input type="button" value="삭제" id="dbtn" class="btn_write btn_txt01" style="cursor: pointer;" />					
+					<input type="button" value="삭제" id="dbtn" class="btn_write btn_txt01" style="cursor: pointer;"  />					
 				</div>	
 			</div>	
 			<!--//게시판-->

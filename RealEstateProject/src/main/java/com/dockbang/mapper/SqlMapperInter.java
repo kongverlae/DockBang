@@ -99,7 +99,18 @@ public interface SqlMapperInter {
 			@Param("email") String email,
 			@Param("category") String category);
 	
-	
+	// 게시판 수정
+	@Update("update board set subject = #{subject}, content = #{content}, filename = #{filename}, filesize = #{filesize} where category = #{category} AND boardseq = #{boardseq}")
+	int updateBoard(@Param("subject") String subject,
+	        @Param("content") String content,
+	        @Param("filename") String filename,
+	        @Param("filesize") long filesize,
+	        @Param("category") String category,
+	        @Param("boardseq") int boardseq);
+	// 게시글 삭제
+	@Delete("delete from board where category = #{category} AND boardseq = #{boardseq}")
+	int deleteBoard(@Param("category") String category,
+			@Param("boardseq") int boardseq);
 	// 역 정보 가져오기
 	@Select("select name, subway_line, latitude, longitude from subway_station;")
 	List<SubwayStationTO> getStations();

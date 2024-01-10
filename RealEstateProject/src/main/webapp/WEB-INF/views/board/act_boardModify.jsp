@@ -6,19 +6,23 @@
 <%
 
 	String category = (String)request.getAttribute("category");
+	String subject = (String)request.getAttribute("subject");
+	String content = (String)request.getAttribute("content");
 	Integer boardseq = (Integer) request.getAttribute("boardseq");
+	
 
-	int flag = (Integer)request.getAttribute( "flag" );
-	out.println( "<script type='text/javascript'>" );
-	if(flag == 0) {
-		out.println( "alert('글수정 성공');" );
-		out.println( "location.href='./view.do?seq=" + boardseq + "';" );
-	} else if(flag == 1) {
-		out.println( "alert('비밀번호 오류');" );
-		out.println( "history.back();" );
-	} else {
-		out.println( "alert('글수정 에러');" );
-		out.println( "history.back();" );
+	int flag = (Integer)request.getAttribute("flag");
+	
+	out.println("<script type='text/javascript'>");	
+	if(flag == 1){
+		// 정상
+		out.println("alert('수정 완료');");
+		out.println("location.href = 'page_boardList.do?category=" + category + "'");
+	} else if(flag == 0){
+		// 에러
+		out.println("alert('수정 실패');");
+		out.println("history.back();");
 	}
-	out.println( "</script>" );
+	out.println("</script>");
+	
 %>

@@ -121,6 +121,8 @@
 				                        </div>
 				                    </div>
 				                    
+				               
+				                    
 				                    <div class="col-lg-12 col-12">
 										<input type="file" name="upload" id="upload" class="form-control form-control-sm ">
 				                    </div>
@@ -130,7 +132,7 @@
 										  	<a href="page_boardView.do" class="btn custom-btn custom-border-btn">보기</a>
 				                    	</div>
 				                    	
-										<a href="page_boardList.do" class="btn custom-btn col-3">수정</a>
+										<a href="act_boardModify.do?category=<%=category %>&boardseq=<%=boardseq %> &subject=<%=subject %> &content=<%=content %>" class="btn custom-btn col-3">수정</a>
 									</div>
 				                </div>
 				            </form>

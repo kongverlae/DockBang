@@ -135,6 +135,70 @@ public class BoardController {
 		return modelAndView;
 	}
 	
+	@RequestMapping("/act_boardModify.do")
+	public ModelAndView act_boardModify(
+	    @RequestParam(value = "upload", required = false) MultipartFile upload,
+	    HttpServletRequest request,
+	    @RequestParam("subject") String subject,
+	    @RequestParam("content") String content,
+	    @RequestParam("category") String category,
+	    @RequestParam("boardseq") int boardseq) {
+
+	    int flag = 0;
+	    String filename = "";
+	    long filesize = 0; // filesize 변수를 블록 외부에서 선언
+
+	    try {
+	        // 파일이 업로드되었는지 확인
+	        if (upload != null && !upload.isEmpty()) {
+	            filename = upload.getOriginalFilename();
+	            filesize = upload.getSize();
+	            // 파일 저장 경로
+	            String uploadPath = "C:\\project_dockbang\\DockBang\\RealEstateProject\\src\\main\\webapp\\images\\file";
+	            upload.transferTo(new File(uploadPath, filename));
+	        }
+
+	        // 게시글 수정
+	        flag = mapper.updateBoard(subject, content, filename, filesize, category, boardseq);
+	    } catch (IllegalStateException | IOException e) {
+	        // 파일 업로드 또는 게시글 수정 중 예외 처리
+	        e.printStackTrace();
+	        // 예외에 대한 적절한 응답을 클라이언트에게 전달하거나, 로깅하여 나중에 디버깅에 사용
+	    }
+
+	    // ModelAndView 설정
+	    ModelAndView modelAndView = new ModelAndView();
+	    modelAndView.setViewName("/board/act_boardModify");
+	    modelAndView.addObject("category", category);
+	    modelAndView.addObject("boardseq", boardseq);
+	    modelAndView.addObject("flag", flag);
+
+	    return modelAndView;
+	}
+	
+	@RequestMapping("/act_boardDelete.do")
+	public ModelAndView act_boardDelete(HttpServletRequest request,
+	        @RequestParam("password") String password,
+	        @RequestParam("category") String category,
+	        @RequestParam("boardseq") int boardseq) {
+
+	    
+	    int flag = 0;
+	    // 세션에서 비밀번호 가져오기
+	    String sessionPassword = (String) request.getSession().getAttribute("password");
+
+	    if (password.equals(sessionPassword)) {
+	
+	       flag = mapper.deleteBoard(category, boardseq);
+	    } 
+	    ModelAndView modelAndView = new ModelAndView();
+	    modelAndView.addObject("category", category);
+	    modelAndView.addObject("boardseq", boardseq);
+	    
+	    
+	    return modelAndView;
+	}
+	
 	@RequestMapping("/page_boardView.do")
 	ModelAndView page_boardView(HttpServletRequest request, @RequestParam("boardseq") Integer boardseq, @RequestParam("category") String category) {
 	    
@@ -199,15 +263,19 @@ public class BoardController {
 	 * // view 페이지로 반환 return modelAndView; }
 	 */	
 	@RequestMapping("/page_boardDelete.do")
-	ModelAndView page_boardDelete(@RequestParam("category") String category) {
+	ModelAndView page_boardDelete(HttpServletRequest request, @RequestParam("boardseq") Integer boardseq, @RequestParam("category") String category) {
 
 		// view(.jsp) 설정
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.setViewName("/board/page_boardDelete");
+		List<BoardTO> boardView = mapper.selectView(boardseq);
 		// 데이터 전송
 		// modelAndView.addObject("data_name", data);
-		modelAndView.addObject("category", category);
-
+		
+		modelAndView.addObject("boardseq",boardseq);
+		modelAndView.addObject("category",category);
+		
+		modelAndView.addObject("boardView", boardView);
 		// view 페이지로 반환
 		return modelAndView;
 	}
