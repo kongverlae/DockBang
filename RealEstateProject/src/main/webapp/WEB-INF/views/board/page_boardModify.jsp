@@ -88,7 +88,8 @@
 								<!-- <div class="m-0">2019.12.05. 10:56 | 89,994 읽음</div> -->
 								<hr>
 							</div>
-				            <form action="#" method="post" class="custom-form contact-form" role="form">
+							
+				            <form action="act_boardWrite.do?category=${category}&boardseq=${boardseq}" method="post" class="custom-form contact-form" role="form" enctype="multipart/form-data">
 				                <div class="row">
 				                	<!-- 작성자와 이메일 부분 -->
 				                    <!-- <div class="col-lg-6 col-md-6 col-12">
@@ -110,17 +111,24 @@
 				
 				                    <div class="col-lg-12 col-12">
 				                        <div class="form-floating">
-				                           <input type="text" name="subject" id="name" class="form-control" placeholder="Name" required="" value="<%= subject %>">
-				                            
+				                           <input type="text" name="subject" id="subject" class="form-control" placeholder="Name" required="" value="<%= subject %>">
+					
 				                            <label for="floatingInput">글제목</label>
 				                        </div>
 				
 				                        <div class="form-floating">
-				                            <textarea class="form-control" id="content" name="content" placeholder="Tell me about the project"><%=content %></textarea>
+				                            <textarea class="form-control" id="content" name="content" placeholder=""><%=content %></textarea>
 				                            <label for="floatingTextarea">내용을 입력해주세요</label>
 				                        </div>
 				                    </div>
-				                    
+				                   <%
+    String subject2 = "123456";
+    String content2 = (String)request.getParameter("content2");
+				                            		
+	System.out.println("subject2: " + subject2);
+	System.out.println("content2: " + content2);
+				                            		
+%>
 				               
 				                    
 				                    <div class="col-lg-12 col-12">
@@ -132,10 +140,11 @@
 										  	<a href="page_boardView.do" class="btn custom-btn custom-border-btn">보기</a>
 				                    	</div>
 				                    	
-										<a href="act_boardModify.do?category=<%=category %>&boardseq=<%=boardseq %> &subject=<%=subject %> &content=<%=content %>" class="btn custom-btn col-3">수정</a>
+										<button type="submit" class="btn custom-btn col-3">수정</button>
 									</div>
 				                </div>
 				            </form>
+				            
 			        	</div>
 					</div>	            
 	            </div>

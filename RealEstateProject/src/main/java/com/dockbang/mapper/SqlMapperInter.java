@@ -57,8 +57,12 @@ public interface SqlMapperInter {
 	int selectUser(@Param("email") String email, @Param("password") String password);
 	
 	// 일반 로그인 유저 이름 갖고 오기
-	@Select("select name from user where email=#{email}")
+	@Select("select name,password from user where email=#{email}")
 	String selectUserName(@Param("email") String email);
+	
+	// 일반 로그인 유저 비밀번호 갖고 오기
+		@Select("select password from user where email=#{email}")
+		String selectUserPassword(@Param("email") String email);
 
 	// 로그인 유저 소셜 유무, 이메일, 이름 가져오기
 	@Select("SELECT social, email, name FROM user WHERE email=#{email}")

@@ -59,6 +59,7 @@ public class MemberController {
         	HttpSession session = request.getSession();
         	session.setAttribute("email",userInfo.get("email").toString());
         	session.setAttribute("nickname",userInfo.get("nickname").toString());
+        	session.setAttribute("password",userInfo.get("password").toString());
         }
         
         // view(.jsp) 설정
@@ -105,6 +106,9 @@ public class MemberController {
 	    	session.setAttribute("email",email);
 	    	String name = mapper.selectUserName(email);
 	    	session.setAttribute("nickname",name);
+	    	session.setAttribute("password",password);
+	    	
+	    	System.out.println(password);
 		}
 		
 		// 데이터 전송

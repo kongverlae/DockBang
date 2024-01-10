@@ -1,4 +1,5 @@
 ﻿
+<%@page import="ch.qos.logback.core.recovery.ResilientSyslogOutputStream"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@page import="com.dockbang.model.BoardTO"%>
@@ -9,9 +10,10 @@
     String category = (String) request.getAttribute("category");
     Integer boardseq = (Integer) request.getAttribute("boardseq");
     String name3 = (String) session.getAttribute("nickname");
-    String password3 = (String) session.getAttribute("password");
+    String password = (String) session.getAttribute("password");
+    String email = (String) session.getAttribute("email");
 
-    
+
  
     String subject = "";
     String writer = "";
@@ -32,6 +34,18 @@
         hit = to.getHit();
         content = to.getContent();
   //  }
+  
+        String script = "";
+        
+        if (!writer.equals(name3)) {
+            // writer와 name3이 다를 때 경고창을 띄우고 이전 페이지로 이동
+            script = "alert('작성자와 사용자가 다릅니다. 이전 페이지로 이동합니다.');";
+            script += "history.back();";
+        }
+
+        // script 출력
+        out.println("<script>" + script + "</script>");
+    
 %>
 
 <!DOCTYPE html>
@@ -81,7 +95,9 @@
 <!-- 		</p> -->
 <!-- 	</div>  -->
 
-	<form action="./act_boardDelete.do?category=<%=category %>&boardseq=<%=boardseq %>" method="post" name="dfrm" style="margin-top:130px;">
+	<form action="/act_boardDelete.do?category=<%=category %>&boardseq=<%=boardseq %>" method="post" name="dfrm" style="margin-top:130px;">
+
+
 	<input type="hidden" name="seq" value="=seq %" />
 		<div class="contents_sub">
 		<!--게시판-->
@@ -108,7 +124,7 @@
 					<input type="button" value="보기" class="btn_list btn_txt02" style="cursor: pointer;" onclick="location.href='page_boardView.do?category=${category}'" />
 				</div>
 				<div class="align_right">			
-					<input type="button" value="삭제" id="dbtn" class="btn_write btn_txt01" style="cursor: pointer;"  />					
+					<input type="button" value="삭제" id="dbtn" class="btn_write btn_txt01" style="cursor: pointer;" />					
 				</div>	
 			</div>	
 			<!--//게시판-->
