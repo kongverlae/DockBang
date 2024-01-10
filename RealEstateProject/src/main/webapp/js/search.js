@@ -236,7 +236,64 @@
 	
 	});
 	
+	
+	
 	console.log(filterKeywords);
+	
+	// 오피스텔 체크박스 이벤트
+    $("#houseTypeOp").change(function(){
+        if($(this).is(":checked")){
+            // 체크되었을 때의 동작
+            console.log("오피스텔이 선택되었습니다.");
+			$("#houseTypeAt").prop("checked", false);
+        } else {
+            // 해제되었을 때의 동작
+            console.log("오피스텔이 해제되었습니다.");
+        }
+    });
+
+    // 주택 체크박스 이벤트
+    $("#houseTypeSh").change(function(){
+        if($(this).is(":checked")){
+            console.log("주택이 선택되었습니다.");
+			$("#houseTypeAt").prop("checked", false);
+        } else {
+            console.log("주택이 해제되었습니다.");
+        }
+    });
+
+    // 원룸 체크박스 이벤트
+    $("#houseTypeOr").change(function(){
+        if($(this).is(":checked")){
+            console.log("원룸이 선택되었습니다.");
+            $("#houseTypeAt").prop("checked", false);
+        } else {
+            console.log("원룸이 해제되었습니다.");
+        }
+    });
+
+    // 아파트 체크박스 이벤트
+    $("#houseTypeAt").change(function(){
+        if($(this).is(":checked")){
+            console.log("아파트가 선택되었습니다.");
+			// 아파트가 선택되었을 때 다른 체크박스들을 해제
+            $("#houseTypeOp, #houseTypeSh, #houseTypeOr").prop("checked", false);
+        } else {
+            console.log("아파트가 해제되었습니다.");
+        }
+    });
+    
+    // 모든 체크박스의 변경 이벤트
+    $("[id^=houseType]").change(function(){
+        var checkedCount = $("[id^=houseType]:checked").length;
+
+        // 최소 하나의 체크박스는 선택되어 있어야 함
+        if (checkedCount === 0) {
+            // 현재 체크박스 선택 취소
+            $(this).prop("checked", true);
+        }
+    });
+	
   })(window.jQuery);
 
 

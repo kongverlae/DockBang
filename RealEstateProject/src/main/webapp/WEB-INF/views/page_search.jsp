@@ -26,7 +26,7 @@
 	<link href="css/jquery-ui.min.css" rel="stylesheet">
 </head>
 
-<body>
+<body style="overflow:hidden;">
 	<!-- header page include -->
 	<%@ include file="page_nav.jsp" %>
 
