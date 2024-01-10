@@ -23,44 +23,42 @@
 	<link href="css/bootstrap.min.css" rel="stylesheet">
 	<link href="css/bootstrap-icons.css" rel="stylesheet">
 	<link href="css/templatemo-topic-listing.css" rel="stylesheet">   
+	<link href="css/jquery-ui.min.css" rel="stylesheet">
 </head>
 
 <body>
 	<!-- header page include -->
 	<%@ include file="page_nav.jsp" %>
 
+	<!-- searchMenu page include -->
+	<%@ include file="page_searchMenu.jsp" %>
+
 	<!-- page content -->
-	<main style="overflow: hidden;">
-			<section
-			class="hero-section justify-content-center align-items-center" style="height: 20vh">
-			<div class="container-xxl">
-				<div class="row">
-					<div class="col-lg-8 col-12 mx-auto ">
-						<!-- <form method="get" class="custom-form mt-4 pt-2 mb-lg-0 mb-5" -->
-						<form method="get" class="custom-form "
-							role="search" action="page_search.do">
-							<div class="input-group input-group-lg">
-								<span class="input-group-text bi-search" id="basic-addon1">
-								</span> <input name="keyword" type="search" class="form-control"
-									id="keyword" placeholder="수원시, 장안구, 정자동 등 주소 입력"
-									aria-label="Search">
-								<button type="submit" class="form-control">Search</button>
-							</div>
-						</form>
-					</div>
-				</div>
-			</div>
+	<main>
+		<div class="row" >
+			<section class="section" id="section-3" >
+				<div id="map" style="width: 100%; height: 80vh; margin: auto;"></div>
+				<code id="snippet" class="snippet"></code>
+			</section>
+		</div>
+		
+	</main>	
+
+	<!-- footer page include -->
+	<%-- <%@ include file="page_footer.jsp" %> --%>
 	
-		</section>
-			<div class="row" >
-				<section class="section" id="section-3" >
-					<div id="map" style="width: 100%; height: 80vh; margin: auto;"></div>
-					<code id="snippet" class="snippet"></code>
-				</section>
-			</div>
-		<!-- jquery -->
-		<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
-		<!-- 각자 발급받은 Client ID 값 넣기 -->
+	<!-- JAVASCRIPT FILES -->
+	<!-- 	<script src="js/jquery.min.js"></script> -->
+	<script src="js/jquery.js"></script>
+	<!-- <script src="js/bootstrap.bundle.min.js"></script> -->
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+	<script src="js/jquery.sticky.js"></script>
+	<script src="js/click-scroll.js"></script>
+	<script src="js/custom.js"></script>
+	<script src="js/jquery-ui.min.js"></script>
+	<!-- search page에서 사용하는 jquery ui 컴포넌트들을 제어하기 위한 js -->
+	<script src="js/search.js"></script>
+	<!-- 각자 발급받은 Client ID 값 넣기 -->
 		<script type="text/javascript"
 			src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=0xkngoqc6q&submodules=geocoder"></script>
 		<script id="code">
@@ -583,23 +581,12 @@
 	
 			});
 		</script>
-	</main>	
-
-	<!-- footer page include -->
-	<%-- <%@ include file="page_footer.jsp" %> --%>
-	
-	<!-- JAVASCRIPT FILES -->
-	<script src="js/jquery.min.js"></script>
-	<script src="js/bootstrap.bundle.min.js"></script>
-	<script src="js/jquery.sticky.js"></script>
-	<script src="js/click-scroll.js"></script>
-	<script src="js/custom.js"></script>
-	<style>
+<!-- 	<style>
 		@media (max-width: 767px) {
 			.hero-section {
 				height: 200px;
 			}
 		}
-	</style>
+	</style> -->
 </body>
 </html> 
