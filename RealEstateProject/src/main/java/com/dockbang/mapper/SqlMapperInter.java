@@ -162,8 +162,9 @@ public interface SqlMapperInter {
 			+ "from food "
 			+ "group by ST_Distance_Sphere(Point(lon, lat), Point(#{lon}, #{lat})) "
 			+ "having distance is not null "
+			+ "and business_type = #{type} "
 			+ "limit 1")
-	FoodTO getFoodNearPoint(double lon, double lat);
+	FoodTO getFoodNearPoint(double lon, double lat, String type);
 	
 	// 공간DB 이용 - 기준점으로부터 제일 가까운 편의시설(영화관) 하나 가져오기
 	@Select("select business_name, ji_address, ST_Distance_Sphere(Point(lon, lat), Point(#{lon}, #{lat})) distance "

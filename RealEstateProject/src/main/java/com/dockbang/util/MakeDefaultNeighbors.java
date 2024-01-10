@@ -205,10 +205,13 @@ public class MakeDefaultNeighbors {
 		// 선릉 (삼성-37, 역삼-58)
 		findElement(nodes, "선릉").addNeighbor(findElement(nodes, "삼성"), 1);
 		findElement(nodes, "선릉").addNeighbor(findElement(nodes, "역삼"), 1);
+		findElement(nodes, "선릉").addNeighbor(findElement(nodes, "선정릉"), 2);
+		findElement(nodes, "선릉").addNeighbor(findElement(nodes, "한티"), 2);
 
 		// 선정릉 (삼성중앙-38, 언주-57)
 		findElement(nodes, "선정릉").addNeighbor(findElement(nodes, "삼성중앙"), 1);
 		findElement(nodes, "선정릉").addNeighbor(findElement(nodes, "언주"), 2);
+		findElement(nodes, "선정릉").addNeighbor(findElement(nodes, "선릉"), 2);
 
 		// 송파 (가락시장-0, 석촌-42)
 		findElement(nodes, "송파").addNeighbor(findElement(nodes, "가락시장"), 1);
