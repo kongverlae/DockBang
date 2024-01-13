@@ -11,6 +11,7 @@ import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 
 import com.dockbang.model.BoardTO;
+import com.dockbang.model.CommentTO;
 import com.dockbang.model.FoodTO;
 import com.dockbang.model.MemberTO;
 import com.dockbang.model.MovieTO;
@@ -116,7 +117,23 @@ public interface SqlMapperInter {
 	@Delete("delete from board where category = #{category} AND boardseq = #{boardseq}")
 	int deleteBoard(@Param("category") String category,
 			@Param("boardseq") int boardseq);
-
+	
+	// 댓글 리스트 출력
+	@Select("select writer, content, wdate from comment where boardseq = #{boardseq} order by commentseq desc")
+	List<CommentTO> selectComment(@Param("boardseq") Integer boardseq);
+	
+	// 댓글 추가
+	@Insert("INSERT INTO comment(commentseq, content, userseq, writer, boardseq, wdate) "
+	        + "VALUES (0, #{content},#{userseq} , #{writer}, #{boardseq}, now())")
+	int insertComment(@Param("content") String content,
+						@Param("userseq") String userseq,
+	                  @Param("writer") String writer,
+	                  @Param("boardseq") int boardseq);
+	
+	// 댓글 삭제
+	@Delete("delete from comment where userseq = #{userseq}")
+	int deleteComment(@Param("userseq") String userseq);
+	
 	// 역 정보(단일) 가져오기
 	@Select("select name, subway_line, latitude, longitude from subway_station group by name having name = #{name};")
 	SubwayStationTO getStation(@Param("name") String name);

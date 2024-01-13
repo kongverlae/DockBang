@@ -1,4 +1,5 @@
-﻿<%@page import="java.io.Console"%>
+﻿<%@page import="com.dockbang.model.CommentTO"%>
+<%@page import="java.io.Console"%>
 <%@page import="ch.qos.logback.core.recovery.ResilientSyslogOutputStream"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="com.dockbang.model.BoardTO" %>
@@ -7,12 +8,28 @@
 
 <%
 	List<BoardTO> boardView = (List) request.getAttribute("boardView");
+	List<CommentTO> commentList = (List) request.getAttribute("commentList");
     String category = (String) request.getAttribute("category");
     Integer boardseq = (Integer) request.getAttribute("boardseq");
+    String name5 = (String) session.getAttribute("nickname");
+    String userseq = (String) session.getAttribute("email");
   
-
     
- 
+    if(name5==null){
+    	name5 = "비회원";
+    }
+    if(userseq==null){
+    	userseq="";
+    }
+
+    for (CommentTO comment : commentList) {
+        String commentWriter = comment.getWriter();
+        String commentContent = comment.getContent();
+        String commentWdate = comment.getWdate();
+        
+       
+    }
+    
     String subject = "";
     String writer = "";
     String mail = "";
@@ -130,52 +147,57 @@
 	        <div class="row justify-content-center">
 		        <div class="col-lg-8 col-12 text-center mt-3">
 					<div class="custom-block bg-white shadow-lg">
-						<h6 class="text-start">총강든도</h6>
-						<form action="#" method="post" class="custom-form contact-form row" role="form">
+						<!--  <h6 class="text-start"><%=name5 %></h6> -->
+						<form action="act_commentWrite.do?category=${category}&boardseq=${boardseq}" method="post" class="custom-form contact-form row" role="form">
+   							 <input type="hidden" id="writer" name="writer" value="<%= name5 %>">
+   							  <input type="hidden" id="userseq" name="userseq" value="<%=userseq %>"> 
+    							<h6 class="text-start"><%= name5 %><%=userseq %></h6>
 							<div class="col-lg-12 col-12 text-start px-2">
 		                        <div class="form-floating">
+		                       	
 		                            <textarea class="form-control h-25 mx-0 mb-0" rows="3" id="content" name="content" placeholder="댓글을 입력해주세요"></textarea>
-		                            <label for="floatingTextarea">바르고 고운말을 사용하여 올바른 인터넷 문화를 만들어 갑시다.</label>
+		                            <label for="floatingTextarea"></label>
 		                        </div>
 							</div>
+							<div class="col-lg-12 col-12 m-0 mt-2 mb-2 row justify-content-end">
+							<input type="submit" class="btn custom-btn col-3" value="작성하기"></input>
+						</div>
 						</form>
+						<!--  
 						<div class="col-lg-12 col-12 m-0 mt-2 mb-2 row justify-content-end">
 							<input type="submit" class="btn custom-btn col-3" value="작성하기"></input>
 						</div>
+						-->
 						<hr>
-						<div class="text-start">
-							<div class="d-flex justify-content-between">
-								<h6>총강든도</h6>
-								<div class="dropdown">
-									<button class="btn py-0 dropdown-togle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-									:
-									</button>
-									<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-									    <a class="dropdown-item" href="#">수정</a>
-									    <a class="dropdown-item" href="#">삭제</a>
-									</div>
-								</div>
-							</div>
-							다들 댓글 달아주셔서 감사합니다.🔫🔫🔫<br>
-							<div class="text-muted mt-1">2024-01-03 10:31</div>
-							<hr>
-							<h6>칼강든도</h6>
-							이 글 보고 집 구했더니 정말로 만족스러운 집을 구했어요⚔️⚔️⚔️<br>
-							<div class="text-muted mt-1">2024-01-03 10:31</div>
-							<hr>
-							<h6>칼든강도</h6>
-							이 글 보고 집 구했더니 정말로 만족스러운 집을 털었어요<br>
-							<div class="text-muted mt-1">2024-01-03 10:31</div>
-							<hr>
-							<h6>가던말던</h6>
-							이 글 보고 집 구했더니 정말로 만족스러운 집을 구하던가 말던가 했어요<br>
-							<div class="text-muted mt-1">2024-01-03 10:31</div>
-							<hr>
-							<h6>킨더가든</h6>
-							이 글 보고 집 구했더니 정말로 만족스러운 유치원을 구했어요<br>
-							<div class="text-muted mt-1">2024-01-03 10:31</div>
-							<hr>
-						</div>
+						<%
+for (CommentTO comment : commentList) {
+    String commentWriter = comment.getWriter();
+    String commentContent = comment.getContent();
+    String commentWdate = comment.getWdate();
+%>
+    <div class="text-start">
+        <div class="d-flex justify-content-between">
+            <h6><%=commentWriter %></h6>
+            <div class="dropdown">
+                <button class="btn py-0 dropdown-togle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    :
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <!--  <a class="dropdown-item" href="#">수정</a> -->
+                    <form id="deleteForm" action="act_commentDelete.do" method="post" class="custom-form contact-form row" role="form">
+   						 <input type="hidden" id="userseq" name="userseq" value="<%= userseq %>">
+   						 <input type="submit" class="dropdown-item" value="삭제">
+					</form>
+                </div>
+            </div>
+        </div>
+        <%=commentContent %><br>
+        <div class="text-muted mt-1"><%=commentWdate %></div>
+        <hr>
+    </div>
+<%
+}
+%>
 					</div>
 	            </div>
 	        </div>
