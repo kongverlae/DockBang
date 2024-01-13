@@ -15,6 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.dockbang.mapper.SqlMapperInter;
 import com.dockbang.model.BoardDAO;
 import com.dockbang.model.BoardTO;
+import com.dockbang.model.CommentTO;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -209,6 +210,7 @@ public class BoardController {
 	    
 	    // 게시글 조회
 	    List<BoardTO> boardView = mapper.selectView(boardseq);
+	    List<CommentTO> commentList = mapper.selectComment(boardseq);
 	    
 	    // 조회수 증가
 	    mapper.updateHit(boardseq);
@@ -217,6 +219,7 @@ public class BoardController {
 	    modelAndView.addObject("boardseq", boardseq);
 	    modelAndView.addObject("category", category);
 	    modelAndView.addObject("boardView", boardView);
+	    modelAndView.addObject("commentList", commentList);
 	    
 	    // view 페이지로 반환
 	    return modelAndView;
