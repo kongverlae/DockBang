@@ -283,7 +283,7 @@
         }
     });
     
-    // 모든 체크박스의 변경 이벤트
+    // 모든 집 유형 체크박스의 변경 이벤트
     $("[id^=houseType]").change(function(){
         var checkedCount = $("[id^=houseType]:checked").length;
 
@@ -293,6 +293,56 @@
             $(this).prop("checked", true);
         }
     });
+    
+	// 모든 거래 유형 체크박스의 변경 이벤트
+    $("[id^=offerType]").change(function(){
+        var checkedCount = $("[id^=offerType]:checked").length;
+
+        // 최소 하나의 체크박스는 선택되어 있어야 함
+        if (checkedCount === 0) {
+            // 현재 체크박스 선택 취소
+            $(this).prop("checked", true);
+        }
+    });
+    
+    
+    // 전세가 입력 슬라이더 
+    $("#offerTypeL").change(function(){
+        if($(this).is(":checked")){
+            console.log("전세 체크.");
+			$("#lSlider").show();
+        } else {
+            console.log("전세 체크 해제.");
+            $("#lSlider").hide();
+        }
+    });
+    
+	// 월세가 입력 슬라이더 
+    $("#offerTypeM").change(function(){
+        if($(this).is(":checked")){
+            console.log("전세 체크.");
+			$("#mSlider").show();
+        } else {
+            console.log("전세 체크 해제.");
+            $("#mSlider").hide();
+        }
+    });
+    
+	// 매매가 입력 슬라이더 
+    $("#offerTypeP").change(function(){
+        if($(this).is(":checked")){
+            console.log("전세 체크.");
+			$("#pSlider").show();
+        } else {
+            console.log("전세 체크 해제.");
+            $("#pSlider").hide();
+        }
+    });
+
+    $(".refreshable").change( function(){
+		console.log(this);
+	});
+    
 	
   })(window.jQuery);
 
