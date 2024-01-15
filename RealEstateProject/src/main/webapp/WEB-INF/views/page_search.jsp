@@ -1,11 +1,27 @@
-<%@page import="com.dockbang.model.SubwayStationTO"%>
-<%@page import="java.util.List"%>
-<%@page import="com.dockbang.model.SaleTO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@page import="com.dockbang.model.SaleTO"%>
+<%@page import="com.dockbang.model.SubwayStationTO"%>
+<%@page import="java.util.List"%>
+<%@page import="java.util.Map"%>
     
 <%
 	String keyword = request.getParameter("keyword");
+
+	// 역 근처 매물 출력 확인용
+	/*
+	Map<String, List<SaleTO>> map = (Map)request.getAttribute("salesNearStationMap");
+	if(map != null){
+		for(Map.Entry<String, List<SaleTO>> entry : map.entrySet()){
+			System.out.println(entry.getKey());
+			for(SaleTO saleTO:entry.getValue()){
+				System.out.print(saleTO.getTitle() + "\t");
+			}
+			System.out.println();
+			System.out.println();
+		}
+	}
+	*/
 %>
 <!DOCTYPE html>
 <html>
