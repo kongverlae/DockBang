@@ -28,6 +28,8 @@ public class BoardController {
 	@Autowired
 	private SqlMapperInter mapper;
 	
+	String uploadPath = "../../../../main/webapp/images/file";
+	
 	@RequestMapping("/page_boardChoose.do")
 	ModelAndView page_boardChoose() {
 		// view(.jsp) 설정
@@ -108,7 +110,8 @@ public class BoardController {
 				String wip = InetAddress.getLocalHost().getHostAddress();
 				String filename = upload.getOriginalFilename();
 				long filesize = upload.getSize();
-				upload.transferTo(new File("C:\\project_dockbang\\DockBang\\RealEstateProject\\src\\main\\webapp\\images\\file",upload.getOriginalFilename()));
+//				upload.transferTo(new File("C:\\DockBang\\RealEstateProject\\src\\main\\webapp\\images\\file",upload.getOriginalFilename()));
+				upload.transferTo(new File(uploadPath, upload.getOriginalFilename()));
 				HttpSession session = request.getSession();
 		    	String email = (String)session.getAttribute("email");
 		    	String name = (String)session.getAttribute("nickname");
@@ -155,7 +158,7 @@ public class BoardController {
 	            filename = upload.getOriginalFilename();
 	            filesize = upload.getSize();
 	            // 파일 저장 경로
-	            String uploadPath = "C:\\project_dockbang\\DockBang\\RealEstateProject\\src\\main\\webapp\\images\\file";
+//	            String uploadPath = "C:\\DockBang\\RealEstateProject\\src\\main\\webapp\\images\\file";
 	            upload.transferTo(new File(uploadPath, filename));
 	        }
 

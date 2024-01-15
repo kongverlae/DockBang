@@ -59,7 +59,6 @@ public class MemberController {
         	HttpSession session = request.getSession();
         	session.setAttribute("email",userInfo.get("email").toString());
         	session.setAttribute("nickname",userInfo.get("nickname").toString());
-        	session.setAttribute("password",userInfo.get("password").toString());
         }
         
         // view(.jsp) 설정
