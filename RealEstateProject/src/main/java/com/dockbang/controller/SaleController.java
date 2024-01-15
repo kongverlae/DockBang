@@ -59,23 +59,6 @@ public class SaleController {
 		return modelAndView;
 	}
 
-	/* 였던것
-	 * @RequestMapping("/page_survey.do") ModelAndView page_survey() {
-	 * 
-	 * // view(.jsp) 설정 ModelAndView modelAndView = new ModelAndView(); //
-	 * List<SubwayStationTO> stations = sdao.getStations(); // List<SaleTO> sales =
-	 * sdao.getSales();
-	 * 
-	 * // sdao.saveSaleNearStation(); // DB에 저장할때만 실행 List<SaleNearStationTO>
-	 * salesNearStation = sdao.getSaleNearStation();
-	 * 
-	 * modelAndView.setViewName("page_survey"); //
-	 * modelAndView.addObject("stations", stations);
-	 * modelAndView.addObject("salesNearStation", salesNearStation);
-	 * 
-	 * // view 페이지로 반환 return modelAndView; }
-	 */
-
 	@RequestMapping("/page_survey.do")
 	ModelAndView page_survey() {
 		// view(.jsp) 설정

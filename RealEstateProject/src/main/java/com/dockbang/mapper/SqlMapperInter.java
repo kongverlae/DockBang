@@ -61,10 +61,6 @@ public interface SqlMapperInter {
 	@Select("select name,password from user where email=#{email}")
 	String selectUserName(@Param("email") String email);
 	
-	// 일반 로그인 유저 비밀번호 갖고 오기
-		@Select("select password from user where email=#{email}")
-		String selectUserPassword(@Param("email") String email);
-
 	// 로그인 유저 소셜 유무, 이메일, 이름 가져오기
 	@Select("SELECT social, email, name FROM user WHERE email=#{email}")
 	MemberTO selectUserInfo(@Param("email") String email);
@@ -154,17 +150,6 @@ public interface SqlMapperInter {
 	@Select("select * from sale where title = #{title}")
 	List<SaleTO> getSalesinfo(@Param("title") String title);
 		
-	// 
-	@Insert("insert into sale_near_station values("
-			+ "0, #{stationName}, #{stationLine}, #{saleName}, #{saleDistance}"
-			+ ")")
-	int insertDistanceStationSale(
-			String stationName,
-			String stationLine,
-			String saleName,
-			double saleDistance
-			);
-	
 	// 컬럼: SaleTO 참고
 	// seq를 이용해 sale 가져오기
 	@Select("select * from sale where sale_seq = #{sale_seq}")
