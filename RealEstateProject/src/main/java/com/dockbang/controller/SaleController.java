@@ -59,23 +59,6 @@ public class SaleController {
 		return modelAndView;
 	}
 
-	/* 였던것
-	 * @RequestMapping("/page_survey.do") ModelAndView page_survey() {
-	 * 
-	 * // view(.jsp) 설정 ModelAndView modelAndView = new ModelAndView(); //
-	 * List<SubwayStationTO> stations = sdao.getStations(); // List<SaleTO> sales =
-	 * sdao.getSales();
-	 * 
-	 * // sdao.saveSaleNearStation(); // DB에 저장할때만 실행 List<SaleNearStationTO>
-	 * salesNearStation = sdao.getSaleNearStation();
-	 * 
-	 * modelAndView.setViewName("page_survey"); //
-	 * modelAndView.addObject("stations", stations);
-	 * modelAndView.addObject("salesNearStation", salesNearStation);
-	 * 
-	 * // view 페이지로 반환 return modelAndView; }
-	 */
-
 	@RequestMapping("/page_survey.do")
 	ModelAndView page_survey() {
 		// view(.jsp) 설정
@@ -89,15 +72,19 @@ public class SaleController {
 	
 	@RequestMapping("/page_search.do")
 	ModelAndView page_search(
-			@RequestParam(value = "keyword", defaultValue = "서울특별시 강남구 역삼동 819-10") String keyword, 
-			@Param(value = "startStation") String startStation) {
+			// 검색어	- 일반검색
+			@RequestParam(value = "keyword", defaultValue = "서울특별시 강남구 역삼동 819-10") String keyword,
+			// 출발역 	- 거리기반 검색
+			@RequestParam(value = "startStation", defaultValue = "") String startStation,
+			// 제한시간 - 거리기반 검색
+			@RequestParam(value = "timeLimit", defaultValue = "-1") int timeLimit) {
 
 		// view(.jsp) 설정
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.setViewName("page_search");
 
 		
-		//매줄 정보 저장 
+		//매물 정보 저장 
 		List<SaleTO> sale = mapper.getSales();
 		modelAndView.addObject("sale", sale);
 		
@@ -109,19 +96,14 @@ public class SaleController {
 		List<String> lon = mapper.selectlon();
 		List<String> local = mapper.selectlocal();
 		
-		// 경계선 데이터 전송
-		modelAndView.addObject("keyword", keyword);
-		modelAndView.addObject("lineLat", lat);
-		modelAndView.addObject("lineLon", lon);
-		modelAndView.addObject("lineLocal", local);
 
 		
 		// 출발역이 주어지면 - 역 이동시간 기반 검색이면
-		if(startStation != null && !startStation.equals("")) {
+		if(startStation != null && !startStation.equals("") && timeLimit != -1) {
 			// 전체 역 리스트
 			List<SubwayStationTO> stations = mapper.getStations();
 			// 출발점 기준 5분이내 도달가능한 역 리스트
-			List<SubwayStationTO> stationsNearStart = new DijkstraAlgo().getStationsNearStart(stations, startStation, 5);
+			List<SubwayStationTO> stationsNearStart = new DijkstraAlgo().getStationsNearStart(stations, startStation, timeLimit);
 			
 			// Map<역이름, List<매물>> - 페이지로 반환할 결과
 			Map<String, List<SaleTO>> salesNearStationMap = new HashMap<>();
@@ -131,6 +113,11 @@ public class SaleController {
 				String stationName = stationTO.getName();
 				// 이름으로 지하철 역 정보 get
 				stationTO = mapper.getStation(stationName);
+				
+				// 출발역일때 그 주소 가져오기 - 출발역으로 지도 이동을 위함
+				if(stationTO.getName().equals(startStation)) {
+					keyword = stationTO.getRoad_address();
+				}
 //			System.out.println("stationTO: " + stationTO.getName());
 				
 				// 공간DB로 역 위치 기준 1km 이내 매물리스트
@@ -144,6 +131,11 @@ public class SaleController {
 //			System.out.println(salesNearStationMap.get("서초").get(0).getTitle());
 		}
 		
+		// 경계선 데이터 전송
+		modelAndView.addObject("keyword", keyword);
+		modelAndView.addObject("lineLat", lat);
+		modelAndView.addObject("lineLon", lon);
+		modelAndView.addObject("lineLocal", local);
 
 		// view 페이지로 반환
 		return modelAndView;

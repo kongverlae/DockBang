@@ -25,8 +25,12 @@ public class BoardController {
 	@Autowired
 	BoardDAO bdao;
 	
+	// 나중에 DAO로 옮기기
 	@Autowired
 	private SqlMapperInter mapper;
+	
+	// 환경에 따라 수정 필요
+	String uploadPath = "C:/DockBang/RealEstateProject/src/main/webapp/images/file";
 	
 	@RequestMapping("/page_boardChoose.do")
 	ModelAndView page_boardChoose() {
@@ -34,27 +38,9 @@ public class BoardController {
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.setViewName("/board/page_boardChoose");
 		
-		// 데이터 전송
-		// modelAndView.addObject("data_name", data);
-
 		// view 페이지로 반환
 		return modelAndView;
 	}
-	
-	/* 였던것
-	 * @RequestMapping("/page_boardList.do") ModelAndView
-	 * page_boardList(@RequestParam("category") String category) {
-	 * 
-	 * // view(.jsp) 설정 ModelAndView modelAndView = new ModelAndView();
-	 * modelAndView.setViewName("/board/page_boardList");
-	 * 
-	 * List<BoardTO> boardList = mapper.selectBoard(category);
-	 * 
-	 * // 데이터 전송 modelAndView.addObject("category", category);
-	 * modelAndView.addObject("boardList", boardList);
-	 * 
-	 * // view 페이지로 반환 return modelAndView; }
-	 */
 	
 	@RequestMapping("/page_boardList.do")
 	ModelAndView page_boardList(@RequestParam("category") String category) {
@@ -66,9 +52,7 @@ public class BoardController {
 		List<BoardTO> boardList = mapper.selectBoard(category);
 		modelAndView.addObject("category", category);
 		modelAndView.addObject("boardList", boardList);
-		 
 		
-		// 데이터 전송
 
 		// view 페이지로 반환
 		return modelAndView;
@@ -76,21 +60,16 @@ public class BoardController {
 	
 	
 	@RequestMapping("/page_boardWrite.do")
-	//ModelAndView page_boardWrite(@RequestParam("category") String category) {
 	ModelAndView page_boardWrite(@RequestParam("category") String category) {
 
 		// view(.jsp) 설정
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.setViewName("/board/page_boardWrite");
-		// 데이터 전송
-		// modelAndView.addObject("data_name", data);
 		
 		// 임시로 지움
 		modelAndView.addObject("category", category);
 
 		// view 페이지로 반환
-		
-		
 		return modelAndView;
 	}
 	
@@ -108,27 +87,26 @@ public class BoardController {
 				String wip = InetAddress.getLocalHost().getHostAddress();
 				String filename = upload.getOriginalFilename();
 				long filesize = upload.getSize();
-				upload.transferTo(new File("C:\\project_dockbang\\DockBang\\RealEstateProject\\src\\main\\webapp\\images\\file",upload.getOriginalFilename()));
+				// String uploadPath: 파일 저장 경로
+				upload.transferTo(new File(uploadPath, upload.getOriginalFilename()));
 				HttpSession session = request.getSession();
 		    	String email = (String)session.getAttribute("email");
 		    	String name = (String)session.getAttribute("nickname");
-		    	//String category1 = (String)session.getAttribute("category");
-		    System.out.println(category);
+//		    	String category1 = (String)session.getAttribute("category");
+//		    	System.out.println(category);
 				flag = mapper.insertBoard(subject, name, content, filename, filesize, wip, email, category);
 			}
 		} catch (IllegalStateException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
 		// view(.jsp) 설정
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.setViewName("/board/act_boardWrite");
+		
 		// 데이터 전송
-		// modelAndView.addObject("data_name", data);
 		modelAndView.addObject("category", category);
 		modelAndView.addObject("flag", flag);
 
@@ -154,8 +132,7 @@ public class BoardController {
 	        if (upload != null && !upload.isEmpty()) {
 	            filename = upload.getOriginalFilename();
 	            filesize = upload.getSize();
-	            // 파일 저장 경로
-	            String uploadPath = "C:\\project_dockbang\\DockBang\\RealEstateProject\\src\\main\\webapp\\images\\file";
+	            // String uploadPath: 파일 저장 경로
 	            upload.transferTo(new File(uploadPath, filename));
 	        }
 
@@ -179,19 +156,13 @@ public class BoardController {
 	
 	@RequestMapping("/act_boardDelete.do")
 	public ModelAndView act_boardDelete(HttpServletRequest request,
-	        @RequestParam("password") String password,
 	        @RequestParam("category") String category,
 	        @RequestParam("boardseq") int boardseq) {
-
 	    
 	    int flag = 0;
-	    // 세션에서 비밀번호 가져오기
-	    String sessionPassword = (String) request.getSession().getAttribute("password");
+	    
+	    // flag 처리 구문
 
-	    if (password.equals(sessionPassword)) {
-	
-	       flag = mapper.deleteBoard(category, boardseq);
-	    } 
 	    ModelAndView modelAndView = new ModelAndView();
 	    modelAndView.addObject("category", category);
 	    modelAndView.addObject("boardseq", boardseq);
@@ -225,17 +196,6 @@ public class BoardController {
 	    return modelAndView;
 	}
 
-	/*
-	 * @RequestMapping("/page_boardView.do") ModelAndView
-	 * page_boardView(@RequestParam("category") String category) {
-	 * 
-	 * // view(.jsp) 설정 ModelAndView modelAndView = new ModelAndView();
-	 * modelAndView.setViewName("/board/page_boardView"); // 데이터 전송 //
-	 * modelAndView.addObject("data_name", data); modelAndView.addObject("category",
-	 * category);
-	 * 
-	 * // view 페이지로 반환 return modelAndView; }
-	 */	
 	@RequestMapping("/page_boardModify.do")
 	ModelAndView page_boardModify(HttpServletRequest request, @RequestParam("boardseq") Integer boardseq, @RequestParam("category") String category) {
 
@@ -248,24 +208,11 @@ public class BoardController {
 		modelAndView.addObject("category",category);
 		
 		modelAndView.addObject("boardView", boardView);
-		// 데이터 전송
-		// modelAndView.addObject("data_name", data);
 
 		// view 페이지로 반환
 		return modelAndView;
 	}
 
-	/*
-	 * @RequestMapping("/page_boardModify.do") ModelAndView
-	 * page_boardFreeModify(@RequestParam("category") String category) {
-	 * 
-	 * // view(.jsp) 설정 ModelAndView modelAndView = new ModelAndView();
-	 * modelAndView.setViewName("/board/page_boardModify"); // 데이터 전송 //
-	 * modelAndView.addObject("data_name", data); modelAndView.addObject("category",
-	 * category);
-	 * 
-	 * // view 페이지로 반환 return modelAndView; }
-	 */	
 	@RequestMapping("/page_boardDelete.do")
 	ModelAndView page_boardDelete(HttpServletRequest request, @RequestParam("boardseq") Integer boardseq, @RequestParam("category") String category) {
 
@@ -273,8 +220,6 @@ public class BoardController {
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.setViewName("/board/page_boardDelete");
 		List<BoardTO> boardView = mapper.selectView(boardseq);
-		// 데이터 전송
-		// modelAndView.addObject("data_name", data);
 		
 		modelAndView.addObject("boardseq",boardseq);
 		modelAndView.addObject("category",category);
