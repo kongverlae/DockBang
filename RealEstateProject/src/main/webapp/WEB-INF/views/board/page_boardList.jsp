@@ -167,45 +167,46 @@ for (int i = startIdx; i < endIdx; i++) {
 						</div>
 	                    <!-- 페이지 네비게이션 -->
 		                <nav aria-label="Page navigation example">
-		                    <ul class="pagination justify-content-center mb-0">
-		                    
-		                    <%
-                    int pageBlockSize = 5; // 한 블록당 페이지 수
-                    int startPage = ((cpage - 1) / pageBlockSize) * pageBlockSize + 1;
-                    int endPage = Math.min(startPage + pageBlockSize - 1, totalPage);
-                    if (startPage > 1) {
+							<ul class="pagination justify-content-center mb-0">
+		                    	<%
+			                    int pageBlockSize = 5; // 한 블록당 페이지 수
+			                    int startPage = ((cpage - 1) / pageBlockSize) * pageBlockSize + 1;
+			                    int endPage = Math.min(startPage + pageBlockSize - 1, totalPage);
+			                    if (startPage > 1) {
 
-                  %>
+                  				%>
+		                    	<!-- << prev button -->
 		                        <li class="page-item">
 		                            <a class="page-link"  href="page_boardList.do?category=<%=category%>&cpage=<%=startPage-1%>" aria-label="Previous">
 		                                <span aria-hidden="true">Prev</span>
 		                            </a>
 		                        </li>
+		                        
+		                        <!-- [1][2][3][4][5] -->
 		                        <%
-                    }
-                    for (int i = startPage; i <= endPage; i++) { 
-                        %>
-		
+			                    }
+			                    for (int i = startPage; i <= endPage; i++) { 
+                        		%>
+		                        <!-- 현재 페이지와 같은 번호의 페이지 아이템이면 active 및 클릭 불가  -->
+		                        <!-- 현재 페이지와 다른 번호의 페이지 아이템이면 그냥 출력 -->
 		                        <li class="page-item active" aria-current="page">
-		                            <a class="page-link" href="page_boardList.do?category=<%=category%>&cpage=<%=i%>" 
-                    class="<%= (i == cpage) ? "active" : "" %>"> <%=i%></a>
+		                            <a class="page-link" href="page_boardList.do?category=<%=category%>&cpage=<%=i%>" class="<%= (i == cpage) ? "active" : "" %>"> <%=i%></a>
 		                        </li>
-		                         <%
-                    }
-                    if (endPage < totalPage) { 
-                        %>  
+								<%
+                    			}
+                    			if (endPage < totalPage) { 
+                        		%>  
 		                        
 		                        <li class="page-item">
 		                            <a class="page-link" href="page_boardList.do?category=<%=category%>&cpage=<%=endPage+1%>" aria-label="Next">
 		                                <span aria-hidden="true">Next</span>
 		                            </a>
-		                            <%
-                    }
-                %>
+		                        <%
+                    			}
+								%>
 		                        </li>
 		                    </ul>
 		                </nav>
-		                
 		                <!-- 페이지 네비게이션 종료 -->
 	                </div>    
 	            </div>
