@@ -83,26 +83,77 @@
 
 							<div class="row justify-content-center">
 								<div class="col-lg-11 col-12 text-center">
-									<img alt="thief with gun" src="../../../images/colleagues-working-cozy-office-medium-shot.jpg">
+									<!-- <img alt="thief with gun" src="../../../images/colleagues-working-cozy-office-medium-shot.jpg"> -->
+									<img alt="<%= saleTO.getTitle() %>" src="<%= saleTO.getSale_pic() %>">
 				        		</div>
 								<div class="col-lg-11 col-12 text-start">
 									
 									<h6>매물 정보</h6>
 									<!--  <div>거래 유형 : 전세/월세/매매 중 1</div> -->
-									<div>거래 유형 : <%= saleTO.getSale_type() %></div>
+									<%
+										String saleType = saleTO.getSale_type();
+										switch(saleType){
+											case "L": // 전세
+									%>
+									<div>거래 유형 : 전세</div>
 									<!-- 전세일 때: 보증금 출력 -->
+									<div>보증금: 		<%= ((saleTO.getDeposit() == null) ? "-" : saleTO.getDeposit() + " (만원)") %></div>
+											
+									<%
+												break;
+											case "M": // 월세
+									%>
+									<div>거래 유형 : 월세</div>
 									<!-- 월세일 때: 보증금, 월세 출력-->
+									<div>월세: 	<%= ((saleTO.getDeposit() == null) ? "-" : saleTO.getDeposit()) %>
+														/
+														<%= ((saleTO.getMonthly_fee() == null) ? "-" : saleTO.getMonthly_fee()) %> </div>
+									
+									<% 
+												break;
+											case "P": // 매매
+									%>
+									<div>거래 유형 : 매매</div>
 									<!-- 매매일 때: 매매가 출력 -->
-									<div>보증금: 		<%= ((saleTO.getMonthly_fee() == null) ? "-" : saleTO.getMonthly_fee()) %></div>
+									<div>매매가: 		<%= ((saleTO.getPrice() == null) ? "-" : saleTO.getPrice()) + " (만원)" %></div>
+									
+									<%
+												break;
+											default:
+												break;
+										}
+									%>
+									
 									<div>융자금: 		<%= ((saleTO.getLoan_amount() == null) ? "-" : saleTO.getLoan_amount()) %></div>
-									<div>관리비: 		<%= ((saleTO.getManage_fee() == null) ? "-" : saleTO.getManage_fee()) %></div>
+									<div>관리비: 		<%= ((saleTO.getManage_fee() == null) ? "-" : saleTO.getManage_fee() + " (원)") %></div>
 									<div>공인중개사:	<%= ((saleTO.getAgency() == null) ? "-" : saleTO.getAgency()) %></div>
 									<div>소재지: 		<%= ((saleTO.getAddress() == null) ? "-" : saleTO.getAddress()) %></div>
 									<hr>
 									
 									<!-- 없으면 -로 표시 됨 -->
 									<h6>매물 상세 정보</h6>
-									<div>주택구분: 		<%= ((saleTO.getHouse_type() == null) ? "-" : saleTO.getHouse_type()) %></div>
+									<%
+										String house_type;
+										switch(saleTO.getHouse_type()){
+											case "AT": // 아파트
+												house_type = "아파트";
+												break;
+											case "OP": // 오피스텔
+												house_type = "오피스텔";
+												break;
+											case "OR": // 원룸
+												house_type = "원룸";
+												break;
+											case "SH": // 주택
+												house_type = "주택";
+												break;
+											default:
+												house_type = "-";
+												break;
+										}
+										
+									%>
+									<div>주택구분: 		<%= house_type %></div>
 									<div>전용면적: 		<%= ((saleTO.getArea() == null) ? "-" : saleTO.getArea()) %> ㎡</div>
 									<div>건축물용도:	<%= ((saleTO.getHouse_usage() == null) ? "-" : saleTO.getHouse_usage()) %></div>
 									<div>사용승인일:	<%= ((saleTO.getBuilt_date() == null) ? "-" : saleTO.getBuilt_date()) %></div>
@@ -258,12 +309,56 @@
 
 								<div class="col-lg-11 col-12 text-start">
 								<% DecimalFormat df = new DecimalFormat("#.##"); // 소수점 둘째자리까지 표현 %>
+								
 									<h6>매물 주변 편의시설 정보</h6>
-									<div>편의점: <%= convTO.getBusiness_name() %> - <%= convTO.getRoad_address() %> (<%= df.format(convTO.getDistance()) %> m)</div>
-									<div>음식점: <%= foodTO.getBusiness_name() %> - <%= foodTO.getRoad_address() %> (<%= df.format(foodTO.getDistance()) %> m)</div>
-									<div>카페: <%= cafeTO.getBusiness_name() %> - <%= cafeTO.getRoad_address() %> (<%= df.format(cafeTO.getDistance()) %> m)</div>
-									<div>영화관: <%= movieTO.getBusiness_name() %> - <%= movieTO.getJi_address() %> (<%= df.format(movieTO.getDistance()) %> m)</div>
-									<div>경찰서: <%= policeTO.getDivision() %> - <%= policeTO.getAddress() %> (<%= df.format(policeTO.getDistance()) %> m)</div>
+									<!-- Jumbotron 활용 -->
+									<div class="container mt-3">
+										<div class="mt-4 p-5 rounded bg-primary text-white">
+											<h3>편의점</h3>
+											<h1><%= convTO.getBusiness_name() %></h1>
+											<b>	<%= convTO.getRoad_address() %> (<%= df.format(convTO.getDistance()) %> m)</b>
+											<a href="https://map.naver.com/p/search/<%= convTO.getRoad_address()%>" target="_blank" 
+												class="badge bg-dark text-wrap">
+												네이버 지도에서 보기
+											</a>
+										</div>
+										<div class="mt-4 p-5 rounded bg-danger text-white">
+											<h3>음식점</h3>
+											<h1><%= foodTO.getBusiness_name() %></h1>
+											<b>	<%= foodTO.getRoad_address() %> (<%= df.format(foodTO.getDistance()) %> m)</b>
+											<a href="https://map.naver.com/p/search/<%= foodTO.getRoad_address() %>" target="_blank" 
+												class="badge bg-dark text-wrap">
+												네이버 지도에서 보기
+											</a>
+										</div>
+										<div class="mt-4 p-5 rounded bg-info text-white">
+											<h3>카페</h3>
+											<h1><%= cafeTO.getBusiness_name() %></h1>
+											<b>	<%= cafeTO.getRoad_address() %> (<%= df.format(cafeTO.getDistance()) %> m)</b>
+											<a href="https://map.naver.com/p/search/<%= cafeTO.getRoad_address() %>" target="_blank" 
+												class="badge bg-dark text-wrap">
+												네이버 지도에서 보기
+											</a>
+										</div>
+										<div class="mt-4 p-5 rounded bg-warning text-white">
+											<h3>영화관</h3>
+											<h1><%= movieTO.getBusiness_name() %></h1>
+											<b>	<%= movieTO.getJi_address() %> (<%= df.format(movieTO.getDistance()) %> m)</b>
+											<a href="https://map.naver.com/p/search/<%= movieTO.getJi_address() %>" target="_blank" 
+												class="badge bg-dark text-wrap">
+												네이버 지도에서 보기
+											</a>
+										</div>
+										<div class="mt-4 p-5 rounded bg-success text-white">
+											<h3>경찰서</h3>
+											<h1><%= policeTO.getDivision() %></h1>
+											<pb>	<%= policeTO.getAddress() %> (<%= df.format(policeTO.getDistance()) %> m)</b>
+											<a href="https://map.naver.com/p/search/<%= policeTO.getAddress() %>" target="_blank" 
+												class="badge bg-dark text-wrap">
+												네이버 지도에서 보기
+											</a>
+										</div>
+									</div>
 				        		</div>
 			        		</div>
 					
