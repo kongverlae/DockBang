@@ -80,7 +80,6 @@
 	 "한성백제",
 	 "한티"
 	];
-	
 	$( "#station-autocomplete" ).autocomplete({
 		delay: 0,
 		source: availableTags,
@@ -110,6 +109,8 @@
 	      values: [ 0, 500 ],
 	      slide: function( event, ui ) {
 	        $( "#l-deposit" ).text( ui.values[ 0 ] + " 만원 - " + ui.values[ 1 ] + " 만원");
+	        refreshFilterKeywords();
+	        console.log(filterKeywords);
 	      }
 	    });
 	    $( "#l-deposit" ).text( $( "#l-deposit-slider" ).slider( "values", 0 ) +
@@ -126,6 +127,8 @@
 	      values: [ 0, 500 ],
 	      slide: function( event, ui ) {
 	        $( "#m-deposit" ).text( ui.values[ 0 ] + " 만원 - " + ui.values[ 1 ] + " 만원");
+	        refreshFilterKeywords();
+	        console.log(filterKeywords);
 	      }
 	    });
 	    $( "#m-deposit" ).text( $( "#m-deposit-slider" ).slider( "values", 0 ) +
@@ -143,6 +146,8 @@
 	      values: [ 0, 500 ],
 	      slide: function( event, ui ) {
 	        $( "#monthly-fee" ).text( ui.values[ 0 ] + " 만원 - " + ui.values[ 1 ] + " 만원");
+	      	refreshFilterKeywords();
+	        console.log(filterKeywords);
 	      }
 	    });
 	    $( "#monthly-fee" ).text( $( "#monthly-fee-slider" ).slider( "values", 0 ) +
@@ -159,6 +164,8 @@
 	      values: [ 0, 500 ],
 	      slide: function( event, ui ) {
 	        $( "#price" ).text( ui.values[ 0 ] + " 만원 - " + ui.values[ 1 ] + " 만원");
+	      	refreshFilterKeywords();
+	        console.log(filterKeywords);
 	      }
 	    });
 	    $( "#price" ).text( $( "#price-slider" ).slider( "values", 0 ) +
@@ -207,36 +214,64 @@
 		"priceMin": null, 		// 매매가 min
 		"priceMax": null 		// 매매가 max
 	};
+	function refreshFilterKeywords() {
+			filterKeywords.station = $("#station-autocomplete").val();
+			filterKeywords.commuteWay = $("input[name='commuteWay']:checked").val();
+			filterKeywords.commuteMin = $( "#commute-slider" ).slider( "values", 0 );
+			filterKeywords.commuteMax = $( "#commute-slider" ).slider( "values", 1 );
+	
+			filterKeywords.op = $( "#houseTypeOp" ).prop( "checked" );
+			filterKeywords.sh = $( "#houseTypeSh" ).prop( "checked" );
+			filterKeywords.or = $( "#houseTypeOr" ).prop( "checked" );
+			filterKeywords.at = $( "#houseTypeAt" ).prop( "checked" );
+		
+			filterKeywords.l = $( "#offerTypeL" ).prop( "checked" );
+			filterKeywords.m = $( "#offerTypeM" ).prop( "checked" );
+			filterKeywords.p = $( "#offerTypeP" ).prop( "checked" );
+		
+			filterKeywords.lDepositMin = $( "#l-deposit-slider" ).slider( "values", 0 );
+			filterKeywords.lDepositMax = $( "#l-deposit-slider" ).slider( "values", 1 );
+			filterKeywords.mDepositMin = $( "#m-deposit-slider" ).slider( "values", 0 );
+			filterKeywords.mDepositMax = $( "#m-deposit-slider" ).slider( "values", 1 );
+			filterKeywords.montylyFeeMin = $( "#monthly-fee-slider" ).slider( "values", 0 );
+			filterKeywords.monthlyFeeMax = $( "#monthly-fee-slider" ).slider( "values", 1 );
+			filterKeywords.priceMin = $( "#price-slider" ).slider( "values", 0 );
+			filterKeywords.priceMax = $( "#price-slider" ).slider( "values", 1 );
+		}
 	console.log(filterKeywords);
 	$(document).ready(function(){
-		/* filterKeywords.station = document.getElementById( "station-autocomplete" ).value; */
-		/* filterKeywords.commuteWay = document.querySelector( 'input[name="commuteWay"]:checked' ).value; */
-		filterKeywords.station = $("#station-autocomplete").val();
-		filterKeywords.commuteWay = $("input[name='commuteWay']:checked").val();
-		filterKeywords.commuteMin = $( "#commute-slider" ).slider( "values", 0 );
-		filterKeywords.commuteMax = $( "#commute-slider" ).slider( "values", 1 );
-	
-		filterKeywords.op = $( "#houseTypeOp" ).prop( "checked" );
-		filterKeywords.sh = $( "#houseTypeSh" ).prop( "checked" );
-		filterKeywords.or = $( "#houseTypeOr" ).prop( "checked" );
-		filterKeywords.at = $( "#houseTypeAt" ).prop( "checked" );
+		//filterKeywords.station = document.getElementById( "station-autocomplete" ).value; 
+		//filterKeywords.commuteWay = document.querySelector( 'input[name="commuteWay"]:checked' ).value; 
 		
-		filterKeywords.l = $( "#offerTypeL" ).prop( "checked" );
-		filterKeywords.m = $( "#offerTypeM" ).prop( "checked" );
-		filterKeywords.p = $( "#offerTypeP" ).prop( "checked" );
-		
-		filterKeywords.lDepositMin = $( "#l-deposit-slider" ).slider( "values", 0 );
-		filterKeywords.lDepositMax = $( "#l-deposit-slider" ).slider( "values", 1 );
-		filterKeywords.mDepositMin = $( "#m-deposit-slider" ).slider( "values", 0 );
-		filterKeywords.mDepositMax = $( "#m-deposit-slider" ).slider( "values", 1 );
-		filterKeywords.montylyFeeMin = $( "#monthly-fee-slider" ).slider( "values", 0 );
-		filterKeywords.monthlyFeeMax = $( "#monthly-fee-slider" ).slider( "values", 1 );
-		filterKeywords.priceMin = $( "#price-slider" ).slider( "values", 0 );
-		filterKeywords.priceMax = $( "#price-slider" ).slider( "values", 1 );
-	
 	});
 	
+	// house_type 필터 만들기
+	// offer_type 필터 만들기 
+	// 매물 가격 정보 필터 만들기
+	// 
 	
+	// 필터링 하는 함수
+	function filteringList(before) {
+		return before.filter(item => {
+   			return (item.house_type === 'at' && filterKeywords.at) ||
+				(item.house_type === 'op' && filterKeywords.op) ||
+				(item.house_type === 'sh' && filterKeywords.sh) ||
+				(item.house_type === 'or' && filterKeywords.or);
+			})
+	}
+	
+	function refreshable() {
+		refreshFilterKeywords();
+		console.log(filterKeywords);
+		//changedArr = filteringList(saleJsonArr);
+		changedArr = slaeJsonArr.filter(item => {
+   			return (item.house_type === 'at' && filterKeywords.at) ||
+				(item.house_type === 'op' && filterKeywords.op) ||
+				(item.house_type === 'sh' && filterKeywords.sh) ||
+				(item.house_type === 'or' && filterKeywords.or);
+			})
+		console.log(saleJsonArr.length);
+	}
 	
 	console.log(filterKeywords);
 	
@@ -250,6 +285,7 @@
             // 해제되었을 때의 동작
             console.log("오피스텔이 해제되었습니다.");
         }
+		refreshable();
     });
 
     // 주택 체크박스 이벤트
@@ -260,6 +296,7 @@
         } else {
             console.log("주택이 해제되었습니다.");
         }
+		refreshable();
     });
 
     // 원룸 체크박스 이벤트
@@ -270,6 +307,7 @@
         } else {
             console.log("원룸이 해제되었습니다.");
         }
+		refreshable();
     });
 
     // 아파트 체크박스 이벤트
@@ -281,8 +319,9 @@
         } else {
             console.log("아파트가 해제되었습니다.");
         }
+        refreshable();
     });
-    
+
     // 모든 집 유형 체크박스의 변경 이벤트
     $("[id^=houseType]").change(function(){
         var checkedCount = $("[id^=houseType]:checked").length;
@@ -339,9 +378,16 @@
         }
     });
 
+
+    /*
     $(".refreshable").change( function(){
-		console.log(this);
+		//console.log(this);
+		refreshFilterKeywords();
+		console.log(filterKeywords);
+		saleJsonArr = filteringList(saleJsonArr);
+		console.log(saleJsonArr.length);
 	});
+	*/
     
 	
   })(window.jQuery);

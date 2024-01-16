@@ -131,7 +131,8 @@ public interface SqlMapperInter {
 	
 	// saleTO 참고
 	//@Select("select title, lat, lon from sale")
-	@Select("select title, lat, lon, sale_type from sale")
+	//@Select("select title, lat, lon, sale_type from sale")
+	@Select("select * from sale")
 	List<SaleTO> getSales();
 	
 	// saleTO 참고

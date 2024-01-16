@@ -132,15 +132,15 @@
 			            <li>
 			            	<h6>거래 유형 / 중복 선택: </h6>
 							<div class="form-check form-check-inline">
-							  <input class="form-check-input refeshable" type="checkbox" id="offerTypeL" value="L" checked>
+							  <input class="form-check-input refreshable" type="checkbox" id="offerTypeL" value="L" checked>
 							  <label class="form-check-label" for="offerTypeL">전세</label>
 							</div>
 							<div class="form-check form-check-inline">
-							  <input class="form-check-input refeshable" type="checkbox" id="offerTypeM" value="M" checked>
+							  <input class="form-check-input refreshable" type="checkbox" id="offerTypeM" value="M" checked>
 							  <label class="form-check-label" for="offerTypeM">월세</label>
 							</div>
                                <div class="form-check form-check-inline">
-							  <input class="form-check-input refeshable" type="checkbox" id="offerTypeP" value="P" checked>
+							  <input class="form-check-input refreshable" type="checkbox" id="offerTypeP" value="P" checked>
 							  <label class="form-check-label" for="offerTypeP">매매</label>
 							</div>
 							<hr>
@@ -150,7 +150,7 @@
 								<div id="l-deposit-slider" class="mx-2 mb-2"></div>
 								<p>
 								  <label for="l-deposit">보증금:</label>
-								  <label id="l-deposit"></label>
+								  <label class="refreshable" id="l-deposit"></label>
 								</p>
 								<hr>
 							</div>
@@ -165,7 +165,7 @@
 								<div id="monthly-fee-slider" class="mx-2 mb-2"></div>
 								<p>
 								  <label for="monthly-fee">매매가:</label>
-								  <label id="monthly-fee"></label>
+								  <label class="refreshable" id="monthly-fee"></label>
 								</p>
 								<hr>
 							</div>
@@ -174,7 +174,7 @@
 								<div id="price-slider" class="mx-2 mb-2"></div>
 								<p>
 								  <label for="price">매매가:</label>
-								  <label id="price"></label>
+								  <label class="refreshable" id="price"></label>
 								</p>
 								<hr>
 							</div>
