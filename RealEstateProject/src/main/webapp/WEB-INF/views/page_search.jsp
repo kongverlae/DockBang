@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@page import="com.dockbang.model.SaleTO"%>
+<%@page import="com.dockbang.model.SaleDongTO"%>
 <%@page import="com.dockbang.model.SubwayStationTO"%>
 <%@page import="java.util.List"%>
 <%@page import="java.util.Map"%>
@@ -141,6 +142,7 @@
 			<%
 			  }
 			%>
+			
 			const saleMarkers = [];
 			for (let i = 0; i < saleLats.length; i++) {
 				saleMarkers.push({ position: new naver.maps.LatLng(saleLats[i], saleLons[i]), message: saleTitleArray[i] });
@@ -166,7 +168,24 @@
 			const stationMarkers = [];
 			for (let i = 0; i < stationLats.length; i++) {
 				stationMarkers.push({ position: new naver.maps.LatLng(stationLats[i], stationLons[i]), message: stationTitleArray[i] });
+			}
+			
+			// 동 매물 개수 정보			
+			const dongName = [];
+			const dongCount = [];
+			
+			for (let i = 0; i < saleDongArray.length; i++) {
+			    const dong = saleDongArray[i];
+			    const index = dongName.indexOf(dong);
 
+			    if (index !== -1) {
+			        // 이미 dongName 배열에 있는 동이면 해당 동에 대한 dongCount 값을 증가
+			        dongCount[index]++;
+			    } else {
+			        // dongName 배열에 없는 동이면 새로운 동이므로 dongName에 추가하고 dongCount는 1로 초기화
+			        dongName.push(dong);
+			        dongCount[dongName.length - 1] = 1;
+			    }
 			}
 			
 
@@ -202,6 +221,7 @@
 				 
 				// 동 마커 생성
 				const infoWindows = [];
+				
 				function drawPolygon(keyword) {
 				    if (polygon) {
 				        polygon.setMap(null);
@@ -237,15 +257,29 @@
 				
 				// 동 경계선
 				dongMarkers.forEach(markerInfo => {
-				    const marker = new naver.maps.Marker({
-				        position: markerInfo.position,
-				        map: map,
-				        icon: {
-				            content: "<div style='border: 1px solid #000; background-color: white; padding: 5px; font-size: 12px;'>" + markerInfo.message + "</div>",
-				            size: new naver.maps.Size(30, 30),
-				            anchor: new naver.maps.Point(15, 30)
-				        }
-				    });
+					let num = 0;
+					const marker = new naver.maps.Marker({
+					    position: markerInfo.position,
+					    map: map,
+					    icon: (() => {
+					        for (let i = 0; i < dongName.length; i++) {
+					            if (dongName[i] === markerInfo.message) {
+					                return {
+					                    content: "<div style='border: 1px solid #000; background-color: white; padding: 5px; font-size: 12px;'>" + dongCount[i] + " " + markerInfo.message + "</div>",
+					                    size: new naver.maps.Size(30, 30),
+					                    anchor: new naver.maps.Point(15, 30)
+					                };
+					            }
+					        }
+					        // 만약 해당하는 dongName이 없다면 기본 content로 설정
+					        return {
+					            content: "<div style='border: 1px solid #000; background-color: white; padding: 5px; font-size: 12px;'>" + markerInfo.message + "</div>",
+					            size: new naver.maps.Size(30, 30),
+					            anchor: new naver.maps.Point(15, 30)
+					        };
+					    })()
+					});
+
 
 				    naver.maps.Event.addListener(marker, 'click', function() {
 				        map.panTo(markerInfo.position);
@@ -312,7 +346,9 @@
 			        infoWindows.push(infoWindow);
 
 			        naver.maps.Event.addListener(marker, 'click', function() {
-			        	polygon.setMap(null);
+			        	if (polygon) {
+			        	    polygon.setMap(null);
+			        	}
 			            infoWindows.forEach(window => window.close());
 			            infoWindow.open(map, marker);
 			            map.panTo(markerInfo.position);
