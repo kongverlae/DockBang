@@ -696,7 +696,7 @@ blockquote {
   color: var(--p-color);
   font-family: var(--title-font-family);
   margin: 0 5px;
-  padding: 10px 20px;
+  /* padding: 10px 20px; */
 }
 
 .page-link:hover,

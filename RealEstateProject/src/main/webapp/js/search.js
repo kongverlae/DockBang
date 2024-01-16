@@ -388,7 +388,24 @@
 		console.log(saleJsonArr.length);
 	});
 	*/
-    
+    function test() {
+	    let list = "";
+		for( let i = 0; i < 20; i++ ) {
+			list += "<div style='height: 100px' class='row my-2'>";
+			list += "<div class='col-5 thumb-post'>";
+			list += "<img alt='매물 사진' src=";
+			list += "'" + saleJsonArr[i].sale_pic + "'";
+			list += ">";
+			/*https://dockbang-sale-picture-bucket.s3.ap-northeast-2.amazonaws.com/OP/OP_0001.jpg*/
+			list += "</div>";
+			list += "<div class='col-7'>";
+			list += "매매 4억7700<br>";
+			list += "아파트, 크기, 층<br>";
+			list += "지역<br>";
+			list += "</div>";
+			list += "</div>";
+		}
+	}
 	
   })(window.jQuery);
 
