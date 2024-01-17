@@ -314,19 +314,7 @@
 			const saleLons = [];
 			const saleTitleArray = [];
 			const saleDongArray = [];
-
-			<%
-			  // JSP 코드를 사용하여 SaleTO 목록에 접근
-			  List<SaleTO> saleList = (List<SaleTO>)request.getAttribute("sale");
-			  for (SaleTO saleItem : saleList) {
-			%>
-			  saleLats.push(<%= saleItem.getLat() %>);
-			  saleLons.push(<%= saleItem.getLon() %>);
-			  saleTitleArray.push('<%= saleItem.getTitle() %>');
-			  saleDongArray.push('<%= saleItem.getTitle().split(" ")[0] %>');
-			<%
-			  }
-			%>
+			
 			//=============김재휘 작업 중======================
 			// test 용도
 			let sale = new Date();
