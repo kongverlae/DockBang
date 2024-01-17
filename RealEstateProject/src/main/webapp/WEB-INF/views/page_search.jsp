@@ -6,6 +6,8 @@
 <%@page import="java.util.List"%>
 <%@page import="java.util.Map"%>
     
+<%@page import="org.json.simple.JSONArray"%>
+<%@page import="org.json.simple.JSONObject"%>
 <%
 	String keyword = request.getParameter("keyword");
 
@@ -37,13 +39,28 @@
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&family=Open+Sans&display=swap" rel="stylesheet">
-	<link href="css/bootstrap.min.css" rel="stylesheet">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+	<!-- <link href="css/bootstrap.min.css" rel="stylesheet"> -->
 	<link href="css/bootstrap-icons.css" rel="stylesheet">
 	<link href="css/templatemo-topic-listing.css" rel="stylesheet">   
 	<link href="css/jquery-ui.min.css" rel="stylesheet">
+	
+	<style type="text/css">
+		.thumb-post img {
+			object-fit: cover; /* keep aspect ratio */
+			object-position: 50% 50%;
+			width: 100%;
+			height: 90px;
+			/* width: fit-content; */
+			/* height: 100px; */
+			/* max-height: 100%; */
+			/* margin-bottom: 1rem; */
+			/* padding-right: 10px; */
+		}
+	</style>
 </head>
 
-<body style="overflow:hidden;">
+<body class="overflow-hidden">
 	<!-- header page include -->
 	<%@ include file="page_nav.jsp" %>
 
@@ -51,12 +68,79 @@
 	<%@ include file="page_searchMenu.jsp" %>
 
 	<!-- page content -->
-	<main>
-		<div class="row" >
-			<section class="section" id="section-3" >
-				<div id="map" style="width: 100%; height: 80vh; margin: auto;"></div>
+	<main class="container-fluid">
+		<div class="row">	
+			<!-- 지도 표시 -->
+			<!-- <div style="width: 80%; padding: 0px"> -->
+			<div class="col-5 col-sm-6 col-md-7 col-lg-8 col-xl-9 col-xxl-10 p-0">
+				<div id="map" style="height: 80vh;"></div>
 				<code id="snippet" class="snippet"></code>
-			</section>
+			</div>
+			
+			<!-- 매물 리스트 표시 -->
+			<!-- <div style="width: 20%;" class="p-0"> -->
+			<div class="col-7 col-sm-6 col-md-5 col-lg-4 col-xl-3 col-xxl-2 p-0">
+				<div class="overflow-y-auto overflow-x-hidden p-0" style="height: 80vh; ">
+					<!-- 리스트 부분 -->
+						<div class="container-fluid" id="saleListing">
+							<!-- <div style="height: 100px" class="row my-2">
+								사진
+								<div class="col-5 thumb-post">
+									<img alt="매물 사진" src="https://dockbang-sale-picture-bucket.s3.ap-northeast-2.amazonaws.com/OP/OP_0001.jpg">
+								</div>
+								내용
+								<div class="col-7">
+									매매 4억7700<br>
+									아파트, 크기, 층<br>
+									지역<br>
+								</div>
+							</div> -->
+						</div>
+					
+						<!-- 페이징 부분 -->
+						<div>
+							<!-- 페이지 네비게이션 -->
+			                <nav aria-label="Page navigation example">
+			                    <ul class="pagination justify-content-center mb-0">
+			                        <li class="page-item">
+			                            <a class="page-link w-10" aria-label="Previous">
+			                                <span aria-hidden="true">&lt;</span>
+			                            </a>
+			                        </li>
+			
+			                        <li class="page-item active" aria-current="page">
+			                            <a class="page-link w-10" href="#">1</a>
+			                        </li>
+			                        
+			                        <li class="page-item">
+			                            <a class="page-link w-10" href="#">2</a>
+			                        </li>
+			                        
+			                        <li class="page-item">
+			                            <a class="page-link w-10" href="#">3</a>
+			                        </li>
+			
+			                        <li class="page-item">
+			                            <a class="page-link w-10" href="#">4</a>
+			                        </li>
+			
+			                        <li class="page-item">
+			                            <a class="page-link w-10" href="#">5</a>
+			                        </li>
+			                        
+			                        <li class="page-item">
+			                            <a class="page-link w-10" href="#" aria-label="Next">
+			                                <span aria-hidden="true"> &gt;</span>
+			                            </a>
+			                        </li>
+			                    </ul>
+			                </nav>
+			                <!-- 페이지 네비게이션 종료 -->
+						</div>
+						<!-- 페이징 부분 종료 -->
+					
+				</div>
+			</div>
 		</div>
 		
 	</main>	
@@ -68,7 +152,8 @@
 	<!-- 	<script src="js/jquery.min.js"></script> -->
 	<script src="js/jquery.js"></script>
 	<!-- <script src="js/bootstrap.bundle.min.js"></script> -->
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+	<!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script> -->
 	<script src="js/jquery.sticky.js"></script>
 	<script src="js/click-scroll.js"></script>
 	<script src="js/custom.js"></script>
@@ -219,9 +304,80 @@
 			});
 			
 			
-			 
+      // main
 			// 동 마커 생성
 			const infoWindows = [];
+      // /main
+
+			// 매뭉 정보 불러오기
+			const saleLats = [];
+			const saleLons = [];
+			const saleTitleArray = [];
+			const saleDongArray = [];
+
+			<%
+			  // JSP 코드를 사용하여 SaleTO 목록에 접근
+			  List<SaleTO> saleList = (List<SaleTO>)request.getAttribute("sale");
+			  for (SaleTO saleItem : saleList) {
+			%>
+			  saleLats.push(<%= saleItem.getLat() %>);
+			  saleLons.push(<%= saleItem.getLon() %>);
+			  saleTitleArray.push('<%= saleItem.getTitle() %>');
+			  saleDongArray.push('<%= saleItem.getTitle().split(" ")[0] %>');
+			<%
+			  }
+			%>
+			//=============김재휘 작업 중======================
+			// test 용도
+			let sale = new Date();
+			<%
+			JSONArray saleJsonArr = new JSONArray();
+			for (SaleTO saleItem : saleList) {
+				if(saleItem.getSale_type()==null){
+				} else if ( !saleItem.getSale_type().equals("AT")) {
+					saleJsonArr.add(saleItem.toJson());
+				}
+			}
+			%>
+			
+			let saleJsonArr = <%=saleJsonArr%>;
+			console.log(saleJsonArr.length);
+			console.log(saleJsonArr[1]);
+			console.log("sale: " + ( new Date() - sale ));
+			let changedArr = null;
+			
+		    let list = "";
+			for( let i = 0; i < 20; i++ ) {
+				list += "<a href="
+				list += "'page_saleInfo.do?sale_seq=" + saleJsonArr[i].sale_seq + "'>";
+				list += "<div style='height: 100px' class='row my-2'>"
+				list += "<div class='col-5 thumb-post'>";
+				list += "<img alt='매물 사진' src=";
+				list += "'" + saleJsonArr[i].sale_pic + "'";
+				list += ">";
+				/*https://dockbang-sale-picture-bucket.s3.ap-northeast-2.amazonaws.com/OP/OP_0001.jpg*/
+				list += "</div>";
+				list += "<div class='col-7'>";
+				console.log(saleJsonArr[i].sale_type);
+				if(saleJsonArr[i].sale_type=="P"){
+					list += saleJsonArr[i].sale_type + saleJsonArr[i].price + "<br>";					
+				} else if (saleJsonArr[i].sale_type=="L"){
+					list += saleJsonArr[i].sale_type + saleJsonArr[i].deposit + "<br>";					
+				} else if (saleJsonArr[i].sale_type=="M"){
+					list += saleJsonArr[i].sale_type + saleJsonArr[i].deposit + "/" + saleJsonArr[i].monthly_fee + "<br>";					
+				}
+				list += saleJsonArr[i].house_type + ", " + saleJsonArr[i].area + "㎡,";
+				list += saleJsonArr[i].floor + "/" + saleJsonArr[i].height + "<br>";
+				list += saleJsonArr[i].address + "<br>";
+				list += "</div>";
+				list += "</div>";
+				list += "</a>";
+			}
+			
+			$("#saleListing").html(list);
+			
+			//=============================================
+
 			
 			function drawPolygon(keyword) {
 			    if (polygon) {
@@ -495,6 +651,7 @@
 
 			    infoWindow.close();
 
+          // navermap
 			    naver.maps.Service.reverseGeocode({
 			        coords: latlng,
 			        orders: [
@@ -505,6 +662,12 @@
 			        if (status === naver.maps.Service.Status.ERROR) {
 			            return alert('Something Wrong!');
 			        }
+          // /navermap
+          // main
+					const infoWindow = new naver.maps.InfoWindow({
+			            content: markerInfo.message
+			        });
+          // /main
 
 			        let items = response.v2.results,
 			            address = '',

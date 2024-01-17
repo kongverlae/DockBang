@@ -35,7 +35,7 @@
         <div class="row align-items-center">
         	
         	<!-- 지역 검색 창 시작 -->
-        	<form method="get" class="custom-form col-lg-2 col-4" role="search" action="page_search.do">
+        	<form method="get" class="custom-form col-4 col-sm-4 col-md-4 col-lg-4 col-xl-3 col-xxl-2" role="search" action="page_search.do">
 				<div class="input-group input-group-lg p-1">
 					<!-- <button type="submit" class="form-control">Search</button> -->
 					<input name="keyword" type="search" class="form-control m-0"
@@ -48,7 +48,7 @@
 			<!-- 지역 검색 창 끝 -->
 					
 			<!-- 매물 상세 검색 그룹 -->	
-            <div class="col-lg-10 col-8">
+            <div class="col-8 col-sm-8 col-md-8 col-lg-8 col-xl-9 col-xxl-10">
             	<!-- 지하철 역 이동 시간 기반 검색 -->
 				<div class="btn-group">
 			        <button type="button" class="btn custom-btn dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
