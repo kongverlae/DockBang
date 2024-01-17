@@ -322,7 +322,7 @@
 			JSONArray saleJsonArr = new JSONArray();
 			for (SaleTO saleItem : saleList) {
 				if(saleItem.getSale_type()==null){
-				} else if ( !saleItem.getSale_type().equals("AT")) {
+				} else {
 					saleJsonArr.add(saleItem.toJson());
 				}
 			}
@@ -333,6 +333,9 @@
 			console.log(saleJsonArr[1]);
 			console.log("sale: " + ( new Date() - sale ));
 			let changedArr = null;
+			
+			<%-- let testlist1 = <%= saleList %>;
+			console.log(testlist1); --%>
 			
 		    let list = "";
 			for( let i = 0; i < 20; i++ ) {
@@ -363,6 +366,50 @@
 			}
 			
 			$("#saleListing").html(list);
+			
+			let circles = [];
+			
+			$("#commutebtn").on("click", function() {
+				$.ajax({
+					// jsp, xml 등 페이지 주소
+					url: '/act_distance_search.do',
+					type: 'get',
+					// json, xml, html, text 등
+					// 파라미터 입력하기
+					data: {
+						startStation: $("#station-autocomplete").val(),
+						timeLimit: $( "#commute-slider" ).slider( "values", 1 )
+					},
+					dataType: 'json',
+					// 성공 4 && 200 이라는 말
+					success: function(json) {
+						//console.log(json);
+						circles = [];
+						console.log(json.stationsNearStart);
+						json.stationsNearStart.forEach(station => {
+							console.log(station.name);
+							let num = stationTitleArray.indexOf(station.name);
+							let title = stationTitleArray[num];
+							let lat = stationLats[num];
+							let lon = stationLons[num];
+							console.log(num + "/" + title + "/" +  lat + "/" +  lon);
+							let circle = new naver.maps.Circle({
+							    map: map,
+							    center: new naver.maps.LatLng(lat, lon),
+							    radius: 1000,
+							    fillColor: 'green',
+							    fillOpacity: 0.1
+							});
+							circles.push(circle);
+						});
+						
+					},
+					// 실패 
+					error: function(e) {
+						alert('[에러]' + e.status);
+					}
+				});
+			});
 			
 			//=============================================
 

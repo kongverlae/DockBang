@@ -407,6 +407,47 @@
 		}
 	}
 	
+	let circles = [];
+	
+	$("#commutebtn").on("click", function() {
+		$.ajax({
+			// jsp, xml 등 페이지 주소
+			url: '/act_distance_search.do',
+			type: 'get',
+			// json, xml, html, text 등
+			// 파라미터 입력하기
+			data: {
+				startStation: $("#station-autocomplete").val(),
+				timeLimit: $( "#commute-slider" ).slider( "values", 1 )
+			},
+			dataType: 'json',
+			// 성공 4 && 200 이라는 말
+			success: function(json) {
+				//console.log(json);
+				json.stationsNearStart.forEach(station => {
+					console.log(station.name);
+					let num = stationTitleArray.indexOf(station.name);
+					let title = stationTitleArray[num];
+					let lat = stationLats[num];
+					let lon = stationLons[num];
+					console.log(num + "/" + title + "/" +  lat + "/" +  lon);
+					let circle = new naver.maps.Circle({
+					    map: map,
+					    center: new naver.maps.LatLng(lat, lon),
+					    radius: 10000,
+					    fillColor: 'crimson',
+					    fillOpacity: 0.8
+					});
+					circles.push(circle);
+				});
+				
+			},
+			// 실패 
+			error: function(e) {
+				alert('[에러]' + e.status);
+			}
+		});
+	});
   })(window.jQuery);
 
 

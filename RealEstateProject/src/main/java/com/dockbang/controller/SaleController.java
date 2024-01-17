@@ -5,10 +5,13 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.dockbang.mapper.SqlMapperInter;
@@ -141,6 +144,49 @@ public class SaleController {
 		return modelAndView;
 	}
 
+	@RequestMapping("/act_distance_search.do")
+	@ResponseBody
+	JSONObject act_distance_search(
+			// 출발역 	- 거리기반 검색
+			@RequestParam(value = "startStation", defaultValue = "") String startStation,
+			// 제한시간 - 거리기반 검색
+			@RequestParam(value = "timeLimit", defaultValue = "-1") int timeLimit) {
+		JSONObject result = new JSONObject();
+		result.put("startStation", startStation);
+		result.put("timeLimit", timeLimit);
+		
+		// 전체 역 리스트
+		List<SubwayStationTO> stations = mapper.getStations();
+		// 출발점 기준 5분이내 도달가능한 역 리스트
+		List<SubwayStationTO> stationsNearStart = new DijkstraAlgo().getStationsNearStart(stations, startStation, timeLimit);
+		
+		result.put("stationsNearStart", stationsNearStart);
+		
+		
+		// Map<역이름, List<매물>> - 페이지로 반환할 결과
+		Map<String, List<SaleTO>> salesNearStationMap = new HashMap<>();
+		
+		
+		// 역 하나하나 1km이내 매물리스트 찾아오기
+		/*
+		 * for (SubwayStationTO stationTO : stationsNearStart) { String stationName =
+		 * stationTO.getName(); // 이름으로 지하철 역 정보 get stationTO =
+		 * mapper.getStation(stationName);
+		 * 
+		 * // 출발역일때 그 주소 가져오기 - 출발역으로 지도 이동을 위함
+		 * if(stationTO.getName().equals(startStation)) { // keyword =
+		 * stationTO.getRoad_address(); } // System.out.println("stationTO: " +
+		 * stationTO.getName());
+		 * 
+		 * // 공간DB로 역 위치 기준 1km 이내 매물리스트 List<SaleTO> salesNearStation =
+		 * sdao.getSaleNearStation(stationTO.getLongitude(), stationTO.getLatitude());
+		 * salesNearStationMap.put(stationName, salesNearStation); }
+		 */
+		
+		
+		return result;
+	}
+	
 	// 매물 상세정보 + 매물 주변 편의시설 정보 반환
 	@RequestMapping("/page_saleInfo.do")
 	ModelAndView page_saleInfo(@RequestParam String sale_seq) {
