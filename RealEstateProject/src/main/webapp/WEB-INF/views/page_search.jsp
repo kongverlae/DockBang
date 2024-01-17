@@ -532,7 +532,7 @@
 
 		    var markerClustering = new MarkerClustering({
 		        minClusterSize: 1,
-		        maxZoom: 18,
+		        maxZoom: 19,
 		        map: map,
 		        markers: markers,
 		        disableClickZoom: false,

@@ -317,7 +317,7 @@ naver.maps.Util.ClassExtend(MarkerClustering, naver.maps.OverlayView, {
 	_createClusters: function() {
 		var map = this.getMap();
 
-		if (!map) return;
+		if (!map || map.getZoom()<15) return;
 
 		var bounds = map.getBounds(),
 			markers = this.getMarkers();
