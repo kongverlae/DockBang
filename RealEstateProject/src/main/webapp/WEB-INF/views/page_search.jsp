@@ -606,6 +606,11 @@
 		        const marker = new naver.maps.Marker({
 		            position: markerInfo.position,
 		            map: null, // 초기에는 지도에 표시하지 않음
+		            icon: {
+		            	content: `<div style="cursor:pointer;display:flex;align-items:center;"><img src="images/station_icon.png" alt="Station Icon" style="width: 40px; height: 40px;"><span style="margin-left: 2px;">` + markerInfo.message + `</span></div>`,
+		                anchor: new naver.maps.Point(20, 40) // 이미지의 중심점 설정
+		            
+		            }
 		        });
 
 		        markerInfo.marker = marker; // 마커 정보에 실제 마커 객체 저장
@@ -617,10 +622,11 @@
 		        infoWindows.push(infoWindow);
 
 		        naver.maps.Event.addListener(marker, 'click', function() {
-		        	polygon.setMap(null);
+		        	if (polygon) {
+		        	    polygon.setMap(null);
+		        	}
 		        	map.setZoom(16);
 		            infoWindows.forEach(window => window.close());
-		            infoWindow.open(map, marker);
 		            map.panTo(markerInfo.position);
 		        });
 		    });
