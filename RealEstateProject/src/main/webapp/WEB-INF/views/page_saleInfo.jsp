@@ -379,7 +379,7 @@
 		<div class="col-8 col-sm-7 col-md-6 col-lg-5 col-xl-4 col-xxl-3 p-0" style="position: fixed; top: 24%; right: 0;">
 			<div class="overflow-y-auto overflow-x-hidden p-0" style="height: 80vh; ">
 				<!-- 리스트 부분 -->
-				<h3 class="bg-secondary p-3">매물 조회 히스토리</h3>
+				<h3 class="p-3">매물 조회 히스토리</h3>
 				<div class="container-fluid">
 					<%
 						// 히스토리 리스트 출력
