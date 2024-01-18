@@ -72,17 +72,17 @@
 		<div class="row">	
 			<!-- 지도 표시 -->
 			<!-- <div style="width: 80%; padding: 0px"> -->
-			<div class="col-5 col-sm-6 col-md-7 col-lg-8 col-xl-9 col-xxl-10 p-0">
+			<div class="col-4 col-sm-5 col-md-6 col-lg-7 col-xl-8 col-xxl-9 p-0">
 				<div id="map" style="height: 80vh;"></div>
 				<code id="snippet" class="snippet"></code>
 			</div>
 			
 			<!-- 매물 리스트 표시 -->
 			<!-- <div style="width: 20%;" class="p-0"> -->
-			<div class="col-7 col-sm-6 col-md-5 col-lg-4 col-xl-3 col-xxl-2 p-0">
+			<div class="col-8 col-sm-7 col-md-6 col-lg-5 col-xl-4 col-xxl-3 p-0">
 				<div class="overflow-y-auto overflow-x-hidden p-0" style="height: 80vh; ">
 					<!-- 리스트 부분 -->
-						<div class="container-fluid" id="saleListing">
+						<div class="container-fluid" id="sideListing">
 							<!-- <div style="height: 100px" class="row my-2">
 								사진
 								<div class="col-5 thumb-post">
@@ -101,13 +101,14 @@
 						<div>
 							<!-- 페이지 네비게이션 -->
 			                <nav aria-label="Page navigation example">
-			                    <ul class="pagination justify-content-center mb-0">
-			                        <li class="page-item">
+			                    <ul id="sidePaging" class="pagination justify-content-center mb-0">
+			                    	
+			                        <!-- <li class="page-item">
 			                            <a class="page-link w-10" aria-label="Previous">
 			                                <span aria-hidden="true">&lt;</span>
 			                            </a>
 			                        </li>
-			
+									
 			                        <li class="page-item active" aria-current="page">
 			                            <a class="page-link w-10" href="#">1</a>
 			                        </li>
@@ -132,7 +133,8 @@
 			                            <a class="page-link w-10" href="#" aria-label="Next">
 			                                <span aria-hidden="true"> &gt;</span>
 			                            </a>
-			                        </li>
+			                        </li> -->
+			                        
 			                    </ul>
 			                </nav>
 			                <!-- 페이지 네비게이션 종료 -->
@@ -321,8 +323,9 @@
 			<%
 			JSONArray saleJsonArr = new JSONArray();
 			for (SaleTO saleItem : saleList) {
+				
 				if(saleItem.getSale_type()==null){
-				} else if ( !saleItem.getSale_type().equals("AT")) {
+				} else {
 					saleJsonArr.add(saleItem.toJson());
 				}
 			}
@@ -332,37 +335,195 @@
 			console.log(saleJsonArr.length);
 			console.log(saleJsonArr[1]);
 			console.log("sale: " + ( new Date() - sale ));
-			let changedArr = null;
 			
-		    let list = "";
-			for( let i = 0; i < 20; i++ ) {
-				list += "<a href="
-				list += "'page_saleInfo.do?sale_seq=" + saleJsonArr[i].sale_seq + "'>";
-				list += "<div style='height: 100px' class='row my-2'>"
-				list += "<div class='col-5 thumb-post'>";
-				list += "<img alt='매물 사진' src=";
-				list += "'" + saleJsonArr[i].sale_pic + "'";
-				list += ">";
-				/*https://dockbang-sale-picture-bucket.s3.ap-northeast-2.amazonaws.com/OP/OP_0001.jpg*/
-				list += "</div>";
-				list += "<div class='col-7'>";
-				console.log(saleJsonArr[i].sale_type);
-				if(saleJsonArr[i].sale_type=="P"){
-					list += saleJsonArr[i].sale_type + saleJsonArr[i].price + "<br>";					
-				} else if (saleJsonArr[i].sale_type=="L"){
-					list += saleJsonArr[i].sale_type + saleJsonArr[i].deposit + "<br>";					
-				} else if (saleJsonArr[i].sale_type=="M"){
-					list += saleJsonArr[i].sale_type + saleJsonArr[i].deposit + "/" + saleJsonArr[i].monthly_fee + "<br>";					
+			// saleList = 검색 등으로 인한 리스트에 출력할 값
+			let saleList = [];
+			saleList = saleJsonArr;
+			
+			// cpage = 현재 페이지
+		    let cpage = 1;
+		    const maxLender = 20;
+			let pageSize = 1;
+			pageSize = Math.ceil(saleList.length/maxLender);
+		    
+		    // pageSize 테스트용 코드
+			//let pageSize = saleList.length % 20 != 0 ? Math.floor(saleList.length/maxLender) + 1 : Math.floor(saleList.length/maxLender);
+			//console.log( "saleList.length : " + saleList.length );
+			//console.log( "pageSize : " + pageSize );
+			//console.log( "pagingTest : " + Math.ceil(saleList.length/maxLender) ) 
+			/* let maxLender = 20;
+			for( let i = 0; i < 42; i++ ) {
+				console.log( i + " : " + (i % 20 != 0 ? Math.floor(i/maxLender) + 1 : Math.floor(i/maxLender)) );
+			} */
+		    
+		    // 지도 화면 사이드에 표시되는 매물 리스트 그리는 함수
+		    // cpage = 현재 페이지 
+		    // maxLender = 최대 페이지 출력 수
+		    // saleJsonArr = 매물 리스트
+		    // let start = 페이지 번호에 따른 매물 리스트 시작 번호
+		    function drawSideListing(saleList) {
+		    	let list = "";
+			    let start = ( ( cpage - 1 ) * maxLender );
+				for( let i = start; i < (start + maxLender); i++ ) {
+					list += "<a href=";
+					list += "'page_saleInfo.do?sale_seq=" + saleList[i].sale_seq + "' ";
+					list += "target='_blank' rel='noreferrer'>";
+					list += "<div style='height: 100px' class='row my-2'>"
+					list += "<div class='col-5 thumb-post'>";
+					list += "<img alt='매물 사진' src=";
+					list += "'" + saleList[i].sale_pic + "'";
+					list += ">";
+					/*https://dockbang-sale-picture-bucket.s3.ap-northeast-2.amazonaws.com/OP/OP_0001.jpg*/
+					list += "</div>";
+					list += "<div class='col-7'>";
+					//console.log(saleList[i].sale_type);
+					if(saleList[i].sale_type=="P"){
+						list += saleList[i].sale_type + saleList[i].price + "<br>";					
+					} else if (saleList[i].sale_type=="l"){
+						list += saleList[i].sale_type + saleList[i].deposit + "<br>";					
+					} else if (saleList[i].sale_type=="m"){
+						list += saleList[i].sale_type + saleList[i].deposit + "/" + saleList[i].monthly_fee + "<br>";					
+					}
+					list += saleList[i].house_type + ", " + saleList[i].area + "㎡,";
+					list += saleList[i].floor + "/" + saleList[i].height + "<br>";
+					list += saleList[i].address + "<br>";
+					list += "</div>";
+					list += "</div>";
+					list += "</a>";
 				}
-				list += saleJsonArr[i].house_type + ", " + saleJsonArr[i].area + "㎡,";
-				list += saleJsonArr[i].floor + "/" + saleJsonArr[i].height + "<br>";
-				list += saleJsonArr[i].address + "<br>";
-				list += "</div>";
-				list += "</div>";
-				list += "</a>";
-			}
+				
+				$("#sideListing").html(list);
+		    };
+		    
+		    // 사이트 페이징 그리는 함수
+		    function drawSidePaging(){
+		    	// page 시작점
+		    	let pageStart = ( ( cpage >= 3 ) ? cpage - 2 : 1 );
+		    	// page 종료점 
+		    	let pageLast = ( ( ( pageStart + 4) < pageSize ) ? 
+		    			pageStart + 4 : pageSize );
+		    	
+		    	let paging = "";
+		    	paging += "";
+		    	
+		    	// 페이징 이전 [<]
+		    	paging += "<li class='page-item'>";
+		    	// 현재 페이지가 1이면 동작 불가
+		    	if(cpage==1){
+			    	paging += "<div id='pbtn' class='page-link w-10' aria-label='Previous'>";
+			    	paging += "<span aria-hidden='true'>&lt;</span></div></li>";
+		    	} else {
+			    	paging += "<button id='pbtn' class='page-link w-10' aria-label='Previous'>";
+			    	paging += "<span aria-hidden='true'>&lt;</span></button></li>";
+		    	}
+                
+		    	// 페이징 번호 출력 [1][2][3][4][5]
+				for(let i=pageStart; i<=pageLast; i++){
+					// 현재 페이지 번호와 같을 경우 현재 페이지라는 표시를 함
+					if(cpage == i){
+						paging += "<li class='page-item active' aria-current='page'>";
+						paging += "<div id='pbtn" + i + "' class='page-link w-1'>" + i + "</div></li>";
+					} else {
+						paging += "<li class='page-item' aria-current='page'>";
+						paging += "<button id='pbtn" + i + "' class='page-link w-1'>" + i + "</button></li>";
+					}
+				}				
+	            
+		    	// 페이징 이후 [>]
+				paging += "<li class='page-item'>";
+				if(cpage==pageSize){
+					paging += "<div id='nbtn' class='page-link w-10' aria-label='Next'>";
+					paging += "<span aria-hidden='true'> &gt;</span></div></li>";
+				} else {
+					paging += "<button id='nbtn' class='page-link w-10' aria-label='Next'>";
+					paging += "<span aria-hidden='true'> &gt;</span></button></li>";
+				}		    	
+	            
+				// html 페이지에 작성하기
+		    	$("#sidePaging").html(paging);
+		    	
+				// 페이징에 버튼 할당 하는 부분
+				
+				// 페이징 이전 버튼 할당
+				if(!(cpage==1)){
+					$("#pbtn").on( "click", function(){
+						cpage--;
+						drawSideListing(saleList);
+						drawSidePaging();
+					} );
+				}
+				// 페이징 번호 부분 버튼 할당
+				for(let i=pageStart; i<=pageLast; i++){
+			    	let pbtnName = "#pbtn" + i;
+					console.log("pbtn name: " + pbtnName);
+					if( !(cpage == i) ){
+						$( pbtnName ).on( "click", function() {
+							//console.log("버튼 누름");
+					    	cpage = i;
+							drawSideListing(saleList);
+							drawSidePaging();
+						});
+					}
+				}
+				
+				// 페이징 이후 버튼 할당
+				if(!(cpage==pageSize)){
+					$("#nbtn").on( "click", function(){
+						cpage++;
+						drawSideListing(saleList);
+						drawSidePaging();
+					} );
+				}
+		    }
 			
-			$("#saleListing").html(list);
+			drawSideListing(saleList);
+			drawSidePaging();
+			let circles = [];
+			
+			$("#commutebtn").on("click", function() {
+				$.ajax({
+					// jsp, xml 등 페이지 주소
+					url: '/act_distance_search.do',
+					type: 'get',
+					// json, xml, html, text 등
+					// 파라미터 입력하기
+					data: {
+						startStation: $("#station-autocomplete").val(),
+						timeLimit: $( "#commute-slider" ).slider( "values", 1 )
+					},
+					dataType: 'json',
+					// 성공 4 && 200 이라는 말
+					success: function(json) {
+						//console.log(json);
+						circles = [];
+						console.log(json.stationsNearStart);
+						json.stationsNearStart.forEach(station => {
+							console.log(station.name);
+							
+							let num = stationTitleArray.indexOf(station.name);
+							let title = stationTitleArray[num];
+							let lat = stationLats[num];
+							let lon = stationLons[num];
+							console.log(num + "/" + title + "/" +  lat + "/" +  lon);
+							let circle = new naver.maps.Circle({
+							    map: map,
+							    center: new naver.maps.LatLng(lat, lon),
+							    radius: 1000,
+							    fillColor: 'green',
+							    fillOpacity: 0.1
+							});
+							circles.push(circle);
+						});
+						
+					},
+					// 실패 
+					error: function(e) {
+						alert('[에러]' + e.status);
+					}
+				});
+			});
+			
+			
 			
 			//=============================================
 
@@ -476,7 +637,7 @@
 		   initializeBounds(); // 초기에 bounds 초기화*/
 			
 			// 매물 마커 생성
-		   saleMarkers.forEach(markerInfo => {
+			saleMarkers.forEach(markerInfo => {
 		        const marker = new naver.maps.Marker({
 		            position: markerInfo.position,
 		            map: null, // 초기에는 지도에 표시하지 않음
