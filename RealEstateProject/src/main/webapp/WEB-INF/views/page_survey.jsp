@@ -218,8 +218,13 @@
 	<script src="js/custom.js"></script>
 	<script src="js/jquery-ui.min.js"></script>
 	<script>
-
 	
+    // pageSize 테스트용 코드
+	/* let maxLender = 20;
+	for( let i = 0; i < 100; i+=5 ) {
+		console.log( i + " : " + (i % 20 != 0 ? Math.floor(i/maxLender) + 1 : Math.floor(i/maxLender)) + " vs " + Math.ceil(i/maxLender) );
+	
+	} */
 	var availableTags = [
 	 "가락시장  ",
 	 "강남    ",

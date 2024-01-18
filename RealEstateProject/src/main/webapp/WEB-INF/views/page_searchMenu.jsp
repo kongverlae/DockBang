@@ -87,6 +87,10 @@
 							  <label for="commute">통근 시간:</label>
 							  <label id="commute"></label>
 							</p>
+							
+							<div class="btn-primary" id="commutebtn">
+								입력
+							</div>
 			            </li>
 			        </ul>
    				</div>
