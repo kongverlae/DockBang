@@ -1,5 +1,6 @@
 package com.dockbang.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,6 +24,9 @@ import com.dockbang.model.SaleDAO;
 import com.dockbang.model.SaleTO;
 import com.dockbang.model.SubwayStationTO;
 import com.dockbang.util.DijkstraAlgo;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class SaleController {
@@ -189,7 +193,7 @@ public class SaleController {
 	
 	// 매물 상세정보 + 매물 주변 편의시설 정보 반환
 	@RequestMapping("/page_saleInfo.do")
-	ModelAndView page_saleInfo(@RequestParam String sale_seq) {
+	ModelAndView page_saleInfo(@RequestParam String sale_seq, HttpServletRequest request) {
 		// 매물 상세정보
 		SaleTO saleTO = mapper.getSale(sale_seq);
 
@@ -208,7 +212,34 @@ public class SaleController {
 		// 매물 주변 편의시설 정보 - 경찰서
 		PoliceTO policeTO = mapper.getPopliceNearPoint(saleTO.getLon(), saleTO.getLat());
 
+		// ===히스토리 기능===
+		HttpSession session = request.getSession();
 		
+		// 열람 기록을 세션에 저장
+		List<SaleTO> historyList;
+		// 세션에서 열람기록 받아옴
+		if(session.getAttribute("historyList") != null) {
+			historyList = (List<SaleTO>) session.getAttribute("historyList");
+		} else {
+			// 열람한적 없으면 열람기록 새로 생성
+			historyList = new ArrayList<>();
+		}
+
+		// 중복된 매물이면 기존 기록 제외
+		if(historyList.contains(saleTO)) {
+			historyList.remove(saleTO);
+		}
+		// 히스토리에 매물 추가
+		historyList.add(saleTO);
+		
+		// 최대 5개만 남기고 삭제
+		while (historyList.size() > 5) {
+			historyList.remove(0);
+        }
+		
+		// 세션에 히스토리 추가
+		session.setAttribute("historyList", historyList);
+		// / ===히스토리 기능=== /
 		
 		// view(.jsp) 설정
 		ModelAndView modelAndView = new ModelAndView();

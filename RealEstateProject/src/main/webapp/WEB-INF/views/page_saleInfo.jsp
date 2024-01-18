@@ -1,6 +1,9 @@
-<%@page import="java.text.DecimalFormat"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+
+<%@page import="java.util.List"%>
+<%@page import="java.text.DecimalFormat"%>
+
 <%@page import="com.dockbang.model.PoliceTO"%>
 <%@page import="com.dockbang.model.MovieTO"%>
 <%@page import="com.dockbang.model.FoodTO"%>
@@ -16,6 +19,8 @@
 	PoliceTO policeTO = (PoliceTO)request.getAttribute("policeTO");
 	
 //	System.out.println((saleTO.getTelevision() == null) ? "널널해요" : saleTO.getTelevision());
+
+	List<SaleTO> historyList = (List)session.getAttribute("historyList");
 %>
 <!DOCTYPE html>
 <html lang="ko">
@@ -368,7 +373,38 @@
 	        
 	    </div>
 	</section>
-	</main>	
+	
+		<!-- 매물 히스토리 표시 -->
+		<!-- <div style="width: 20%;" class="p-0"> -->
+		<div class="col-8 col-sm-7 col-md-6 col-lg-5 col-xl-4 col-xxl-3 p-0" style="position: fixed; top: 24%; right: 0;">
+			<div class="overflow-y-auto overflow-x-hidden p-0" style="height: 80vh; ">
+				<!-- 리스트 부분 -->
+				<h3 class="bg-secondary p-3">매물 조회 히스토리</h3>
+				<div class="container-fluid">
+					<%
+						// 히스토리 리스트 출력
+						StringBuilder sb = new StringBuilder();
+						for(SaleTO historySaleTO:historyList){
+							// System.out.println("title: " + historySaleTO.getTitle());
+							sb.append("<a href='page_saleInfo.do?sale_seq=" + historySaleTO.getSale_seq() + "' target='_blank' rel='noreferrer'>");
+							sb.append("<div style='height: 100px' class='row my-2'>");
+							sb.append("<div class='col-5 thumb-post'>");
+							sb.append("<img alt='" + historySaleTO.getTitle() + "' src=" + historySaleTO.getSale_pic() + " width='60' height='60'>");
+							sb.append("</div>");
+							sb.append("<div class='col-7'>");
+							sb.append(historySaleTO.getTitle() + "<br>");
+							sb.append("</div>");
+							sb.append("</a>");
+						}
+						
+						out.println(sb.toString());
+					%>
+					
+				</div>
+			</div>
+		</div>
+	
+	</main>
 	<!-- footer page include -->
 	<%@ include file="page_footer.jsp" %>
 	
