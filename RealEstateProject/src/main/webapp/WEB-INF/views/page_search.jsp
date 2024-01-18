@@ -231,11 +231,10 @@
 		  }
 		%>
 		
-		const saleMarkers = [];
+		/*const saleMarkers = [];
 		for (let i = 0; i < saleLats.length; i++) {
 			saleMarkers.push({ position: new naver.maps.LatLng(saleLats[i], saleLons[i]), message: saleTitleArray[i] });
-
-		}
+		}*/
 		
 		// 역 정보 불러오기
 		const stationLats = [];
@@ -390,6 +389,7 @@
 					list += "</div>";
 					list += "</div>";
 					list += "</a>";
+
 				}
 				
 				$("#sideListing").html(list);
@@ -584,6 +584,7 @@
 				            anchor: new naver.maps.Point(15, 30)
 				        };
 				    })()
+				    
 				});
 
 
@@ -593,7 +594,7 @@
 			        // 편의성을 위한 클릭시 확대만 되게
 			        if(map.getZoom() < 14){
 				        map.setZoom(14);	
-			        }
+			        } 
 			        
 			        // 클릭한 마커의 위치의 키워드로 설정
 			        keyword = markerInfo.message;
@@ -608,7 +609,7 @@
 			    const currentZoom = map.getZoom();
 			
 			    console.log(currentZoom);
-			
+			    
 			    // 역 마커 표시 여부 설정
 			    stationMarkers.forEach(markerInfo => {
 			        const marker = markerInfo.marker;
@@ -641,6 +642,7 @@
 		        const marker = new naver.maps.Marker({
 		            position: markerInfo.position,
 		            map: null, // 초기에는 지도에 표시하지 않음
+		            check: true,
 		            message: markerInfo.message
 		        });
 
