@@ -55,7 +55,6 @@ var MarkerClustering = function(options) {
 naver.maps.Util.ClassExtend(MarkerClustering, naver.maps.OverlayView, {
 	onAdd: function() {
 		var map = this.getMap();
-
 		this._mapRelations = naver.maps.Event.addListener(map, 'idle', naver.maps.Util.bind(this._onIdle, this));
 
 		if (this.getMarkers().length > 0) {
@@ -326,14 +325,13 @@ naver.maps.Util.ClassExtend(MarkerClustering, naver.maps.OverlayView, {
 			var marker = markers[i],
 				position = marker.getPosition();
 
-			if (!bounds.hasLatLng(position)) continue;
-
-			var	closestCluster = this._getClosestCluster(position);
-
-			closestCluster.addMarker(marker);
-
-			this._markerRelations.push(naver.maps.Event.addListener(marker, 'dragend', naver.maps.Util.bind(this._onDragEnd, this)));
-		}
+			if (marker.check && bounds.hasLatLng(position)) {
+	            var closestCluster = this._getClosestCluster(position);
+	            closestCluster.addMarker(marker);
+	
+	            this._markerRelations.push(naver.maps.Event.addListener(marker, 'dragend', naver.maps.Util.bind(this._onDragEnd, this)));
+	        }
+        }
 	},
 
 	/**
@@ -527,11 +525,17 @@ Cluster.prototype = {
 	enableClickZoom: function() {
 		if (this._relation) return;
 
-		var map = this._markerClusterer.getMap();
+		 var map = this._markerClusterer.getMap();
 
-		this._relation = naver.maps.Event.addListener(this._clusterMarker, 'click', naver.maps.Util.bind(function(e) {
-			map.morph(e.coord, map.getZoom() + 1);
-		}, this));
+	    this._relation = naver.maps.Event.addListener(this._clusterMarker, 'click', naver.maps.Util.bind(function(e) {
+	        // 클러스터에 속한 마커들의 정보를 표시합니다.
+	        var markers = this.getClusterMember();
+	
+	        for (var i = 0; i < markers.length; i++) {
+				console.log("마커 " + (i + 1) + ": 위치 - " + markers[i].message + "<br>");
+	            // 마커에 대한 다른 정보도 추가할 수 있습니다.
+	        }
+	    }, this));
 	},
 
 	/**
@@ -622,7 +626,7 @@ Cluster.prototype = {
 	 * 클러스터를 구성하는 마커를 노출합니다. 이때에는 클러스터 마커를 노출하지 않습니다.
 	 * @private
 	 */
-	_showMember: function() {
+	/*_showMember: function() {
 		var map = this._markerClusterer.getMap(),
 			marker = this._clusterMarker,
 			members = this._clusterMember;
@@ -634,13 +638,13 @@ Cluster.prototype = {
 		if (marker) {
 			marker.setMap(null);
 		}
-	},
+	},*/
 
 	/**
 	 * 클러스터를 구성하는 마커를 노출하지 않습니다. 이때에는 클러스터 마커를 노출합니다.
 	 * @private
 	 */
-	_hideMember: function() {
+	/*_hideMember: function() {
 		var map = this._markerClusterer.getMap(),
 			marker = this._clusterMarker,
 			members = this._clusterMember;
@@ -652,7 +656,7 @@ Cluster.prototype = {
 		if (marker && !marker.getMap()) {
 			marker.setMap(map);
 		}
-	},
+	},*/
 
 	/**
 	 * 전달된 위/경도를 중심으로 그리드 크기만큼 확장한 클러스터 경계 영역을 반환합니다.
