@@ -407,7 +407,7 @@
 		}
 	}
 	
-	let circles = [];
+	/*let circles = [];
 	
 	$("#commutebtn").on("click", function() {
 		$.ajax({
@@ -447,7 +447,7 @@
 				alert('[에러]' + e.status);
 			}
 		});
-	});
+	});*/
   })(window.jQuery);
 
 
