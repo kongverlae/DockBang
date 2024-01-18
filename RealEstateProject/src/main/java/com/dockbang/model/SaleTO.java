@@ -73,6 +73,13 @@ public class SaleTO {
 	private String tv_license;
 	private String new_built;
 	
+	// List 중복체크에 커스텀메서드를 넣기 위함
+	@Override
+	public boolean equals(Object saleTO) {
+		// sale_seq가 같으면 같은 to
+		return ((SaleTO) saleTO).getSale_seq().equals(this.sale_seq);
+	}
+	
 	public JSONObject toJson() {
 		JSONObject obj = new JSONObject();
 		obj.put( "sale_seq", sale_seq);
