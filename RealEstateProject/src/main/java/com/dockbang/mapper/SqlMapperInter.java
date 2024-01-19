@@ -65,6 +65,10 @@ public interface SqlMapperInter {
 	@Select("SELECT social, email, name FROM user WHERE email=#{email}")
 	MemberTO selectUserInfo(@Param("email") String email);
 	
+	// 유저 북마크 추가
+	@Insert("insert into bookmark (useremail, saleseq, memo) values (#{userEmail}, #{saleSeq}, #{memo})")
+	int addUserBookmark(String userEmail, String saleSeq, String memo);
+	
 	// 게시판 리스트 출력
 	@Select("select boardseq, subject, writer, wdate from board where category = #{category} order by boardseq desc")
 	List<BoardTO> selectBoard(@Param("category") String category);

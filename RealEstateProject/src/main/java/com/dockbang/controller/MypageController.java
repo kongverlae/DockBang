@@ -1,9 +1,11 @@
 package com.dockbang.controller;
 
+import org.json.simple.JSONObject;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.dockbang.mapper.SqlMapperInter;
@@ -46,4 +48,18 @@ public class MypageController {
         // view 페이지로 반환
         return modelAndView;
     }
+    
+    @RequestMapping("/act_addBookmark.do")
+    @ResponseBody
+    JSONObject act_addBookmark(String userEmail, String saleSeq, String memo) {
+    	JSONObject obj = new JSONObject();
+    	
+    	// 0:실패 1:성공
+    	int flag = mapper.addUserBookmark(userEmail, saleSeq, memo);
+    	
+    	obj.put("flag", flag);
+    	
+    	return obj;
+    }
+    
 }

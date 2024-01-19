@@ -105,7 +105,6 @@ public class MemberController {
 	    	session.setAttribute("email",email);
 	    	String name = mapper.selectUserName(email);
 	    	session.setAttribute("nickname",name);
-	    	session.setAttribute("password",password);
 	    	
 	    	System.out.println(password);
 		}

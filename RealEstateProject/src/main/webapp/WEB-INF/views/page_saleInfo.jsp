@@ -35,13 +35,159 @@
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&family=Open+Sans&display=swap" rel="stylesheet">
-	<link href="css/bootstrap.min.css" rel="stylesheet">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+	<!-- <link href="css/bootstrap.min.css" rel="stylesheet"> -->
 	<link href="css/bootstrap-icons.css" rel="stylesheet">
-	<link href="css/templatemo-topic-listing.css" rel="stylesheet">   
+	<link href="css/templatemo-topic-listing.css" rel="stylesheet">
+	
 
 </head>
 
 <body>
+	<!-- 북마크 모달 -->
+	<div class="modal" id="bookmarkModal">
+		<div class="modal-dialog">
+			<div class="modal-content">
+
+				<!-- Modal Header -->
+				<div class="modal-header">
+					<h4 class="modal-title">북마크 추가</h4>
+					<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+				</div>
+
+				<!-- Modal body -->
+				<div class="modal-body">
+					<form>
+			          <div class="mb-3">
+			            <label for="sale-title" class="col-form-label">매물명</label>
+			            <input type="text" class="form-control" id="sale-title" readonly="readonly">
+			          </div>
+			          <div class="mb-3">
+			            <label for="message-text" class="col-form-label">메시지</label>
+			            <textarea class="form-control" id="message-text" maxlength="50" placeholder="최대 50자까지 작성 가능..."></textarea>
+			          </div>
+			        </form>
+				</div>
+
+				<!-- Modal footer -->
+				<div class="modal-footer">
+        			<button type="button" class="btn custom-border-btn" id="bookmarkSubmitBtn">추가</button>
+        			
+					<!-- 북마크 추가 성공시 눌릴 버튼: hidden -->
+        			<button type="button" data-bs-toggle="modal" data-bs-target="#successModal" id="successBtn" hidden="true"></button>
+					<!-- 북마크 추가 실패시 눌릴 버튼: hidden -->
+        			<button type="button" data-bs-toggle="modal" data-bs-target="#failModal" id="failBtn" hidden="true"></button>
+        			
+					<button type="button" class="btn custom-border-btn"
+						data-bs-dismiss="modal">닫기</button>
+				</div>
+
+			</div>
+		</div>
+	</div>
+	
+	<!-- 완료창 모달 -->
+	<div class="modal" id="successModal">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<!-- Modal Header -->
+				<div class="modal-header">
+				</div>
+				<!-- Modal body -->
+				<div class="modal-body">
+					<div class="alert alert-info">
+						<strong>성공</strong>
+					</div>
+				</div>
+				<!-- Modal footer -->
+				<div class="modal-footer">
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<!-- 실패창 모달 -->
+	<div class="modal" id="failModal">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<!-- Modal Header -->
+				<div class="modal-header">
+				</div>
+				<!-- Modal body -->
+				<div class="modal-body">
+					<div class="alert alert-danger alert-dismissiable">
+						<strong>실패</strong>
+					</div>
+				</div>
+				<!-- Modal footer -->
+				<div class="modal-footer">
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<script src="js/jquery.min.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			// 모달 이벤트
+			let bookmarkModal = document.getElementById('bookmarkModal');
+			bookmarkModal.addEventListener('show.bs.modal', function (event) {
+				// Button that triggered the modal
+				let button = event.relatedTarget;
+				// Extract info from data-bs-* attributes
+				let saleTitle = button.getAttribute('data-bs-target');
+				// If necessary, you could initiate an AJAX request here
+				// and then do the updating in a callback.
+	
+				// Update the modal's content.
+				// let modalTitle = bookmarkModal.querySelector('.modal-title');
+				let modalBodyInput = bookmarkModal.querySelector('.modal-body input');
+		
+			  // modalTitle.textContent = 'New message to ' + recipient;
+			  modalBodyInput.value = '<%= saleTO.getTitle() %>';
+			});
+			
+			// 북마크에 추가
+			let bookmarkSubmitBtn = document.getElementById('bookmarkSubmitBtn');
+			bookmarkSubmitBtn.addEventListener('click', function(event){
+				let memo = bookmarkModal.querySelector('.modal-body textarea').value;
+				// let memo = document.getElementById('message-text');
+				// console.log(memo.value);
+				
+				$.ajax({
+					url: './act_addBookmark.do?userEmail=' + '<%= (String)session.getAttribute("email") %>' + '&saleSeq=' + '<%= saleTO.getSale_seq() %>' + '&memo=' + memo ,
+					type: 'GET',
+					dataType: 'json',
+					success: function(json){
+						// 0 실패 1 성공
+						// console.log(json.flag);
+						if(json.flag == 1){
+							let btn = document.getElementById('successBtn');
+						    // click() 메소드를 사용하여 클릭 이벤트를 발생시킴
+							btn.click();
+						} else{
+							let btn = document.getElementById('failBtn');
+							btn.click();
+						}
+						
+					},
+					error: function(){
+						console.log('에러');
+					}
+				});
+				
+		
+			});
+			
+			
+			
+		});
+		
+		
+		
+	</script>
+	<!-- /북마크 모달 -->
+	
 	<!-- header page include -->
 	<%@ include file="page_nav.jsp" %>
 	
@@ -84,6 +230,16 @@
 								<!-- ( 192.168.0.1 | kong@ver.lae | 127.000 37.000 ) -->
 								<!-- <div class="m-0">2019.12.05. 10:56 | 89,994 읽음</div> -->
 							</div>
+							
+							<!-- 북마크 버튼 -->
+							
+							<div class="container mt-3">
+								<button type="button" class="btn custom-btn" data-bs-toggle="modal"
+									data-bs-target="#bookmarkModal">북마크에 매물 추가하기</button>
+							</div>
+							
+							<!-- /북마크 버튼 -->
+							
 							<hr>
 
 							<div class="row justify-content-center">
