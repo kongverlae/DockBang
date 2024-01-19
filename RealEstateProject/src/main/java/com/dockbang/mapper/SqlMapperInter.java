@@ -145,7 +145,8 @@ public interface SqlMapperInter {
 	// saleTO 참고
 	//@Select("select title, lat, lon from sale")
 	//@Select("select title, lat, lon, sale_type from sale")
-	@Select("select * from sale")
+	@Select("select title, lat, lon, sale_seq from sale")
+	//@Select("select * from sale")
 	//@Select("select * from sale limit 1000") // 원활한 작업을 위해 변경함
 	List<SaleTO> getSales();
 	
