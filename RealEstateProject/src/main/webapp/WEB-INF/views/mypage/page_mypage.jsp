@@ -1,7 +1,11 @@
-<%@page import="com.dockbang.model.MemberTO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<% MemberTO to = (MemberTO)request.getAttribute("userInfo"); %>
+<%@ page errorPage="../error/error_mypage.jsp" %>
+<%@page import="com.dockbang.model.MemberTO"%>
+<%
+	MemberTO to = (MemberTO)request.getAttribute("userInfo");
+	
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -91,19 +95,20 @@ nav a:hover {
 
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
  <script>
-        // 서버에서 받아온 사용자 정보
-        var userInfo = {
-            /*socialAccount: "<%= session.getAttribute("social") %>",
-            email: "<%= session.getAttribute("email") %>",
-            name: "<%= session.getAttribute("nickname") %>"*/
-            
-            socialAccount: "<%= to.getSocial() %>",
-            email: "<%= to.getEmail() %>",
-            name: "<%= to.getName() %>"
-        };
 
         // 페이지 로딩이 완료된 후 실행
         $(document).ready(function () {
+	        // 서버에서 받아온 사용자 정보
+	        var userInfo = {
+	            /*socialAccount: "<%= session.getAttribute("social") %>",
+	            email: "<%= session.getAttribute("email") %>",
+	            name: "<%= session.getAttribute("nickname") %>"*/
+	            
+	            socialAccount: "<%= to.getSocial() %>",
+	            email: "<%= to.getEmail() %>",
+	            name: "<%= to.getName() %>"
+	        };
+        
             // '내 정보' 클릭 시 서버에서 받아온 데이터를 페이지에 표시
             $("#myInfoLink").click(function () {
                 $("#socialAccount").text("소셜 유무: " + userInfo.socialAccount);
