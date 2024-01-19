@@ -217,7 +217,8 @@
 		const saleLons = [];
 		const saleTitleArray = [];
 		const saleDongArray = [];
-
+		const saleSeqArray = [];
+		
 		<%
 		  // JSP 코드를 사용하여 SaleTO 목록에 접근
 		  List<SaleTO> saleList = (List<SaleTO>)request.getAttribute("sale");
@@ -226,11 +227,11 @@
 		  saleLats.push(<%= saleItem.getLat() %>);
 		  saleLons.push(<%= saleItem.getLon() %>);
 		  saleTitleArray.push('<%= saleItem.getTitle() %>');
+		  saleSeqArray.push('<%= saleItem.getSale_seq() %>');
 		  saleDongArray.push('<%= saleItem.getTitle().split(" ")[0] %>');
 		<%
 		  }
 		%>
-		
 		const saleMarkers = [];
 		for (let i = 0; i < saleLats.length; i++) {
 			saleMarkers.push({ position: new naver.maps.LatLng(saleLats[i], saleLons[i]), message: saleTitleArray[i] });
@@ -798,82 +799,34 @@
 			naver.maps.onJSContentLoaded = initGeocoder;
 			
 			//=============김재휘 작업 중======================
-			// test 용도
-			let sale = new Date();
-			<%
-			JSONArray saleJsonArr = new JSONArray();
-			for (SaleTO saleItem : saleList) {
-				
-				if(saleItem.getSale_type()==null){
-				} else {
-					saleJsonArr.add(saleItem.toJson());
-				}
-			}
-			%>
-			
-			let saleJsonArr = <%=saleJsonArr%>;
-			console.log(saleJsonArr.length);
-			console.log(saleJsonArr[1]);
-			console.log("sale: " + ( new Date() - sale ));
-			
-			// saleList = 검색 등으로 인한 리스트에 출력할 값
-			let saleList = [];
-			saleList = saleJsonArr;
-			
+			// 매물 목록은 seq만 유지하기 변수 이름은 saleSeqArray
+			// 현재 사용하려는 매물 목록은 flteredSeq
+			let filteredSeq = saleSeqArray;
+			// sideList와 sidePage를 위한 변수들
 			// cpage = 현재 페이지
 		    let cpage = 1;
 		    const maxLender = 20;
+			// pageSize = 사용하려는 매물 목록 크기                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
 			let pageSize = 1;
-			pageSize = Math.ceil(saleList.length/maxLender);
-		    
-		    // pageSize 테스트용 코드
-			//let pageSize = saleList.length % 20 != 0 ? Math.floor(saleList.length/maxLender) + 1 : Math.floor(saleList.length/maxLender);
-			//console.log( "saleList.length : " + saleList.length );
-			//console.log( "pageSize : " + pageSize );
-			//console.log( "pagingTest : " + Math.ceil(saleList.length/maxLender) ) 
-			/* let maxLender = 20;
-			for( let i = 0; i < 42; i++ ) {
-				console.log( i + " : " + (i % 20 != 0 ? Math.floor(i/maxLender) + 1 : Math.floor(i/maxLender)) );
-			} */
-		    
-		    // ajax를 이용해서 페이지 그리는 데 필요한 정보 가져오기
-		    /* function getSideList(seqList) {
-				$.ajax({
-					// jsp, xml 등 페이지 주소
-					url: '/act_saleList.do',
-					type: 'get',
-					// json, xml, html, text 등
-					// 파라미터 입력하기
-					traditional: true,
-					data: {'seqList': seqList},
-					dataType: 'json',
-					// 성공 4 && 200 이라는 말
-					success: function(json) {
-						console.log(json);
-					},
-					// 실패 
-					error: function(e) {
-						alert('[에러]' + e.status);
-					}
-				});
-			}
-			 */
-		    // 지도 화면 사이드에 표시되는 매물 리스트 그리는 함수
+			let circles = [];
+
 		    // cpage = 현재 페이지 
 		    // maxLender = 최대 페이지 출력 수
 		    // saleJsonArr = 매물 리스트
 		    // let start = 페이지 번호에 따른 매물 리스트 시작 번호
-		    function drawSideListing(seqList) {
-		    	let list = "";
-			    let start = ( ( cpage - 1 ) * maxLender );
-			    // 들어온 seq 리스트를 seq만 가지고 있는 배열로 변경하는 작업
-			    let atSeqList = [];
-			    let last = (((start + maxLender)<seqList.length) ? start + maxLender : seqList.length);
-			    for( let i = start; i < last; i++ ) {
-			    	atSeqList.push(seqList[i].sale_seq);
-			    }
-			    
-			    $.ajax({
+
+		    // 지도 화면 사이드에 표시되는 매물 리스트 그리는 함수
+		    function drawSideListing(filteredSeq) {
+				let list = "";
+				let start = ( ( cpage - 1 ) * maxLender );
+				// 들어온 seq 리스트를 seq만 가지고 있는 배열로 변경하는 작업
+				let atSeqList = [];
+				let last = (((start + maxLender)<filteredSeq.length) ? start + maxLender : filteredSeq.length);
+				for( let i = start; i < last; i++ ) {
+					atSeqList.push(filteredSeq[i]);
+				}
+
+				$.ajax({
 					// jsp, xml 등 페이지 주소
 					url: '/act_saleList.do',
 					type: 'get',
@@ -921,69 +874,28 @@
 						alert('[에러]' + e.status);
 					}
 				});
-			    
-			    // console.log(atSeqList);
-			    // let saleList = getSideList(atSeqList);
-			    // console.log("saleList : " + saleList);
-				// 비동기식이기 때문에 데이터를 받아오는 방식이 다름
-			    // getSideList(atSeqList, function(saleList) {
-			    //	console.log("saleList : " + saleList);
-			    // });
-				/* 
-			    for( let i = start; i < (start + maxLender); i++ ) {
-					list += "<a href=";
-					list += "'page_saleInfo.do?sale_seq=" + saleList[i].sale_seq + "' ";
-					list += "target='_blank' rel='noreferrer'>";
-					list += "<div style='height: 100px' class='row my-2'>"
-					list += "<div class='col-5 thumb-post'>";
-					list += "<img alt='매물 사진' src=";
-					list += "'" + saleList[i].sale_pic + "'";
-					list += ">";
-					list += "</div>";
-					list += "<div class='col-7'>";
-					if(saleList[i].sale_type=="P"){
-						list += saleList[i].sale_type + saleList[i].price + "<br>";					
-					} else if (saleList[i].sale_type=="l"){
-						list += saleList[i].sale_type + saleList[i].deposit + "<br>";					
-					} else if (saleList[i].sale_type=="m"){
-						list += saleList[i].sale_type + saleList[i].deposit + "/" + saleList[i].monthly_fee + "<br>";					
-					}
-					list += saleList[i].house_type + ", " + saleList[i].area + "㎡,";
-					list += saleList[i].floor + "/" + saleList[i].height + "<br>";
-					list += saleList[i].address + "<br>";
-					list += "</div>";
-					list += "</div>";
-					list += "</a>";
-
-				}
-				
-				$("#sideListing").html(list);
-				 */
-				
 		    };
 		    
 		    // 사이트 페이징 그리는 함수
 		    function drawSidePaging(){
 		    	// page 시작점
-		    	let pageStart = ( ( cpage >= 3 ) ? cpage - 2 : 1 );
-		    	// page 종료점 
-		    	let pageLast = ( ( ( pageStart + 4) < pageSize ) ? 
-		    			pageStart + 4 : pageSize );
-		    	
-		    	let paging = "";
-		    	paging += "";
-		    	
-		    	// 페이징 이전 [<]
-		    	paging += "<li class='page-item'>";
-		    	// 현재 페이지가 1이면 동작 불가
-		    	if(cpage==1){
-			    	paging += "<div id='pbtn' class='page-link w-10' aria-label='Previous'>";
-			    	paging += "<span aria-hidden='true'>&lt;</span></div></li>";
-		    	} else {
-			    	paging += "<button id='pbtn' class='page-link w-10' aria-label='Previous'>";
-			    	paging += "<span aria-hidden='true'>&lt;</span></button></li>";
-		    	}
-                
+				let pageStart = ( ( cpage >= 3 ) ? cpage - 2 : 1 );
+				// page 종료점 
+				let pageLast = ( ( ( pageStart + 4) < pageSize ) ? pageStart + 4 : pageSize );
+				
+				// page 들을 출력하기 위한 html
+				let paging = "";
+				// 페이징 이전 [<]
+				paging += "<li class='page-item'>";
+				// 현재 페이지가 1이면 동작 불가
+				if(cpage==1){
+					paging += "<div id='pbtn' class='page-link w-10' aria-label='Previous'>";
+					paging += "<span aria-hidden='true'>&lt;</span></div></li>";
+				} else {
+					paging += "<button id='pbtn' class='page-link w-10' aria-label='Previous'>";
+					paging += "<span aria-hidden='true'>&lt;</span></button></li>";
+				}
+		        
 		    	// 페이징 번호 출력 [1][2][3][4][5]
 				for(let i=pageStart; i<=pageLast; i++){
 					// 현재 페이지 번호와 같을 경우 현재 페이지라는 표시를 함
@@ -995,7 +907,7 @@
 						paging += "<button id='pbtn" + i + "' class='page-link w-1'>" + i + "</button></li>";
 					}
 				}				
-	            
+		        
 		    	// 페이징 이후 [>]
 				paging += "<li class='page-item'>";
 				if(cpage==pageSize){
@@ -1005,71 +917,63 @@
 					paging += "<button id='nbtn' class='page-link w-10' aria-label='Next'>";
 					paging += "<span aria-hidden='true'> &gt;</span></button></li>";
 				}		    	
-	            
+		        
 				// html 페이지에 작성하기
-		    	$("#sidePaging").html(paging);
-		    	
+				$("#sidePaging").html(paging);
+
 				// 페이징에 버튼 할당 하는 부분
-				
-				// 페이징 이전 버튼 할당
+			
+				// 페이징 이전 버튼[<] 할당
 				if(!(cpage==1)){
 					$("#pbtn").on( "click", function(){
 						cpage--;
-						drawSideListing(saleList);
-						drawSidePaging();
+						//drawSideListing(saleList);
+						//drawSidePaging();
+						drawSaleList(filteredSeq);
 					} );
 				}
-				// 페이징 번호 부분 버튼 할당
+				// 페이징 번호 부분 버튼[1][2][3] 할당
 				for(let i=pageStart; i<=pageLast; i++){
-			    	let pbtnName = "#pbtn" + i;
+					let pbtnName = "#pbtn" + i;
 					//console.log("pbtn name: " + pbtnName);
 					if( !(cpage == i) ){
 						$( pbtnName ).on( "click", function() {
 							//console.log("버튼 누름");
-					    	cpage = i;
-							drawSideListing(saleList);
-							drawSidePaging();
+							cpage = i;
+							//drawSideListing(saleList);
+							//drawSidePaging();
+							drawSaleList(filteredSeq);
 						});
 					}
 				}
 				
-				// 페이징 이후 버튼 할당
+				// 페이징 이후 버튼[>] 할당
 				if(!(cpage==pageSize)){
 					$("#nbtn").on( "click", function(){
 						cpage++;
-						drawSideListing(saleList);
-						drawSidePaging();
+						//drawSideListing(saleList);
+						//drawSidePaging();
+						drawSaleList(filteredSeq);
 					} );
 				}
 		    }
 			
-			drawSideListing(saleList);
-			drawSidePaging();
-			let circles = [];
-			
-			// 필터를 적용하는 함수 
-			// 원하는 seq의 리스트를 넣으면 필터를 적용 시킴
+
+			// 마커를 활성화하거나 비활성화 하는 함수들
+			// 마커를 전체 비활성화하는 함수
 			function clearFilter(){
 				for(let i=0; i<markers.length; i++) {
 					markers[i].check = false;
 				}
 			}
-			function applyFilter(seqList){
-				//console.log("is started?");
-				//let testStart = new Date();
-				//for(let i=0; i<markers.length; i++) {
-				//	markers[i].check = false;
-				//}
-				//console.log("testStart : " + (new Date() - testStart ));
-				//let testSeq = [9286 , 9287 ,9288 , 9289 ,9290 , 9291 ,9292 , 9293 ,9294 , 9295 ,9296 , 9297 ,9298 , 9299 ,9300 , 9301 ,9302 ,9303 ,9304 ,9305 ,9306 ,9307 ,9308 ,9309 ,9310 ,9311 ,9312 ,9313 ,9314 ,9315 ,9316 ,9317 ,9318 ,9319 ,9320 ,9321 ,9322 ,9323 ,9324 ,9325 ,9326 ,9327 ,9328 ,9329 ,9330 ,9331 ,9332 ,9333 ,9334 ,9335 ,9336 ,9337 ,9338 ,9339 ,9340 ,9341 ,9342 ,9343 ,9344 ,9345 ,9346 ,9347 ,9348 ,9349 ,9350 ,9351 ,9352 ,9353 ,9354 ,9355 ,9356 ,9357 ,9358 ,9359 ,9360 ,9361 ,9362 ,9363 ,9364 ,9365 ,9366 ,9367 ,9368 ,9369 ,9370 ,9371 ,9372 ,9373 ,9374 ,9375 ,9376 ,9377 ,9378 ,9379 ,9380 ,9381 ,9382 ,9383 ,9384 ,9385 ,9386 ,9387 ,9388 ,9389 ,9390 ,9391 ,9392 ,9393 ,9394 ,9395 ,9396 ,9397 ,9398 ,9399 ,9400 ,9401 ,9402 ,9403 ,21810 ,21811 ,21812 ,21813 ,21814 ,21815 ,21816 ,21817 ,21818 ,21819 ,21820 ,21821 ,21822 ,21823 ,21824 ,21825 ,21826 ,21827 ,21828 ,21829 ,21830 ,21831 ,21832 ,21833 ,21834 ,21835 ,21836 ,21837 ,21838 ,21839 ,21840 ,21841 ,21842 ,21843 ,21844 ,21845 ,21846 ,21847 ,21848 ,21849 ,21850 ,21851 ,21852 ,21853 ,21854 ,21855 ,21856 ,21857 ,21858 ,21859 ,21860 ,21861 ,21862 ,21863 ,21864 ,21865 ,21866 ,21867 ,21868 ,21869 ,21870 ,21871 ,21872 ,21873 ,21874 ,21875 ,21876 ,21877 ,21878 ,21879 ,21880 ,21881 ,21882 ,21883 ,21884 ,21885 ,21886 ,21887 ,21888 ,21889 ,21890 ,21891 ,21892 ,21893 ,21894 ,21895 ,21896 ,21897 ,21898 ,21899 ,21900 ,21901 ,21902 ,21903 ,21904 ,21905 ,21906 ,21907 ,21908 ,21909 ,21910 ,21911 ,21912 ,21913 ,21914 ,21915 ,21916 ,21917 ,21918 ,21919 ,21920 ,21921 ,21922 ,21923 ,21924 ,21925 ,21926 ,21927 ,21928 ,21929 ,21930 ,21931 ,21932 ,21933 ,21934 ,21935 ,21936 ,21937 ,21938 ,21939 ,21940 ,21941 ,21942 ,21943 ,21944 ,21945 ,21946 ,21947 ,21948 ,21949 ,21950 ,21951 ,21952 ,21953 ,21954 ,21955 ,21956 ,21957 ,21958 ,21959 ,21960 ,21961 ,21962 ,21963 ,21964 ,21965 ,21966 ,21967 ,21968 ,21969 ,21970 ,21971 ,21972 ,21973 ,21974 ,21975 ,21976 ,21977 ,21978 ,21979 ,21980 ,21981 ,21982 ,21983 ,21984 ,21985 ,21986 ,21987 ,21988 ,21989 ,21990 ,21991 ,21992 ,21993 ,21994 ,21995 ,21996 ,21997 ,21998 ,21999 ,22000 ,22001 ,22002 ,22003 ,22004 ,22005 ,22006 ,22007 ,22008 ,22009 ,22010 ,22011 ,22012 ,22013 ,22014 ,22015 ,22016 ,22017 ,22018 ,22019 ,22020 ,22021 ,22022 ,22023 ,22024 ,22025 ,22026 ,22027 ,22028 ,22029 ,22030 ,22031 ,22032 ,22033 ,22034 ,22035 ,22036 ,22037 ,22038 ,22039 ,22040 ,22041 ,22042 ,22043 ,22044 ,22045 ,22046 ,22047 ,22048 ,22049 ,22050 ,22051 ,22052 ,22053 ,22054 ,22055 ,22056 ,22057 ,22058 ,32754 ,32755 ,32756 ,32757 ,32758 ,32759 ,32760 ,32761 ,32762 ,32763 ,32764 ,32765 ,32766 ,32767 ,32768 ,32769 ,32770 ,32771 ,32772 ,32773 ,32774 ,32775 ,32776 ,32777 ,32778 ,32779 ,32780 ,32781 ,32782 ,32783 ,32784 ,32785 ,32786 ,32787 ,32788 ,32789 ,32790 ,32791 ,32792 ,32793 ,32794 ,36284 ,36285 ,36286 ,36287 ,36288 ,36289 ,36290 ,36291 ,36292 ,36293 ,36294 ,36295 ,36296 ,36297 ,36298 ,36299 ,36300 ,36301 ,36302 ,36303 ,36304 ,36305 ,36306 ,36307 ,36308 ,36309 ,36310 ,36311 ,36312 ,36313 ,36314 ,36315 ,36316 ,36317 ,36318 ,36319 ,36320 ,36321 ,36322 ,36323 ,36324 ,36325 ,36326 ,36327 ,36328 ,36329 ,36330 ,36331 ,36332 ,36333 ,36334];
-				
-				//let markcheck = new Date();
-				seqList.forEach(seq => {
+			// 마커를 원하는 seq들만 활성화하는 함수
+			function applyFilter(filteredSeq){
+				filteredSeq.forEach(seq => {
 					//console.log(seq);
+					// 한번 확인해보기 [seq]인지 [seq-1]인지 
 					markers[seq-1].check = true;
 					//markers[i].check = false;
 				});
-				//console.log("markcheck : " + (new Date() - markcheck));
 			}
 			
 			
@@ -1090,45 +994,37 @@
 					success: function(json) {
 						// 거리 기반 검색 성공
 						console.log(json);
+						// 기존 circle 객체들 비활성화
 						circles.forEach( circle => {
 							circle.setVisible(false);	
 						});
-						//circles = [];
-						//console.log(json.stationsNearStart);
 						
-						// 지하철역의 표시를 위한 처리
+						// 새로운 circle(지하철역 위치) 객체 생성 및 추가
 						json.stationsNearStart.forEach(station => {
-							//console.log(station.name);
-							let num = stationTitleArray.indexOf(station.name);
-							let title = stationTitleArray[num];
-							let lat = stationLats[num];
-							let lon = stationLons[num];
-							console.log(num + "/" + title + "/" +  lat + "/" +  lon);
+							let num = stationTitleArray.indexOf(station.name);	// 지하철역이 저장된 인덱스 번호
+							// let title = stationTitleArray[num];				// 지하철역 이름(테스트용 출력에 사용)
+							let lat = stationLats[num];							// 지하철역 위도 경도
+							let lon = stationLons[num];							// 지하철역 위도 경도
+							// 테스트용 출력 부분
+							//console.log(num + "/" + title + "/" +  lat + "/" +  lon);
 							let circle = new naver.maps.Circle({
-							    map: map,
-							    center: new naver.maps.LatLng(lat, lon),
-							    radius: 1000,
-							    fillColor: 'green',
-							    fillOpacity: 0.1
+								map: map,
+								center: new naver.maps.LatLng(lat, lon),
+								radius: 1000,
+								fillColor: 'green',
+								fillOpacity: 0.1
 							});
+							// 새로운 cirlce(지하철역 위치) 객체 추가
 							circles.push(circle);
-							
 						});
 						
-						// 매물의 표시를 갱신하기 위한 처리
-						clearFilter();
-						// 지하철 역 인근 매물 배열 합체
-						json.salesNearStations.forEach(sales => {
-							applyFilter(sales);
-						});
-						console.log("applyFilter() executed");
-						
+						// 필터링된 seq 리스트 저장
+						filteredSeq = json.salesNearStations[0];
+						// 필터링된 seq 리스트 출력
+						newSaleList(filteredSeq);
 						markerClustering._redraw();
-						console.log("markerClustering.redraw() executed");
-						
-						// 사이드 리스트 다시 불러오는 방법
-						// 1. cpage 초기화, pageSize 초기화
-						
+						console.log("markerClustering._redraw() executed");
+						drawSaleList(filteredSeq);
 					},
 					// 실패 
 					error: function(e) {
@@ -1137,19 +1033,27 @@
 				});
 			});
 			
+			// 기본 페이지, 클러스터링 변경, 클러스터링 클릭, 거리기반검색, 필터(상세)검색
+			function newSaleList(filteredSeq) {
+				cpage = 1;
+				pageSize = Math.ceil(filteredSeq.length/maxLender);
+				clearFilter();
+				applyFilter(filteredSeq);
+				// 기본 새로고침 후 사이드 페이지 드로우
+			}
 			
-			
+			// 기본 페이지, 클러스터링 변경, 클러스터링 클릭, 거리기반검색, 필터(상세)검색, 페이징이동
+			function drawSaleList(filteredSeq) {
+				drawSideListing(filteredSeq);
+				drawSidePaging();
+			}
+
+			newSaleList(filteredSeq);
+			drawSaleList(filteredSeq);
 			//=============================================
 
 
 		});
 	</script>
-<!-- 	<style>
-		@media (max-width: 767px) {
-			.hero-section {
-				height: 200px;
-			}
-		}
-	</style> -->
 </body>
 </html> 
