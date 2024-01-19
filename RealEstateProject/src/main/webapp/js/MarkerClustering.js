@@ -365,8 +365,9 @@ naver.maps.Util.ClassExtend(MarkerClustering, naver.maps.OverlayView, {
 
 	/**
 	 * 생성된 클러스터를 모두 제거하고, 다시 생성합니다.
-	 * @private
+	 * 
 	 */
+	/*@private*/
 	_redraw: function() {
 		this._clearClusters();
 		this._createClusters();

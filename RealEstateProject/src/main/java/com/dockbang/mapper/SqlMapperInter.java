@@ -159,11 +159,17 @@ public interface SqlMapperInter {
 	
 	// 컬럼: SaleTO 참고
 	// 공간DB 이용 - 기준점으로부터 1km이내 매물 가져오기
-	@Select("select *, "
+	//@Select("select *, "
+	//		+ "ST_Distance_Sphere(Point(lon, lat), Point(#{lon}, #{lat})) distance "
+	//		+ "from sale "
+	//		+ "where ST_Distance_Sphere(Point(lon, lat), Point(#{lon}, #{lat})) < (#{distance} * 1000)")
+	//List<SaleTO> getSalesNearStation(double lon, double lat, String distance);
+	@Select("select sale_seq, "
 			+ "ST_Distance_Sphere(Point(lon, lat), Point(#{lon}, #{lat})) distance "
 			+ "from sale "
 			+ "where ST_Distance_Sphere(Point(lon, lat), Point(#{lon}, #{lat})) < (#{distance} * 1000)")
-	List<SaleTO> getSalesNearStation(double lon, double lat, String distance);
+	List<String> getSalesNearStation(double lon, double lat, String distance);
+	
 	
 	// 공간DB 이용 - 기준점으로부터 제일 가까운 편의시설(음식점) 하나 가져오기
 	@Select("select business_name, business_type, road_address, ST_Distance_Sphere(Point(lon, lat), Point(#{lon}, #{lat})) distance "

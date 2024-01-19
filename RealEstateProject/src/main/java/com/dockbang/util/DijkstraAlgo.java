@@ -69,7 +69,8 @@ public class DijkstraAlgo {
     
     // 특정상황시 시간 추가
     public int getAdditionalTime(DijkstraNode current, DijkstraNode neighbor) {
-    	int addTime = 0;
+    	// 역 하나당 1분 추가
+    	int addTime = 1;
     	
     	// 부모 노드
     	DijkstraNode parentNode = current.getParent();
@@ -89,7 +90,7 @@ public class DijkstraAlgo {
     		// 전역과 다음역에 같은 호선이 없으면
     		if(!flag) {
 //    			System.out.println(parentNode.getData() + " - " + current.getData() + " - " + neighbor.getData() + " 환승 +1");
-    			addTime += 3;
+    			addTime += 5;
     		}
     	}
     	
