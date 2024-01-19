@@ -168,7 +168,10 @@ public class SaleController {
 		
 		
 		// Map<역이름, List<매물>> - 페이지로 반환할 결과
-		Map<String, List<SaleTO>> salesNearStationMap = new HashMap<>();
+//		Map<String, List<SaleTO>> salesNearStationMap = new HashMap<>();
+		
+		// 최종결과인 sale의 seq를 담는 리스트
+		List<String> salesNearStation = new ArrayList<>();
 		
 		JSONArray salesNearStations = new JSONArray();
 		// 역 하나하나 1km이내 매물리스트 찾아오기
@@ -177,18 +180,28 @@ public class SaleController {
 			// 이름으로 지하철 역 정보 get
 			stationTO = mapper.getStation(stationName);
 			
-			// 출발역일때 그 주소 가져오기 - 출발역으로 지도 이동을 위함
-			if(stationTO.getName().equals(startStation)) {
-				// 뭔지 몰라서 일단 주석 처리
+//			if(stationTO.getName().equals(startStation)) {
+				// 출발역일때 검색어 가져오기 - 출발역으로 지도 이동을 위함
+				// 페이지 이동으로 쓰이지 않음
 				//keyword = stationTO.getRoad_address();
-			}
+//			}
 //		System.out.println("stationTO: " + stationTO.getName());
-			
+
+//			salesNearStation.add(sdao.getSaleNearStation(stationTO.getLongitude(), stationTO.getLatitude()).get(0));
 			// 공간DB로 역 위치 기준 1km 이내 매물리스트
-			List<String> salesNearStation = sdao.getSaleNearStation(stationTO.getLongitude(), stationTO.getLatitude());
+			List<String> saleSeqs = sdao.getSaleNearStation(stationTO.getLongitude(), stationTO.getLatitude());
+
+			for(String saleSeq:saleSeqs) {
+				// 중복이 없을때만 추가
+				if(!salesNearStation.contains(saleSeq)) {
+					salesNearStation.add(saleSeq);
+				}
+			}
 			//salesNearStationMap.put(stationName, salesNearStation);
-			salesNearStations.add(salesNearStation);
 		}
+		
+		salesNearStations.add(salesNearStation);
+		// JSONArray에 seq List를 추가
 		result.put("salesNearStations", salesNearStations);
 		
 		return result;
