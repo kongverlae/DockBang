@@ -234,7 +234,7 @@
 		%>
 		const saleMarkers = [];
 		for (let i = 0; i < saleLats.length; i++) {
-			saleMarkers.push({ position: new naver.maps.LatLng(saleLats[i], saleLons[i]), message: saleTitleArray[i] });
+			saleMarkers.push({ position: new naver.maps.LatLng(saleLats[i], saleLons[i]), message: saleSeqArray[i] });
 		}
 		
 		// 역 정보 불러오기
@@ -843,8 +843,8 @@
 						json.forEach( data => {
 							list += "<a href=";
 							list += "'page_saleInfo.do?sale_seq=" + data.sale_seq + "' ";
-							list += "target='_blank' rel='noreferrer'>";
-							list += "<div style='height: 100px' class='row my-2'>"
+							list += "target='_blank' rel='noreferrer' style='height: 100px' class='row my-2'>";
+							//list += "<div style='height: 100px' class='row my-2'>"
 							list += "<div class='col-5 thumb-post'>";
 							list += "<img alt='매물 사진' src=";
 							list += "'" + data.sale_pic + "'";
@@ -862,7 +862,7 @@
 							list += data.floor + "/" + data.height + "<br>";
 							list += data.address + "<br>";
 							list += "</div>";
-							list += "</div>";
+							//list += "</div>";
 							list += "</a>";
 						});
 						
@@ -970,7 +970,6 @@
 			function applyFilter(filteredSeq){
 				filteredSeq.forEach(seq => {
 					//console.log(seq);
-					// 한번 확인해보기 [seq]인지 [seq-1]인지 
 					markers[seq-1].check = true;
 					//markers[i].check = false;
 				});

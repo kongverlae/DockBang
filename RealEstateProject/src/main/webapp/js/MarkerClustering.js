@@ -526,16 +526,30 @@ Cluster.prototype = {
 	enableClickZoom: function() {
 		if (this._relation) return;
 
-		 var map = this._markerClusterer.getMap();
+		var map = this._markerClusterer.getMap();
 
 	    this._relation = naver.maps.Event.addListener(this._clusterMarker, 'click', naver.maps.Util.bind(function(e) {
 	        // 클러스터에 속한 마커들의 정보를 표시합니다.
 	        var markers = this.getClusterMember();
-	
+			// 지금 선택된 클러스터의 seq 모음
+			let clusterSeq = [];
 	        for (var i = 0; i < markers.length; i++) {
-				console.log("마커 " + (i + 1) + ": 위치 - " + markers[i].message + "<br>");
+				//console.log("마커 " + (i + 1) + ": 위치 - " + markers[i].message + "<br>");
 	            // 마커에 대한 다른 정보도 추가할 수 있습니다.
+	            // 배열에 seq 정보 삽입
+				clusterSeq.push(markers[i].message);
 	        }
+//=============김재휘 작업중	        
+			//console.log(filteredSeq.length);
+	        //console.log(filteredSeq.length);
+
+			// filteredSeq = page_search.js에서 사용하는 변수
+	        
+	        //filteredSeq = clusterSeq;
+	        //newSaleList(filteredSeq);
+	        //this._redraw();
+	        //drawSaleList(filterdSeq);
+	        
 	    }, this));
 	},
 
