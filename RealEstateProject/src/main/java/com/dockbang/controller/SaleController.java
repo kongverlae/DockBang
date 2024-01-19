@@ -128,8 +128,8 @@ public class SaleController {
 //			System.out.println("stationTO: " + stationTO.getName());
 				
 				// 공간DB로 역 위치 기준 1km 이내 매물리스트
-				List<SaleTO> salesNearStation = sdao.getSaleNearStation(stationTO.getLongitude(), stationTO.getLatitude());
-				salesNearStationMap.put(stationName, salesNearStation);
+				//List<SaleTO> salesNearStation = sdao.getSaleNearStation(stationTO.getLongitude(), stationTO.getLatitude());
+				//salesNearStationMap.put(stationName, salesNearStation);
 			}
 			
 			// 출발점 기준 5분이내 도달가능한 역 위치 기준 1km 이내 매물리스트
@@ -157,7 +157,7 @@ public class SaleController {
 			@RequestParam(value = "timeLimit", defaultValue = "-1") int timeLimit) {
 		JSONObject result = new JSONObject();
 		result.put("startStation", startStation);
-		result.put("timeLimit", timeLimit);
+		//result.put("timeLimit", timeLimit);
 		
 		// 전체 역 리스트
 		List<SubwayStationTO> stations = mapper.getStations();
@@ -170,23 +170,26 @@ public class SaleController {
 		// Map<역이름, List<매물>> - 페이지로 반환할 결과
 		Map<String, List<SaleTO>> salesNearStationMap = new HashMap<>();
 		
-		
+		JSONArray salesNearStations = new JSONArray();
 		// 역 하나하나 1km이내 매물리스트 찾아오기
-		/*
-		 * for (SubwayStationTO stationTO : stationsNearStart) { String stationName =
-		 * stationTO.getName(); // 이름으로 지하철 역 정보 get stationTO =
-		 * mapper.getStation(stationName);
-		 * 
-		 * // 출발역일때 그 주소 가져오기 - 출발역으로 지도 이동을 위함
-		 * if(stationTO.getName().equals(startStation)) { // keyword =
-		 * stationTO.getRoad_address(); } // System.out.println("stationTO: " +
-		 * stationTO.getName());
-		 * 
-		 * // 공간DB로 역 위치 기준 1km 이내 매물리스트 List<SaleTO> salesNearStation =
-		 * sdao.getSaleNearStation(stationTO.getLongitude(), stationTO.getLatitude());
-		 * salesNearStationMap.put(stationName, salesNearStation); }
-		 */
-		
+		for (SubwayStationTO stationTO : stationsNearStart) {
+			String stationName = stationTO.getName();
+			// 이름으로 지하철 역 정보 get
+			stationTO = mapper.getStation(stationName);
+			
+			// 출발역일때 그 주소 가져오기 - 출발역으로 지도 이동을 위함
+			if(stationTO.getName().equals(startStation)) {
+				// 뭔지 몰라서 일단 주석 처리
+				//keyword = stationTO.getRoad_address();
+			}
+//		System.out.println("stationTO: " + stationTO.getName());
+			
+			// 공간DB로 역 위치 기준 1km 이내 매물리스트
+			List<String> salesNearStation = sdao.getSaleNearStation(stationTO.getLongitude(), stationTO.getLatitude());
+			//salesNearStationMap.put(stationName, salesNearStation);
+			salesNearStations.add(salesNearStation);
+		}
+		result.put("salesNearStations", salesNearStations);
 		
 		return result;
 	}

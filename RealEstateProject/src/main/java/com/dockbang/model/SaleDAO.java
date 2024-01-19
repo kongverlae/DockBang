@@ -55,7 +55,8 @@ public class SaleDAO {
 
 	
 	// 역근처매물 정보(SaleNearStationTO 참고) 가져오기
-	public List<SaleTO> getSaleNearStation(Double lon, Double lat){
+	//public List<SaleTO> getSaleNearStation(Double lon, Double lat){
+	public List<String> getSaleNearStation(Double lon, Double lat){
 //		List<SaleNearStationTO> sales = mapper.getSalesNearStation();
 		// 1km이내 매물정보 가져오기
 		return mapper.getSalesNearStation(lon, lat, "1");
