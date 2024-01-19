@@ -194,6 +194,35 @@ public class SaleController {
 		return result;
 	}
 	
+	// 매물리스트 화면 출력에 필요한 정보 추가
+	@RequestMapping("act_saleList.do")
+	@ResponseBody
+	JSONArray act_saleList(List<String> seqList) {
+		JSONArray array = new JSONArray();
+		JSONObject obj = new JSONObject();
+		
+		// 매물리스트 화면 출력에 필요한 정보 추가
+		for(String seq:seqList) {
+			SaleTO saleTO = mapper.getSaleListInfo(seq);
+			
+			obj.put("sale_seq", saleTO.getSale_seq());
+			obj.put("sale_pic", saleTO.getSale_pic());
+			obj.put("sale_type", saleTO.getSale_type());
+			obj.put("price", saleTO.getPrice());
+			obj.put("deposit", saleTO.getDeposit());
+			obj.put("monthly_fee", saleTO.getMonthly_fee());
+			obj.put("house_type", saleTO.getHouse_type());
+			obj.put("area", saleTO.getArea());
+			obj.put("floor", saleTO.getFloor());
+			obj.put("height", saleTO.getHeight());
+			obj.put("address", saleTO.getAddress());
+			
+			array.add(obj);
+		}
+		
+		return array;
+	}
+	
 	// 매물 상세정보 + 매물 주변 편의시설 정보 반환
 	@RequestMapping("/page_saleInfo.do")
 	ModelAndView page_saleInfo(@RequestParam String sale_seq, HttpServletRequest request) {
