@@ -843,8 +843,8 @@
 						json.forEach( data => {
 							list += "<a href=";
 							list += "'page_saleInfo.do?sale_seq=" + data.sale_seq + "' ";
-							list += "target='_blank' rel='noreferrer'>";
-							list += "<div style='height: 100px' class='row my-2'>"
+							list += "target='_blank' rel='noreferrer' style='height: 100px' class='row my-2'>";
+							//list += "<div style='height: 100px' class='row my-2'>"
 							list += "<div class='col-5 thumb-post'>";
 							list += "<img alt='매물 사진' src=";
 							list += "'" + data.sale_pic + "'";
@@ -852,17 +852,37 @@
 							list += "</div>";
 							list += "<div class='col-7'>";
 							if(data.sale_type=="P"){
-								list += data.sale_type + data.price + "<br>";					
+								//list += data.sale_type + data.price + "<br>";					
+								list += "매매 " + data.price + "만원<br>";					
 							} else if (data.sale_type=="l"){
-								list += data.sale_type + data.deposit + "<br>";					
+								//list += data.sale_type + data.deposit + "<br>";					
+								list += "전세 " + data.deposit + "만원<br>";					
 							} else if (data.sale_type=="m"){
-								list += data.sale_type + data.deposit + "/" + data.monthly_fee + "<br>";					
+								//list += data.sale_type + data.deposit + "/" + data.monthly_fee + "<br>";					
+								list += "월세 " + data.deposit + "만원/" + data.monthly_fee + "만원<br>";					
 							}
-							list += data.house_type + ", " + data.area + "㎡,";
+							switch(data.house_type){
+								case 'AT':
+									list += "아파트";
+									break;
+								case 'OP':
+									list += "오피스텔";
+									break;
+								case 'SH':
+									list += "주택";
+									break;
+								case 'OR':
+									list += "원룸";
+									break;
+								default:
+									list += "정보 없음";
+									break;
+							}
+							list += ", " + data.area + "㎡,";
 							list += data.floor + "/" + data.height + "<br>";
 							list += data.address + "<br>";
 							list += "</div>";
-							list += "</div>";
+							//list += "</div>";
 							list += "</a>";
 						});
 						
