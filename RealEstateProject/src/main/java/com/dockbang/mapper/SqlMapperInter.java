@@ -146,6 +146,7 @@ public interface SqlMapperInter {
 	//@Select("select title, lat, lon from sale")
 	//@Select("select title, lat, lon, sale_type from sale")
 	@Select("select * from sale")
+	//@Select("select * from sale limit 1000") // 원활한 작업을 위해 변경함
 	List<SaleTO> getSales();
 	
 	// saleTO 참고
@@ -161,7 +162,7 @@ public interface SqlMapperInter {
 	// seq를 이용해 sale list에 표시할 정보 가져오기
 	@Select("select sale_seq, "
 			+ "sale_pic, "
-			+ "slae_type, "
+			+ "sale_type, "
 			+ "price, "
 			+ "deposit, "
 			+ "monthly_fee, "
