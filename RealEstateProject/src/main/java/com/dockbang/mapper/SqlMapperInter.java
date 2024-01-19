@@ -153,9 +153,25 @@ public interface SqlMapperInter {
 	List<SaleTO> getSalesinfo(@Param("title") String title);
 		
 	// 컬럼: SaleTO 참고
-	// seq를 이용해 sale 가져오기
+	// seq를 이용해 sale 전체정보 가져오기
 	@Select("select * from sale where sale_seq = #{sale_seq}")
 	SaleTO getSale(String sale_seq);
+	
+	// 컬럼: SaleTO 참고
+	// seq를 이용해 sale list에 표시할 정보 가져오기
+	@Select("select sale_seq, "
+			+ "sale_pic, "
+			+ "slae_type, "
+			+ "price, "
+			+ "deposit, "
+			+ "monthly_fee, "
+			+ "house_type, "
+			+ "area, "
+			+ "floor, "
+			+ "height, "
+			+ "address "
+			+ "from sale where sale_seq = #{sale_seq}")
+	SaleTO getSaleListInfo(String sale_seq);
 	
 	// 컬럼: SaleTO 참고
 	// 공간DB 이용 - 기준점으로부터 1km이내 매물 가져오기
