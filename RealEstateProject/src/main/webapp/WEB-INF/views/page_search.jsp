@@ -836,15 +836,101 @@
 				console.log( i + " : " + (i % 20 != 0 ? Math.floor(i/maxLender) + 1 : Math.floor(i/maxLender)) );
 			} */
 		    
+		    // ajax를 이용해서 페이지 그리는 데 필요한 정보 가져오기
+		    /* function getSideList(seqList) {
+				$.ajax({
+					// jsp, xml 등 페이지 주소
+					url: '/act_saleList.do',
+					type: 'get',
+					// json, xml, html, text 등
+					// 파라미터 입력하기
+					traditional: true,
+					data: {'seqList': seqList},
+					dataType: 'json',
+					// 성공 4 && 200 이라는 말
+					success: function(json) {
+						console.log(json);
+					},
+					// 실패 
+					error: function(e) {
+						alert('[에러]' + e.status);
+					}
+				});
+			}
+			 */
 		    // 지도 화면 사이드에 표시되는 매물 리스트 그리는 함수
 		    // cpage = 현재 페이지 
 		    // maxLender = 최대 페이지 출력 수
 		    // saleJsonArr = 매물 리스트
 		    // let start = 페이지 번호에 따른 매물 리스트 시작 번호
-		    function drawSideListing(saleList) {
+		    function drawSideListing(seqList) {
 		    	let list = "";
 			    let start = ( ( cpage - 1 ) * maxLender );
-				for( let i = start; i < (start + maxLender); i++ ) {
+			    // 들어온 seq 리스트를 seq만 가지고 있는 배열로 변경하는 작업
+			    let atSeqList = [];
+			    let last = (((start + maxLender)<seqList.length) ? start + maxLender : seqList.length);
+			    for( let i = start; i < last; i++ ) {
+			    	atSeqList.push(seqList[i].sale_seq);
+			    }
+			    
+			    $.ajax({
+					// jsp, xml 등 페이지 주소
+					url: '/act_saleList.do',
+					type: 'get',
+					// json, xml, html, text 등
+					// 파라미터 입력하기
+					traditional: true,
+					data: {'seqList': atSeqList},
+					dataType: 'json',
+					// 성공 4 && 200 이라는 말
+					success: function(json) {
+						//console.log(json);
+						//console.log(json[0]);
+						//console.log(json[0].sale_seq);
+						json.forEach( data => {
+							list += "<a href=";
+							list += "'page_saleInfo.do?sale_seq=" + data.sale_seq + "' ";
+							list += "target='_blank' rel='noreferrer'>";
+							list += "<div style='height: 100px' class='row my-2'>"
+							list += "<div class='col-5 thumb-post'>";
+							list += "<img alt='매물 사진' src=";
+							list += "'" + data.sale_pic + "'";
+							list += ">";
+							list += "</div>";
+							list += "<div class='col-7'>";
+							if(data.sale_type=="P"){
+								list += data.sale_type + data.price + "<br>";					
+							} else if (data.sale_type=="l"){
+								list += data.sale_type + data.deposit + "<br>";					
+							} else if (data.sale_type=="m"){
+								list += data.sale_type + data.deposit + "/" + data.monthly_fee + "<br>";					
+							}
+							list += data.house_type + ", " + data.area + "㎡,";
+							list += data.floor + "/" + data.height + "<br>";
+							list += data.address + "<br>";
+							list += "</div>";
+							list += "</div>";
+							list += "</a>";
+						});
+						
+						$("#sideListing").html(list);
+						
+					},
+					// 실패 
+					error: function(e) {
+						alert('[에러]' + e.status);
+					}
+				});
+			    
+			    // console.log(atSeqList);
+			    // let saleList = getSideList(atSeqList);
+			    // console.log("saleList : " + saleList);
+				// 비동기식이기 때문에 데이터를 받아오는 방식이 다름
+			    // getSideList(atSeqList, function(saleList) {
+			    //	console.log("saleList : " + saleList);
+			    // });
+				/* 
+			    for( let i = start; i < (start + maxLender); i++ ) {
 					list += "<a href=";
 					list += "'page_saleInfo.do?sale_seq=" + saleList[i].sale_seq + "' ";
 					list += "target='_blank' rel='noreferrer'>";
@@ -853,10 +939,8 @@
 					list += "<img alt='매물 사진' src=";
 					list += "'" + saleList[i].sale_pic + "'";
 					list += ">";
-					/*https://dockbang-sale-picture-bucket.s3.ap-northeast-2.amazonaws.com/OP/OP_0001.jpg*/
 					list += "</div>";
 					list += "<div class='col-7'>";
-					//console.log(saleList[i].sale_type);
 					if(saleList[i].sale_type=="P"){
 						list += saleList[i].sale_type + saleList[i].price + "<br>";					
 					} else if (saleList[i].sale_type=="l"){
@@ -874,6 +958,8 @@
 				}
 				
 				$("#sideListing").html(list);
+				 */
+				
 		    };
 		    
 		    // 사이트 페이징 그리는 함수
@@ -936,7 +1022,7 @@
 				// 페이징 번호 부분 버튼 할당
 				for(let i=pageStart; i<=pageLast; i++){
 			    	let pbtnName = "#pbtn" + i;
-					console.log("pbtn name: " + pbtnName);
+					//console.log("pbtn name: " + pbtnName);
 					if( !(cpage == i) ){
 						$( pbtnName ).on( "click", function() {
 							//console.log("버튼 누름");
@@ -1039,6 +1125,10 @@
 						
 						markerClustering._redraw();
 						console.log("markerClustering.redraw() executed");
+						
+						// 사이드 리스트 다시 불러오는 방법
+						// 1. cpage 초기화, pageSize 초기화
+						
 					},
 					// 실패 
 					error: function(e) {

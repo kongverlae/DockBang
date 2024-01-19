@@ -197,12 +197,13 @@ public class SaleController {
 	// 매물리스트 화면 출력에 필요한 정보 추가
 	@RequestMapping("act_saleList.do")
 	@ResponseBody
-	JSONArray act_saleList(List<String> seqList) {
+	JSONArray act_saleList(@RequestParam List<String> seqList) {
+		//System.out.println(seqList);
 		JSONArray array = new JSONArray();
-		JSONObject obj = new JSONObject();
 		
 		// 매물리스트 화면 출력에 필요한 정보 추가
 		for(String seq:seqList) {
+			JSONObject obj = new JSONObject();
 			SaleTO saleTO = mapper.getSaleListInfo(seq);
 			
 			obj.put("sale_seq", saleTO.getSale_seq());
