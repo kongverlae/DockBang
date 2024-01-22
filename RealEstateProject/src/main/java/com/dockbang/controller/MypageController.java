@@ -1,6 +1,7 @@
 package com.dockbang.controller;
 
 import com.dockbang.model.BookmarkTO;
+import com.dockbang.model.MemberDAO;
 import com.dockbang.model.SaleTO;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -13,10 +14,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.dockbang.mapper.SqlMapperInter;
-import com.dockbang.model.BoardDAO;
 import com.dockbang.model.MemberTO;
+import com.dockbang.model.SaleDAO;
 
-import java.awt.print.Book;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -28,7 +28,10 @@ import jakarta.servlet.http.HttpSession;
 @MapperScan(basePackages = {"com.dockbang.mapper"})
 public class MypageController {
     @Autowired
-    BoardDAO bdao;
+    MemberDAO mdao;
+    
+    @Autowired
+    SaleDAO sdao;
 
     @Autowired
 	private SqlMapperInter mapper;
@@ -46,20 +49,21 @@ public class MypageController {
         if (userEmail != null) {
             // 사용자 정보 조회
 //            Map<String, String> userInfo = mapper.selectUserInfo(userEmail);
-            MemberTO userInfo = mapper.selectUserInfo(userEmail);
+            MemberTO userInfo = mdao.getMemberTO(userEmail);
 
             // 데이터 전송
             modelAndView.addObject("userInfo", userInfo);
         }
 
         // 북마크 정보
-        List<BookmarkTO> bookmarkTOList = mapper.getUserBookmark(userEmail);
+        List<BookmarkTO> bookmarkTOList = mdao.getBookmarkTOList(userEmail);
         // 북마크에 등록된 매물 정보
         List<SaleTO> bookmarkSaleList = new ArrayList<>();
 
         for(BookmarkTO bookmarkTO:bookmarkTOList){
             // sale seq로 매물정보 불러오기
-            bookmarkSaleList.add(mapper.getSale(bookmarkTO.getSaleseq()));
+        	SaleTO saleTO = sdao.getSaleInfo(bookmarkTO.getSaleseq());
+            bookmarkSaleList.add(saleTO);
         }
 
         // js의 array로 표현하기
@@ -86,7 +90,7 @@ public class MypageController {
     	JSONObject obj = new JSONObject();
     	
     	// 0:실패 1:성공
-    	int flag = mapper.addUserBookmark(userEmail, saleSeq, memo);
+    	int flag = mdao.addUserBookmark(userEmail, saleSeq, memo);
     	
     	obj.put("flag", flag);
     	
