@@ -1,6 +1,8 @@
 package com.dockbang.model;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -61,6 +63,88 @@ public class SaleDAO {
 		// 1km이내 매물정보 가져오기
 		return mapper.getSalesNearStation(lon, lat, "1");
 	}
+
+	// type: 원하는 데이터
+	public List<String> getGeo(String type){
+		List<String> resultList;
+		
+		switch(type) {
+			case "lat":
+				resultList = mapper.selectlat();
+				break;
+			case "lon":
+				resultList = mapper.selectlon();
+				break;
+			case "local":
+				resultList = mapper.selectlocal();
+				break;
+			default:
+				resultList = null;
+				break;
+		}
+		
+		return resultList;
+	}
+	
+	// 매물 목록 반환
+	public List<SaleTO> getSale(){
+		List<SaleTO> resultList = mapper.getSales();
+		
+		return resultList;
+	}
+	
+	// 지하철 역 목록 반환 - 호선별 중복X
+	public List<SubwayStationTO> getSubwayStationGroupByNameList(){
+		List<SubwayStationTO> stationList = mapper.getStationsGroupByName();
+		
+		return stationList;
+	}
+	
+	// 지하철 역 목록 반환 - 호선별 중복 O
+	public List<SubwayStationTO> getSubwayStationList(){
+		List<SubwayStationTO> stationList = mapper.getStations();
+		
+		return stationList;
+	}
+	
+	// seq를 이용해 모든 정보 불러오기
+	public SaleTO getSaleInfo(String seq) {
+		SaleTO saleTO = mapper.getSale(seq);
+		
+		return saleTO;
+	}
+	
+	
+	// seq를 이용해 매물리스트 출력에 필요한 정보만 불러오기
+	public SaleTO getSaleListTO(String seq) {
+		SaleTO saleTO = mapper.getSaleListInfo(seq);
+		
+		return saleTO;
+	}
+	
+	// 매물 주변에 제일 가까운 편의시설 검색
+	public Map<String, Object> getConvNearStation(String sale_seq) {
+		SaleTO saleTO = mapper.getSale(sale_seq);
+		
+		Map<String, Object> resultMap = new HashMap<>();
+		
+		resultMap.put("편의점", mapper.getFoodNearPoint(saleTO.getLon(), saleTO.getLat(), "편의점"));
+		resultMap.put("음식점", mapper.getFoodNearPoint(saleTO.getLon(), saleTO.getLat(), "기타 휴게음식점"));
+		resultMap.put("카페", mapper.getFoodNearPoint(saleTO.getLon(), saleTO.getLat(), "커피숍"));
+		resultMap.put("영화관", mapper.getMovieNearPoint(saleTO.getLon(), saleTO.getLat()));
+		resultMap.put("경찰서", mapper.getPopliceNearPoint(saleTO.getLon(), saleTO.getLat()));
+		
+		return resultMap;
+	}
+	
+	// 지하철역 이름으로 TO 가져오기 
+	public SubwayStationTO getStationTO(String stationName) {
+		SubwayStationTO stationTO = mapper.getStation(stationName);
+		
+		return stationTO;
+	}
 	
 	
 }
+
+

@@ -35,10 +35,6 @@ public class SaleController {
 	@Autowired
 	SaleDAO sdao;
 
-	// 나중에 DAO로 옮기기
-	@Autowired
-	private SqlMapperInter mapper;
-
 //	@RequestMapping("/index.do")
 //	ModelAndView index() {
 //
@@ -92,51 +88,17 @@ public class SaleController {
 
 		
 		//매물 정보 저장 
-		List<SaleTO> sale = mapper.getSales();
+		List<SaleTO> sale = sdao.getSale();
 		modelAndView.addObject("sale", sale);
 		
 		//역 정보 저장
-		List<SubwayStationTO> station = mapper.getStationsGroupByName();
+		List<SubwayStationTO> station = sdao.getSubwayStationGroupByNameList();
 		modelAndView.addObject("station", station);
 		
-		List<String> lat = mapper.selectlat();
-		List<String> lon = mapper.selectlon();
-		List<String> local = mapper.selectlocal();
+		List<String> lat = sdao.getGeo("lat");
+		List<String> lon = sdao.getGeo("lon");
+		List<String> local = sdao.getGeo("local");
 		
-
-		
-		// 출발역이 주어지면 - 역 이동시간 기반 검색이면
-		if(startStation != null && !startStation.equals("") && timeLimit != -1) {
-			// 전체 역 리스트
-			List<SubwayStationTO> stations = mapper.getStations();
-			// 출발점 기준 5분이내 도달가능한 역 리스트
-			List<SubwayStationTO> stationsNearStart = new DijkstraAlgo().getStationsNearStart(stations, startStation, timeLimit);
-			
-			// Map<역이름, List<매물>> - 페이지로 반환할 결과
-			Map<String, List<SaleTO>> salesNearStationMap = new HashMap<>();
-			
-			// 역 하나하나 1km이내 매물리스트 찾아오기
-			for (SubwayStationTO stationTO : stationsNearStart) {
-				String stationName = stationTO.getName();
-				// 이름으로 지하철 역 정보 get
-				stationTO = mapper.getStation(stationName);
-				
-				// 출발역일때 그 주소 가져오기 - 출발역으로 지도 이동을 위함
-				if(stationTO.getName().equals(startStation)) {
-					keyword = stationTO.getRoad_address();
-				}
-//			System.out.println("stationTO: " + stationTO.getName());
-				
-				// 공간DB로 역 위치 기준 1km 이내 매물리스트
-				//List<SaleTO> salesNearStation = sdao.getSaleNearStation(stationTO.getLongitude(), stationTO.getLatitude());
-				//salesNearStationMap.put(stationName, salesNearStation);
-			}
-			
-			// 출발점 기준 5분이내 도달가능한 역 위치 기준 1km 이내 매물리스트
-			modelAndView.addObject("salesNearStationMap", salesNearStationMap);
-			
-//			System.out.println(salesNearStationMap.get("서초").get(0).getTitle());
-		}
 		
 		// 경계선 데이터 전송
 		modelAndView.addObject("keyword", keyword);
@@ -160,7 +122,7 @@ public class SaleController {
 		//result.put("timeLimit", timeLimit);
 		
 		// 전체 역 리스트
-		List<SubwayStationTO> stations = mapper.getStations();
+		List<SubwayStationTO> stations = sdao.getSubwayStationList();
 		// 출발점 기준 5분이내 도달가능한 역 리스트
 		List<SubwayStationTO> stationsNearStart = new DijkstraAlgo().getStationsNearStart(stations, startStation, timeLimit);
 		
@@ -178,7 +140,7 @@ public class SaleController {
 		for (SubwayStationTO stationTO : stationsNearStart) {
 			String stationName = stationTO.getName();
 			// 이름으로 지하철 역 정보 get
-			stationTO = mapper.getStation(stationName);
+			stationTO = sdao.getStationTO(stationName);
 			
 //			if(stationTO.getName().equals(startStation)) {
 				// 출발역일때 검색어 가져오기 - 출발역으로 지도 이동을 위함
@@ -217,7 +179,7 @@ public class SaleController {
 		// 매물리스트 화면 출력에 필요한 정보 추가
 		for(String seq:seqList) {
 			JSONObject obj = new JSONObject();
-			SaleTO saleTO = mapper.getSaleListInfo(seq);
+			SaleTO saleTO = sdao.getSaleListTO(seq);
 			
 			obj.put("sale_seq", saleTO.getSale_seq());
 			obj.put("sale_pic", saleTO.getSale_pic());
@@ -240,23 +202,28 @@ public class SaleController {
 	// 매물 상세정보 + 매물 주변 편의시설 정보 반환
 	@RequestMapping("/page_saleInfo.do")
 	ModelAndView page_saleInfo(@RequestParam String sale_seq, HttpServletRequest request) {
-		// 매물 상세정보
-		SaleTO saleTO = mapper.getSale(sale_seq);
+		// 매물 주변 편의시설 정보 해시맵
+		Map<String, Object> convNearStationMap = sdao.getConvNearStation(sale_seq);
+		
 
 		// 매물 주변 편의시설 정보 - 편의점
-		FoodTO convTO = mapper.getFoodNearPoint(saleTO.getLon(), saleTO.getLat(), "편의점");
+		FoodTO convTO = (FoodTO)convNearStationMap.get("편의점");
 		
 		// 매물 주변 편의시설 정보 - 음식점
-		FoodTO foodTO = mapper.getFoodNearPoint(saleTO.getLon(), saleTO.getLat(), "기타 휴게음식점");
+		FoodTO foodTO = (FoodTO)convNearStationMap.get("음식점");
 		
 		// 매물 주변 편의시설 정보 - 카페
-		FoodTO cafeTO = mapper.getFoodNearPoint(saleTO.getLon(), saleTO.getLat(), "커피숍");
+		FoodTO cafeTO = (FoodTO)convNearStationMap.get("카페");
 
 		// 매물 주변 편의시설 정보 - 영화관
-		MovieTO movieTO = mapper.getMovieNearPoint(saleTO.getLon(), saleTO.getLat());
+		MovieTO movieTO = (MovieTO)convNearStationMap.get("영화관");
 
 		// 매물 주변 편의시설 정보 - 경찰서
-		PoliceTO policeTO = mapper.getPopliceNearPoint(saleTO.getLon(), saleTO.getLat());
+		PoliceTO policeTO = (PoliceTO)convNearStationMap.get("경찰서");
+		
+		
+		// 매물 상세정보
+		SaleTO saleTO = sdao.getSaleInfo(sale_seq);
 
 		// ===히스토리 기능===
 		HttpSession session = request.getSession();
