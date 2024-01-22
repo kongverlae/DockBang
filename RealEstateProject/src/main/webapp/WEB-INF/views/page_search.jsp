@@ -234,7 +234,7 @@
 		%>
 		const saleMarkers = [];
 		for (let i = 0; i < saleLats.length; i++) {
-			saleMarkers.push({ position: new naver.maps.LatLng(saleLats[i], saleLons[i]), message: saleTitleArray[i] });
+			saleMarkers.push({ position: new naver.maps.LatLng(saleLats[i], saleLons[i]), message: saleSeqArray[i] });
 		}
 		
 		// 역 정보 불러오기
