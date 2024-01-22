@@ -8,6 +8,7 @@
 <%@page import="com.dockbang.model.MovieTO"%>
 <%@page import="com.dockbang.model.FoodTO"%>
 <%@page import="com.dockbang.model.SaleTO"%>
+<%@ page import="java.nio.charset.StandardCharsets" %>
 <%
 	// 매물 정보
 	SaleTO saleTO = (SaleTO)request.getAttribute("saleTO");
@@ -155,7 +156,9 @@
 				// console.log(memo.value);
 				
 				$.ajax({
-					url: './act_addBookmark.do?userEmail=' + '<%= (String)session.getAttribute("email") %>' + '&saleSeq=' + '<%= saleTO.getSale_seq() %>' + '&memo=' + memo ,
+					url: './act_addBookmark.do?userEmail=' + '<%= (String)session.getAttribute("email") %>' +
+							'&saleSeq=' + '<%= saleTO.getSale_seq() %>' +
+							'&memo=' + memo,
 					type: 'GET',
 					dataType: 'json',
 					success: function(json){
@@ -513,7 +516,7 @@
 										<div class="mt-4 p-5 rounded bg-success text-white">
 											<h3>경찰서</h3>
 											<h1><%= policeTO.getDivision() %></h1>
-											<pb>	<%= policeTO.getAddress() %> (<%= df.format(policeTO.getDistance()) %> m)</b>
+											<b>	<%= policeTO.getAddress() %> (<%= df.format(policeTO.getDistance()) %> m)</b>
 											<a href="https://map.naver.com/p/search/<%= policeTO.getAddress() %>" target="_blank" 
 												class="badge bg-dark text-wrap">
 												네이버 지도에서 보기

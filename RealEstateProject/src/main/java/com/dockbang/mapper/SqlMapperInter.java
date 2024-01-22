@@ -3,21 +3,13 @@ package com.dockbang.mapper;
 import java.util.List;
 import java.util.Map;
 
+import com.dockbang.model.*;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
-
-import com.dockbang.model.BoardTO;
-import com.dockbang.model.CommentTO;
-import com.dockbang.model.FoodTO;
-import com.dockbang.model.MemberTO;
-import com.dockbang.model.MovieTO;
-import com.dockbang.model.PoliceTO;
-import com.dockbang.model.SaleTO;
-import com.dockbang.model.SubwayStationTO;
 
 
 @Mapper
@@ -68,6 +60,10 @@ public interface SqlMapperInter {
 	// 유저 북마크 추가
 	@Insert("insert into bookmark (useremail, saleseq, memo) values (#{userEmail}, #{saleSeq}, #{memo})")
 	int addUserBookmark(String userEmail, String saleSeq, String memo);
+
+	// 유저 북마크 검색
+	@Select("select bookmarkseq, useremail, memo, saleseq from bookmark where useremail=#{userEmail}")
+	List<BookmarkTO> getUserBookmark(String userEmail);
 	
 	// 게시판 리스트 출력
 	@Select("select boardseq, subject, writer, wdate from board where category = #{category} order by boardseq desc")
