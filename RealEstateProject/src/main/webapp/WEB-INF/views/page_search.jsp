@@ -854,10 +854,10 @@
 							if(data.sale_type=="P"){
 								//list += data.sale_type + data.price + "<br>";					
 								list += "매매 " + data.price + "만원<br>";					
-							} else if (data.sale_type=="l"){
+							} else if (data.sale_type=="L"){
 								//list += data.sale_type + data.deposit + "<br>";					
 								list += "전세 " + data.deposit + "만원<br>";					
-							} else if (data.sale_type=="m"){
+							} else if (data.sale_type=="M"){
 								//list += data.sale_type + data.deposit + "/" + data.monthly_fee + "<br>";					
 								list += "월세 " + data.deposit + "만원/" + data.monthly_fee + "만원<br>";					
 							}
@@ -1031,8 +1031,8 @@
 								map: map,
 								center: new naver.maps.LatLng(lat, lon),
 								radius: 1000,
-								fillColor: 'green',
-								fillOpacity: 0.1
+								fillColor: 'crimson',
+								fillOpacity: 0.05
 							});
 							// 새로운 cirlce(지하철역 위치) 객체 추가
 							circles.push(circle);
