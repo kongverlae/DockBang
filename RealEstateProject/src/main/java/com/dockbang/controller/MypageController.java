@@ -33,9 +33,6 @@ public class MypageController {
     @Autowired
     SaleDAO sdao;
 
-    @Autowired
-	private SqlMapperInter mapper;
-
     @RequestMapping("/page_mypage.do")
     ModelAndView page_mypage(HttpServletRequest request) {
         // view(.jsp) 설정
