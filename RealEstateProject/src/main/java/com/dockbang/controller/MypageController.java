@@ -1,5 +1,9 @@
 package com.dockbang.controller;
 
+import com.dockbang.model.BookmarkTO;
+import com.dockbang.model.SaleTO;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.simple.JSONObject;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +16,9 @@ import com.dockbang.mapper.SqlMapperInter;
 import com.dockbang.model.BoardDAO;
 import com.dockbang.model.MemberTO;
 
+import java.awt.print.Book;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -43,6 +50,30 @@ public class MypageController {
 
             // 데이터 전송
             modelAndView.addObject("userInfo", userInfo);
+        }
+
+        // 북마크 정보
+        List<BookmarkTO> bookmarkTOList = mapper.getUserBookmark(userEmail);
+        // 북마크에 등록된 매물 정보
+        List<SaleTO> bookmarkSaleList = new ArrayList<>();
+
+        for(BookmarkTO bookmarkTO:bookmarkTOList){
+            // sale seq로 매물정보 불러오기
+            bookmarkSaleList.add(mapper.getSale(bookmarkTO.getSaleseq()));
+        }
+
+        // js의 array로 표현하기
+        ObjectMapper objectMapper = new ObjectMapper();
+        String bookmarkSaleListJson = "";
+        String bookmarkTOListJson = "";
+        try {
+            bookmarkSaleListJson = objectMapper.writeValueAsString(bookmarkSaleList);
+            bookmarkTOListJson = objectMapper.writeValueAsString(bookmarkTOList);
+        } catch (JsonProcessingException e) {
+            System.out.println("에러: " + e.getMessage());
+        } finally {
+            modelAndView.addObject("bookmarkTOListJson", bookmarkTOListJson);
+            modelAndView.addObject("bookmarkSaleListJson", bookmarkSaleListJson);
         }
 
         // view 페이지로 반환

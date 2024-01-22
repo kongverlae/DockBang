@@ -2,9 +2,13 @@
 	pageEncoding="UTF-8"%>
 <%@ page errorPage="../error/error_mypage.jsp" %>
 <%@page import="com.dockbang.model.MemberTO"%>
+<%@ page import="com.dockbang.model.BookmarkTO" %>
+<%@ page import="java.util.List" %>
 <%
 	MemberTO to = (MemberTO)request.getAttribute("userInfo");
-	
+    String bookmarkTOListJson = (String)request.getAttribute("bookmarkTOListJson");
+    String bookmarkSaleListJson = (String)request.getAttribute("bookmarkSaleListJson");
+
 %>
 <!DOCTYPE html>
 <html>
@@ -54,7 +58,7 @@ nav a {
 	padding: 20px 20px;
 	text-decoration: none;
 	transition: color 0.3s;
-	letter-spacing: 4px; /* 글자 사이 간격 조절 */
+	/*letter-spacing: 4px; !* 글자 사이 간격 조절 *!*/
 	font-size: 20px;
 }
 
@@ -99,22 +103,120 @@ nav a:hover {
         // 페이지 로딩이 완료된 후 실행
         $(document).ready(function () {
 	        // 서버에서 받아온 사용자 정보
-	        var userInfo = {
-	            /*socialAccount: "<%= session.getAttribute("social") %>",
-	            email: "<%= session.getAttribute("email") %>",
-	            name: "<%= session.getAttribute("nickname") %>"*/
-	            
+	        let userInfo = {
 	            socialAccount: "<%= to.getSocial() %>",
 	            email: "<%= to.getEmail() %>",
-	            name: "<%= to.getName() %>"
+	            name: "<%= to.getName() %>",
+                bookmarkTOArray: <%= bookmarkTOListJson %>,
+                bookmarkSaleArray: <%= bookmarkSaleListJson %>
 	        };
-        
+            
+            const showUserInfo = function () {
+                $("#socialAccount").html("소셜 유무: " + userInfo.socialAccount);
+                $("#userEmail").html("이메일: " + userInfo.email);
+                $("#userName").html("이름: " + userInfo.name);
+            }
+
+            const hideUserInfo = function(){
+                $("#socialAccount").html("");
+                $("#userEmail").html("");
+                $("#userName").html("");
+            }
+
+            const showBookmark = function (){
+                let bookmarkHTML = '';
+                // console.log(userInfo.bookmarkArray);
+                userInfo.bookmarkTOArray.forEach(function (bookmark){
+                    // bookmarkTO의 saleseq를 이용하여 bookmarkSaleArray에서 검색
+                    let saleData = userInfo.bookmarkSaleArray.find(function(bookmarkSale) {
+                        return bookmarkSale.sale_seq === bookmark.saleseq;
+                    });
+
+                    // bookmarkHTML += '<div><a href="./page_saleInfo.do?sale_seq=' + saleData.sale_seq + '" target="_blank">'
+                    //     + '<img src="' + saleData.sale_pic + '" width="100">'
+                    //     + bookmark.memo + '</a></div>';
+
+                    bookmarkHTML += "<a href=";
+                    bookmarkHTML += "'page_saleInfo.do?sale_seq=" + saleData.sale_seq + "' ";
+                    bookmarkHTML += "target='_blank' rel='noreferrer' style='height: 150px' class='row my-2'>";
+                    bookmarkHTML += "<div class='col-5 thumb-post'>";
+                    bookmarkHTML += "<img alt='매물 사진' src=";
+                    bookmarkHTML += "'" + saleData.sale_pic + "'";
+                    bookmarkHTML += " width='100'>";
+                    bookmarkHTML += "<div class='row-5'>" + bookmark.memo + "</div>";
+                    bookmarkHTML += "</div>";
+                    bookmarkHTML += "<div class='col-7'>";
+                    if(saleData.sale_type=="P"){
+                        //list += data.sale_type + data.price + "<br>";
+                        bookmarkHTML += "매매 " + saleData.price + "만원<br>";
+                    } else if (saleData.sale_type=="l"){
+                        //list += data.sale_type + data.deposit + "<br>";
+                        bookmarkHTML += "전세 " + saleData.deposit + "만원<br>";
+                    } else if (saleData.sale_type=="m"){
+                        //list += data.sale_type + data.deposit + "/" + data.monthly_fee + "<br>";
+                        bookmarkHTML += "월세 " + saleData.deposit + "만원/" + saleData.monthly_fee + "만원<br>";
+                    }
+                    switch(saleData.house_type){
+                        case 'AT':
+                            bookmarkHTML += "아파트";
+                            break;
+                        case 'OP':
+                            bookmarkHTML += "오피스텔";
+                            break;
+                        case 'SH':
+                            bookmarkHTML += "주택";
+                            break;
+                        case 'OR':
+                            bookmarkHTML += "원룸";
+                            break;
+                        default:
+                            bookmarkHTML += "정보 없음";
+                            break;
+                    }
+                    bookmarkHTML += ", " + saleData.area + "㎡,";
+                    bookmarkHTML += saleData.floor + "/" + saleData.height + "<br>";
+                    bookmarkHTML += saleData.address + "<br>";
+                    bookmarkHTML += "</div>";
+                    bookmarkHTML += "</a>";
+                });
+                // console.log(bookmarkHTML);
+
+                $("#bookmarkList").html(bookmarkHTML);
+            }
+
+            const hideBookmark = function(){
+                $("#bookmarkList").html("");
+            }
+
+            const showHistory = function(){
+                $("#history").html("<b>미구현</b>");
+            }
+
+            const hideHistory = function(){
+                $("#history").html("");
+            }
+
             // '내 정보' 클릭 시 서버에서 받아온 데이터를 페이지에 표시
             $("#myInfoLink").click(function () {
-                $("#socialAccount").text("소셜 유무: " + userInfo.socialAccount);
-                $("#userEmail").text("이메일: " + userInfo.email);
-                $("#userName").text("이름: " + userInfo.name);
+                hideHistory();
+                hideBookmark();
+                showUserInfo();
             });
+            
+            // '내 정보' 클릭 시 서버에서 받아온 데이터를 페이지에 표시
+            $("#bookmarkLink").click(function () {
+                hideHistory();
+                hideUserInfo();
+                showBookmark();
+            });
+
+            $("#historyLink").click(function () {
+                hideUserInfo();
+                hideBookmark();
+                showHistory();
+            });
+
+
         });
     </script>
 
@@ -131,16 +233,22 @@ nav a:hover {
         </div>
         <nav>
             <a id="myInfoLink" href="#">내 정보</a>
-            <a href="page_mypage.do">즐겨 찾기</a>
-            <a href="page_mypage.do">검색 히스토리</a>
-            <a href="page_mypage.do">~~~~~~~~</a>
-            <a href="page_mypage.do">~~~~~~</a>
+            <a id="bookmarkLink" href="#">즐겨 찾기</a>
+            <a id="historyLink" href="#">검색 히스토리</a>
 
-            <!-- 세션에서 가져온 사용자 정보 표시 -->
             <div id="userInfo">
+                <!-- 북마크 리스트 -->
+                <div id="bookmarkList"></div>
+
+                <!-- 사용자 정보 표시 -->
                 <div id="socialAccount"></div>
                 <div id="userEmail"></div>
                 <div id="userName"></div>
+
+                <!-- 사용자 검색 히스토리 -->
+                <div id="history"></div>
+
+
             </div>
         </nav>
     </main>

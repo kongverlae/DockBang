@@ -7,8 +7,10 @@ import lombok.Setter;
 @Setter
 public class BookmarkTO {
 	// bookmark seq
-	private String useqseq;
-	
+	private String bookmarkseq;
+	// user의 email은 unique
+	private String useremail;
+
 	private String memo;
 	
 	// sale seq
