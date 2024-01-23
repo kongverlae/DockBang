@@ -1,7 +1,7 @@
 
-  (function ($) {
-  
-  "use strict";
+(function ($) {
+	"use strict";
+	
 	var availableTags = [
 	 "가락시장",
 	 "강남",
@@ -237,12 +237,13 @@
 			filterKeywords.monthlyFeeMax = $( "#monthly-fee-slider" ).slider( "values", 1 );
 			filterKeywords.priceMin = $( "#price-slider" ).slider( "values", 0 );
 			filterKeywords.priceMax = $( "#price-slider" ).slider( "values", 1 );
+
+			//console.log(filterKeywords);
 		}
-	console.log(filterKeywords);
 	$(document).ready(function(){
 		//filterKeywords.station = document.getElementById( "station-autocomplete" ).value; 
 		//filterKeywords.commuteWay = document.querySelector( 'input[name="commuteWay"]:checked' ).value; 
-		
+		//console.log(cpage);
 	});
 	
 	// house_type 필터 만들기
@@ -262,18 +263,16 @@
 	
 	function refreshable() {
 		refreshFilterKeywords();
-		console.log(filterKeywords);
+		//console.log(filterKeywords);
 		//changedArr = filteringList(saleJsonArr);
-		changedArr = slaeJsonArr.filter(item => {
+		/*changedArr = saleJsonArr.filter(item => {
    			return (item.house_type === 'at' && filterKeywords.at) ||
 				(item.house_type === 'op' && filterKeywords.op) ||
 				(item.house_type === 'sh' && filterKeywords.sh) ||
 				(item.house_type === 'or' && filterKeywords.or);
 			})
-		console.log(saleJsonArr.length);
+		console.log(saleJsonArr.length);*/
 	}
-	
-	console.log(filterKeywords);
 	
 	// 오피스텔 체크박스 이벤트
     $("#houseTypeOp").change(function(){
@@ -286,6 +285,21 @@
             console.log("오피스텔이 해제되었습니다.");
         }
 		refreshable();
+		let house_type_list = [];
+		if( filterKeywords.at ){
+			house_type_list.push("at");
+		}
+		if( filterKeywords.op ){
+			house_type_list.push("op");
+		}
+		if( filterKeywords.sh ){
+			house_type_list.push("sh");
+		}
+		if( filterKeywords.or ){
+			house_type_list.push("or");
+		}
+		//console.log(house_type_list);
+		searchSaleSeq(house_type_list);
     });
 
     // 주택 체크박스 이벤트
@@ -297,6 +311,21 @@
             console.log("주택이 해제되었습니다.");
         }
 		refreshable();
+		let house_type_list = [];
+		if( filterKeywords.at ){
+			house_type_list.push("at");
+		}
+		if( filterKeywords.op ){
+			house_type_list.push("op");
+		}
+		if( filterKeywords.sh ){
+			house_type_list.push("sh");
+		}
+		if( filterKeywords.or ){
+			house_type_list.push("or");
+		}
+		//console.log(house_type_list);
+		searchSaleSeq(house_type_list);
     });
 
     // 원룸 체크박스 이벤트
@@ -307,7 +336,23 @@
         } else {
             console.log("원룸이 해제되었습니다.");
         }
+        
 		refreshable();
+		let house_type_list = [];
+		if( filterKeywords.at ){
+			house_type_list.push("at");
+		}
+		if( filterKeywords.op ){
+			house_type_list.push("op");
+		}
+		if( filterKeywords.sh ){
+			house_type_list.push("sh");
+		}
+		if( filterKeywords.or ){
+			house_type_list.push("or");
+		}
+		//console.log(house_type_list);
+		searchSaleSeq(house_type_list);
     });
 
     // 아파트 체크박스 이벤트
@@ -320,6 +365,21 @@
             console.log("아파트가 해제되었습니다.");
         }
         refreshable();
+        let house_type_list = [];
+		if( filterKeywords.at ){
+			house_type_list.push("at");
+		}
+		if( filterKeywords.op ){
+			house_type_list.push("op");
+		}
+		if( filterKeywords.sh ){
+			house_type_list.push("sh");
+		}
+		if( filterKeywords.or ){
+			house_type_list.push("or");
+		}
+		//console.log(house_type_list);
+		searchSaleSeq(house_type_list);
     });
 
     // 모든 집 유형 체크박스의 변경 이벤트
@@ -331,6 +391,15 @@
             // 현재 체크박스 선택 취소
             $(this).prop("checked", true);
         }
+      	// let house_type_list = [];
+        //console.log($("[id^=houseType]:checked"));
+		/*
+        $("[id^=houseType]:checked").forEach(checked => {
+        	console.log(checked);
+        	house_type_list = checked;
+        	console.log(house_type_list);
+        });
+        */
     });
     
 	// 모든 거래 유형 체크박스의 변경 이벤트
@@ -407,39 +476,20 @@
 		}
 	}
 	
-	/*let circles = [];
-	
-	$("#commutebtn").on("click", function() {
+	function searchSaleSeq(house_type_list){
 		$.ajax({
 			// jsp, xml 등 페이지 주소
-			url: '/act_distance_search.do',
+			url: '/act_house_type_search.do',
 			type: 'get',
 			// json, xml, html, text 등
 			// 파라미터 입력하기
-			data: {
-				startStation: $("#station-autocomplete").val(),
-				timeLimit: $( "#commute-slider" ).slider( "values", 1 )
-			},
+			data: { 'house_type_list': house_type_list },
+			traditional: true,
 			dataType: 'json',
 			// 성공 4 && 200 이라는 말
 			success: function(json) {
+				// 거리 기반 검색 성공
 				//console.log(json);
-				json.stationsNearStart.forEach(station => {
-					console.log(station.name);
-					let num = stationTitleArray.indexOf(station.name);
-					let title = stationTitleArray[num];
-					let lat = stationLats[num];
-					let lon = stationLons[num];
-					console.log(num + "/" + title + "/" +  lat + "/" +  lon);
-					let circle = new naver.maps.Circle({
-					    map: map,
-					    center: new naver.maps.LatLng(lat, lon),
-					    radius: 10000,
-					    fillColor: 'crimson',
-					    fillOpacity: 0.8
-					});
-					circles.push(circle);
-				});
 				
 			},
 			// 실패 
@@ -447,7 +497,7 @@
 				alert('[에러]' + e.status);
 			}
 		});
-	});*/
-  })(window.jQuery);
+	};
+})(window.jQuery);
 
 

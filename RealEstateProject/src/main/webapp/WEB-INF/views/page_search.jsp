@@ -162,11 +162,14 @@
 	<script src="js/jquery-ui.min.js"></script>
 	<!-- search page에서 사용하는 jquery ui 컴포넌트들을 제어하기 위한 js -->
 	<script src="js/search.js"></script>
+	<!-- <script type="module" th:src="@{/js/sidePaging.js}"></script> -->
+	<script type="text/javascript" src="js/sidePaging.js"></script>
 	<!-- 각자 발급받은 Client ID 값 넣기 -->
 	<script type="text/javascript"
 		src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=0xkngoqc6q&submodules=geocoder"></script>
 	<script type="text/javascript" src="js/MarkerClustering.js"></script>
 	<script id="code">
+		"use strict";
 		/* 코드 부분이였는데 */
 		
 		// 동 위치 정보
@@ -587,19 +590,19 @@
 		   
 		   
 		   
-		    function searchCoordinateToAddress(latlng) {	    	
+		    /* function searchCoordinateToAddress(latlng) {	    	
 		    	
-		    }			
+		    } */			
 			
 			// 지도 커서를 손가락 모양으로 설정
 			map.setCursor('pointer');
-			 
+			
 			// 좌표를 주소로 변환하는 함수
 			function searchCoordinateToAddress(latlng) {
 
-			    infoWindow.close();
+			infoWindow.close();
 
-          // navermap
+			// navermap
 			    naver.maps.Service.reverseGeocode({
 			        coords: latlng,
 			        orders: [
@@ -799,203 +802,25 @@
 			naver.maps.onJSContentLoaded = initGeocoder;
 			
 			//=============김재휘 작업 중======================
-			// 매물 목록은 seq만 유지하기 변수 이름은 saleSeqArray
-			// 현재 사용하려는 매물 목록은 flteredSeq
-			let filteredSeq = saleSeqArray;
+			//import { cpage } from '/js/sidepaging.js';
+
+			let circles = [];
+			//let filteredSeq = [];
 			// sideList와 sidePage를 위한 변수들
 			// cpage = 현재 페이지
-		    let cpage = 1;
-		    const maxLender = 20;
+			//let cpage = 1;
+			//const maxLender = 20;
 			// pageSize = 사용하려는 매물 목록 크기                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
-			let pageSize = 1;
-			let circles = [];
+			//let pageSize = 1;
 
-		    // cpage = 현재 페이지 
-		    // maxLender = 최대 페이지 출력 수
-		    // saleJsonArr = 매물 리스트
-		    // let start = 페이지 번호에 따른 매물 리스트 시작 번호
-
-		    // 지도 화면 사이드에 표시되는 매물 리스트 그리는 함수
-		    function drawSideListing(filteredSeq) {
-				let list = "";
-				let start = ( ( cpage - 1 ) * maxLender );
-				// 들어온 seq 리스트를 seq만 가지고 있는 배열로 변경하는 작업
-				let atSeqList = [];
-				let last = (((start + maxLender)<filteredSeq.length) ? start + maxLender : filteredSeq.length);
-				for( let i = start; i < last; i++ ) {
-					atSeqList.push(filteredSeq[i]);
-				}
-
-				$.ajax({
-					// jsp, xml 등 페이지 주소
-					url: '/act_saleList.do',
-					type: 'get',
-					// json, xml, html, text 등
-					// 파라미터 입력하기
-					traditional: true,
-					data: {'seqList': atSeqList},
-					dataType: 'json',
-					// 성공 4 && 200 이라는 말
-					success: function(json) {
-						//console.log(json);
-						//console.log(json[0]);
-						//console.log(json[0].sale_seq);
-						json.forEach( data => {
-							list += "<a href=";
-							list += "'page_saleInfo.do?sale_seq=" + data.sale_seq + "' ";
-							list += "target='_blank' rel='noreferrer' style='height: 100px' class='row my-2'>";
-							//list += "<div style='height: 100px' class='row my-2'>"
-							list += "<div class='col-5 thumb-post'>";
-							list += "<img alt='매물 사진' src=";
-							list += "'" + data.sale_pic + "'";
-							list += ">";
-							list += "</div>";
-							list += "<div class='col-7'>";
-							if(data.sale_type=="P"){
-								//list += data.sale_type + data.price + "<br>";					
-								list += "매매 " + data.price + "만원<br>";					
-							} else if (data.sale_type=="L"){
-								//list += data.sale_type + data.deposit + "<br>";					
-								list += "전세 " + data.deposit + "만원<br>";					
-							} else if (data.sale_type=="M"){
-								//list += data.sale_type + data.deposit + "/" + data.monthly_fee + "<br>";					
-								list += "월세 " + data.deposit + "만원/" + data.monthly_fee + "만원<br>";					
-							}
-							switch(data.house_type){
-								case 'AT':
-									list += "아파트";
-									break;
-								case 'OP':
-									list += "오피스텔";
-									break;
-								case 'SH':
-									list += "주택";
-									break;
-								case 'OR':
-									list += "원룸";
-									break;
-								default:
-									list += "정보 없음";
-									break;
-							}
-							list += ", " + data.area + "㎡,";
-							list += data.floor + "/" + data.height + "<br>";
-							list += data.address + "<br>";
-							list += "</div>";
-							//list += "</div>";
-							list += "</a>";
-						});
-						
-						$("#sideListing").html(list);
-						
-					},
-					// 실패 
-					error: function(e) {
-						alert('[에러]' + e.status);
-					}
-				});
-		    };
-		    
-		    // 사이트 페이징 그리는 함수
-		    function drawSidePaging(){
-		    	// page 시작점
-				let pageStart = ( ( cpage >= 3 ) ? cpage - 2 : 1 );
-				// page 종료점 
-				let pageLast = ( ( ( pageStart + 4) < pageSize ) ? pageStart + 4 : pageSize );
-				
-				// page 들을 출력하기 위한 html
-				let paging = "";
-				// 페이징 이전 [<]
-				paging += "<li class='page-item'>";
-				// 현재 페이지가 1이면 동작 불가
-				if(cpage==1){
-					paging += "<div id='pbtn' class='page-link w-10' aria-label='Previous'>";
-					paging += "<span aria-hidden='true'>&lt;</span></div></li>";
-				} else {
-					paging += "<button id='pbtn' class='page-link w-10' aria-label='Previous'>";
-					paging += "<span aria-hidden='true'>&lt;</span></button></li>";
-				}
-		        
-		    	// 페이징 번호 출력 [1][2][3][4][5]
-				for(let i=pageStart; i<=pageLast; i++){
-					// 현재 페이지 번호와 같을 경우 현재 페이지라는 표시를 함
-					if(cpage == i){
-						paging += "<li class='page-item active' aria-current='page'>";
-						paging += "<div id='pbtn" + i + "' class='page-link w-1'>" + i + "</div></li>";
-					} else {
-						paging += "<li class='page-item' aria-current='page'>";
-						paging += "<button id='pbtn" + i + "' class='page-link w-1'>" + i + "</button></li>";
-					}
-				}				
-		        
-		    	// 페이징 이후 [>]
-				paging += "<li class='page-item'>";
-				if(cpage==pageSize){
-					paging += "<div id='nbtn' class='page-link w-10' aria-label='Next'>";
-					paging += "<span aria-hidden='true'> &gt;</span></div></li>";
-				} else {
-					paging += "<button id='nbtn' class='page-link w-10' aria-label='Next'>";
-					paging += "<span aria-hidden='true'> &gt;</span></button></li>";
-				}		    	
-		        
-				// html 페이지에 작성하기
-				$("#sidePaging").html(paging);
-
-				// 페이징에 버튼 할당 하는 부분
+			//filteredSeq = saleSeqArray;
+			//newSaleList(filteredSeq);
+			//drawSaleList(filteredSeq);
 			
-				// 페이징 이전 버튼[<] 할당
-				if(!(cpage==1)){
-					$("#pbtn").on( "click", function(){
-						cpage--;
-						//drawSideListing(saleList);
-						//drawSidePaging();
-						drawSaleList(filteredSeq);
-					} );
-				}
-				// 페이징 번호 부분 버튼[1][2][3] 할당
-				for(let i=pageStart; i<=pageLast; i++){
-					let pbtnName = "#pbtn" + i;
-					//console.log("pbtn name: " + pbtnName);
-					if( !(cpage == i) ){
-						$( pbtnName ).on( "click", function() {
-							//console.log("버튼 누름");
-							cpage = i;
-							//drawSideListing(saleList);
-							//drawSidePaging();
-							drawSaleList(filteredSeq);
-						});
-					}
-				}
-				
-				// 페이징 이후 버튼[>] 할당
-				if(!(cpage==pageSize)){
-					$("#nbtn").on( "click", function(){
-						cpage++;
-						//drawSideListing(saleList);
-						//drawSidePaging();
-						drawSaleList(filteredSeq);
-					} );
-				}
-		    }
-			
-
-			// 마커를 활성화하거나 비활성화 하는 함수들
-			// 마커를 전체 비활성화하는 함수
-			function clearFilter(){
-				for(let i=0; i<markers.length; i++) {
-					markers[i].check = false;
-				}
-			}
-			// 마커를 원하는 seq들만 활성화하는 함수
-			function applyFilter(filteredSeq){
-				filteredSeq.forEach(seq => {
-					//console.log(seq);
-					// 한번 확인해보기 [seq]인지 [seq-1]인지 
-					markers[seq-1].check = true;
-					//markers[i].check = false;
-				});
-			}
-			
+			let right = new Right(saleSeqArray);
+	
+			right.drawSideListing();
+			right.drawSidePaging();
 			
 			// 거리기반검색
 			$("#commutebtn").on("click", function() {
@@ -1052,24 +877,6 @@
 					}
 				});
 			});
-			
-			// 기본 페이지, 클러스터링 변경, 클러스터링 클릭, 거리기반검색, 필터(상세)검색
-			function newSaleList(filteredSeq) {
-				cpage = 1;
-				pageSize = Math.ceil(filteredSeq.length/maxLender);
-				clearFilter();
-				applyFilter(filteredSeq);
-				// 기본 새로고침 후 사이드 페이지 드로우
-			}
-			
-			// 기본 페이지, 클러스터링 변경, 클러스터링 클릭, 거리기반검색, 필터(상세)검색, 페이징이동
-			function drawSaleList(filteredSeq) {
-				drawSideListing(filteredSeq);
-				drawSidePaging();
-			}
-
-			newSaleList(filteredSeq);
-			drawSaleList(filteredSeq);
 			//=============================================
 
 

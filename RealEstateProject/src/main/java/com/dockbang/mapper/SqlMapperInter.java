@@ -218,4 +218,17 @@ public interface SqlMapperInter {
 			+ "limit 1")
 	PoliceTO getPopliceNearPoint(double lon, double lat);
 	
+	
+	// 상세 검색용 sqls
+	// house_type으로 sale_seq 가져오기
+	@Select({
+        "<script>",
+        "SELECT sale_seq FROM sale WHERE house_type IN",
+        "<foreach item='houseType' collection='houseTypes' open='(' separator=',' close=')'>",
+        "#{houseType}",
+        "</foreach>",
+        "</script>"
+    })
+    List<String> getSaleSeqByHouseTypes(@Param("houseTypes") List<String> houseTypes);
+	
 }

@@ -320,4 +320,18 @@ public class SaleController {
 		return modelAndView;
 	}
 
+	// 상세 검색을 위한 매소드들
+	// 매물 상세 정보(house_type)를 가진 매물의 seq 리스트 반환
+	@RequestMapping("/act_house_type_search.do")
+	@ResponseBody
+	JSONObject act_house_type_search(
+			// house_type 리스트
+			@RequestParam List<String> house_type_list) {
+		
+		JSONObject result = new JSONObject();
+		List<String> saleSeqs = mapper.getSaleSeqByHouseTypes(house_type_list);
+		result.put("saleSeqs", saleSeqs);
+		
+		return result;
+	}
 }
