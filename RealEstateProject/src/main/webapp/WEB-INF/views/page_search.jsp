@@ -594,8 +594,8 @@
 		        	if (polygon) {
 		        	    polygon.setMap(null);
 		        	}
-		            map.panTo(markerInfo.position);
 		        	map.setZoom(16, true);
+		            map.panTo(markerInfo.position);
 		            infoWindows.forEach(window => window.close());
 		        });
 		    });
@@ -893,7 +893,7 @@
 						//console.log(stationLats[stationTitleArray.findIndex($("#station-autocomplete").val())]);
 						//console.log($("#station-autocomplete").val());
 				        //console.log(stationTitleArray.indexOf("강남"));
-					    map.setZoom(13, true);	
+					    map.setZoom(15, true);	
 				        map.panTo(stationMarkers[stationTitleArray.indexOf($("#station-autocomplete").val())].position);
 					},
 					// 실패 
