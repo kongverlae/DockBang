@@ -296,9 +296,8 @@ public class SaleController {
 			// house_type 리스트
 			@RequestParam List<String> house_type_list) {
 		
-		JSONObject result = new JSONObject();
-		List<String> saleSeqs = mapper.getSaleSeqByHouseTypes(house_type_list);
-		result.put("saleSeqs", saleSeqs);
+		// housetype list => seq list
+		JSONObject result = sdao.getSeqsByHouseType(house_type_list);
 		
 		return result;
 	}
@@ -355,28 +354,22 @@ public class SaleController {
 	        @RequestParam String monthlyFeeMin, 
 	        @RequestParam String monthlyFeeMax) {
 
-	    JSONObject result = new JSONObject();
-	    List<String> saleSeqs = new ArrayList<>();
+	    // 요금 정보
+	    Map<String, String> fee = new HashMap<>();
+	    
+	    fee.put("priceMin", priceMin);
+	    fee.put("priceMax", priceMax);
+	    fee.put("lDepositMin", lDepositMin);
+	    fee.put("lDepositMax", lDepositMax);
+	    fee.put("mDepositMin", mDepositMin);
+	    fee.put("mDepositMax", mDepositMax);
+	    fee.put("monthlyFeeMin", monthlyFeeMin);
+	    fee.put("monthlyFeeMax", monthlyFeeMax);
 
-	    for (String saleType : saleTypeList) {
-	        List<String> tempSaleSeqs;
-	        switch (saleType) {
-	            case "p":
-	                tempSaleSeqs = mapper.getSaleSeqBySaleTypeP(priceMin, priceMax);
-	                break;
-	            case "l":
-	                tempSaleSeqs = mapper.getSaleSeqBySaleTypeL(lDepositMin, lDepositMax);
-	                break;
-	            case "m":
-	                tempSaleSeqs = mapper.getSaleSeqBySaleTypeM(mDepositMin, mDepositMax, monthlyFeeMin, monthlyFeeMax);
-	                break;
-	            default:
-	                tempSaleSeqs = Collections.emptyList();
-	        }
-	        saleSeqs.addAll(tempSaleSeqs);
-	    }
-
-	    result.put("saleSeqs", saleSeqs);
+	    // saletype list => seq list
+	    JSONObject result = sdao.getSeqsBySaleType(saleTypeList, fee);
+	    
+	    
 	    return result;
 	}
 
