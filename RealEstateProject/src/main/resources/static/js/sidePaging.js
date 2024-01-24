@@ -31,7 +31,7 @@ class Right {
 	// filteredSeq를 설정하는 함수
 	setFilteredSeq(filteredSeq) {
 		this.filteredSeq = filteredSeq;
-		this.pageSize = Math.ceil(this.filteredSeq.length/this.maxLender);;
+		this.pageSize = Math.ceil(this.filteredSeq.length/this.maxLender);
 	}
 	// filteredSeq를 반환하는 함수
 	getFilteredSeq() {
@@ -53,7 +53,7 @@ class Right {
 		// 최대 20개 혹은 입력된 갯수 만큼 매물의 정보를 가져오기 위한 작업		
 		let atSeqList = [];
 		for( let i = start; i < last; i++ ) {
-			atSeqList.push(filteredSeq[i]);
+			atSeqList.push(this.filteredSeq[i]);
 		}
 	
 		$.ajax({
@@ -159,7 +159,7 @@ class Right {
 	    
 		// 페이징 이후 [>]
 		paging += "<li class='page-item'>";
-		if(this.cpage==pageSize){
+		if(this.cpage==this.pageSize){
 			paging += "<div id='nbtn' class='page-link w-10' aria-label='Next'>";
 			paging += "<span aria-hidden='true'> &gt;</span></div></li>";
 		} else {
@@ -174,33 +174,49 @@ class Right {
 	
 		// 페이징 이전 버튼[<] 할당
 		if(!(this.cpage==1)){
-			$("#pbtn").on( "click", function(){
+			document.getElementById('pbtn').addEventListener('click', () => {
 				this.cpage--;
 				this.drawSideListing();
 				this.drawSidePaging();
-			} );
+			});
+			/*$("#pbtn").on( "click", function(){
+				this.cpage--;
+				this.drawSideListing();
+				drawSideListing
+				this.drawSidePaging();
+			} );*/
 		}
 		// 페이징 번호 부분 버튼[1][2][3] 할당
 		for(let i=pageStart; i<=pageLast; i++){
-			let pbtnName = "#pbtn" + i;
+			let pbtnName = "pbtn" + i;
 			//console.log("pbtn name: " + pbtnName);
 			if( !(this.cpage == i) ){
-				$( pbtnName ).on( "click", function() {
+				document.getElementById( pbtnName ).addEventListener('click', () => {
+					this.cpage = i;
+					this.drawSideListing();
+					this.drawSidePaging();
+				});
+				/*$( pbtnName ).on( "click", function() {
 					//console.log("버튼 누름");
 					this.cpage = i;
-					drawSideListing();
-					drawSidePaging();
-				});
+					this.drawSideListing();
+					this.drawSidePaging();
+				});*/
 			}
 		}
 		
 		// 페이징 이후 버튼[>] 할당
-		if(!(this.cpage==pageSize)){
-			$("#nbtn").on( "click", function(){
+		if(!(this.cpage==this.pageSize)){
+			document.getElementById('nbtn').addEventListener('click', () => {
 				this.cpage++;
-				drawSideListing();
-				drawSidePaging();
-			} );
+				this.drawSideListing();
+				this.drawSidePaging();
+			});
+			/*$("#nbtn").on( "click", function(){
+				this.cpage++;
+				this.drawSideListing();
+				this.drawSidePaging();
+			} );*/
 		}
 	}
 	
