@@ -1,9 +1,12 @@
 package com.dockbang.model;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -142,6 +145,44 @@ public class SaleDAO {
 		SubwayStationTO stationTO = mapper.getStation(stationName);
 		
 		return stationTO;
+	}
+	
+	// housetype으로 해당하는 매물의 seq list 가져오기
+	public JSONObject getSeqsByHouseType(List<String> house_type_list) {
+		JSONObject result = new JSONObject();
+		List<String> saleSeqs = mapper.getSaleSeqByHouseTypes(house_type_list);
+		
+		result.put("saleSeqs", saleSeqs);
+		return result;
+	}
+	
+	// saletype으로 해당하는 매물의 seq list 가져오기
+	public JSONObject getSeqsBySaleType(List<String> saleTypeList, Map<String, String> fee) {
+		JSONObject result = new JSONObject();
+		List<String> saleSeqs = new ArrayList<>();
+		
+		for (String saleType : saleTypeList) {
+	        List<String> tempSaleSeqs;
+	        switch (saleType) {
+	            case "p":
+	                tempSaleSeqs = mapper.getSaleSeqBySaleTypeP(fee.get("priceMin"), fee.get("priceMax"));
+	                break;
+	            case "l":
+	                tempSaleSeqs = mapper.getSaleSeqBySaleTypeL(fee.get("lDepositMin"), fee.get("lDepositMax"));
+	                break;
+	            case "m":
+	                tempSaleSeqs = mapper.getSaleSeqBySaleTypeM(fee.get("mDepositMin"), fee.get("mDepositMax"), fee.get("monthlyFeeMin"), fee.get("monthlyFeeMax"));
+	                break;
+	            default:
+	                tempSaleSeqs = Collections.emptyList();
+	        }
+	        saleSeqs.addAll(tempSaleSeqs);
+	    }
+
+	    result.put("saleSeqs", saleSeqs);
+		
+		
+		return result;
 	}
 	
 	
