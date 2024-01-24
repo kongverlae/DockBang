@@ -303,10 +303,22 @@
 			
 			// 네이버 지도 객체를 생성하고 설정
 			let map = new naver.maps.Map(mapDiv, {
-			    center: new naver.maps.LatLng(37.3595704, 127.105399),
-			    zoom: 13
+			    center: new naver.maps.LatLng(37.4989, 127.0282),
+			    zoom: 13,
+			    minZoom: 12, //지도의 최소 줌 레벨
+		        zoomControl: true, //줌 컨트롤의 표시 여부
+		        zoomControlOptions: { //줌 컨트롤의 옵션
+		            position: naver.maps.Position.TOP_LEFT
+		        }
 			    //, mapTypeControl: true
 			});
+			/* map.setOptions({ //모든 지도 컨트롤 보이기
+	            scaleControl: true,
+	            logoControl: true,
+	            mapDataControl: true,
+	            zoomControl: true,
+	            mapTypeControl: true
+	        }); */
 			
 			
       // main
@@ -383,12 +395,12 @@
 
 
 			    naver.maps.Event.addListener(marker, 'click', function() {
-			        map.panTo(markerInfo.position);
 			        
 			        // 편의성을 위한 클릭시 확대만 되게
 			        if(map.getZoom() < 14){
-				        map.setZoom(14);	
+				        map.setZoom(14, true);	
 			        } 
+			        map.panTo(markerInfo.position);
 			        
 			        // 클릭한 마커의 위치의 키워드로 설정
 			        keyword = markerInfo.message;
@@ -582,9 +594,9 @@
 		        	if (polygon) {
 		        	    polygon.setMap(null);
 		        	}
-		        	map.setZoom(16);
-		            infoWindows.forEach(window => window.close());
 		            map.panTo(markerInfo.position);
+		        	map.setZoom(16, true);
+		            infoWindows.forEach(window => window.close());
 		        });
 		    });
 		   
@@ -877,6 +889,12 @@
 						markerClustering._redraw();
 						right.drawSideListing();
 						right.drawSidePaging();
+				        // 출발지 기준으로 이동 및 줌 설정
+						//console.log(stationLats[stationTitleArray.findIndex($("#station-autocomplete").val())]);
+						//console.log($("#station-autocomplete").val());
+				        //console.log(stationTitleArray.indexOf("강남"));
+					    map.setZoom(13, true);	
+				        map.panTo(stationMarkers[stationTitleArray.indexOf($("#station-autocomplete").val())].position);
 					},
 					// 실패 
 					error: function(e) {
@@ -1458,6 +1476,7 @@
 						}
 					});
 				};
+				
 			//=============================================
 
 
