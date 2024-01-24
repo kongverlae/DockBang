@@ -1,6 +1,7 @@
 package com.dockbang.controller;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -318,6 +319,98 @@ public class SaleController {
 
 		// view 페이지로 반환
 		return modelAndView;
+	}
+
+	// 상세 검색을 위한 매소드들
+	// 매물 상세 정보(house_type)를 가진 매물의 seq 리스트 반환
+	@RequestMapping("/act_house_type_search.do")
+	@ResponseBody
+	JSONObject act_house_type_search(
+			// house_type 리스트
+			@RequestParam List<String> house_type_list) {
+		
+		JSONObject result = new JSONObject();
+		List<String> saleSeqs = mapper.getSaleSeqByHouseTypes(house_type_list);
+		result.put("saleSeqs", saleSeqs);
+		
+		return result;
+	}
+	
+	// 매물 상세 정보(sale_type)를 가진 매물의 seq 리스트 반환
+	/*
+	 * @RequestMapping("/act_sale_type_search.do")
+	 * 
+	 * @ResponseBody JSONObject act_sale_type_search( // house_type 리스트
+	 * 
+	 * @RequestParam List<String> saleTypeList,
+	 * 
+	 * @RequestParam String priceMin,
+	 * 
+	 * @RequestParam String priceMax,
+	 * 
+	 * @RequestParam String lDepositMin,
+	 * 
+	 * @RequestParam String lDepositMax,
+	 * 
+	 * @RequestParam String mDepositMin,
+	 * 
+	 * @RequestParam String mDepositMax,
+	 * 
+	 * @RequestParam String monthlyFeeMin,
+	 * 
+	 * @RequestParam String monthlyFeeMax) { System.out.println("saleTypeList :" +
+	 * saleTypeList); System.out.println("priceMin :" + priceMin);
+	 * System.out.println("priceMax :" + priceMax);
+	 * System.out.println("lDepositMin :" + lDepositMin);
+	 * System.out.println("lDepositMax :" + lDepositMax);
+	 * System.out.println("mDepositMin :" + mDepositMin);
+	 * System.out.println("mDepositMax :" + mDepositMax);
+	 * System.out.println("monthlyFeeMin :" + monthlyFeeMin);
+	 * System.out.println("monthlyFeeMax :" + monthlyFeeMax);
+	 * 
+	 * JSONObject result = new JSONObject(); List<String> saleSeqs =
+	 * mapper.getSaleSeqBySaleTypes( saleTypeList, priceMin, priceMax, lDepositMin,
+	 * lDepositMax, mDepositMin, mDepositMax, monthlyFeeMin, monthlyFeeMax );
+	 * result.put("saleSeqs", saleSeqs);
+	 * 
+	 * return result; }
+	 */
+	@RequestMapping("/act_sale_type_search.do")
+	@ResponseBody
+	public JSONObject actSaleTypeSearch(
+	        @RequestParam List<String> saleTypeList,
+	        @RequestParam String priceMin, 
+	        @RequestParam String priceMax, 
+	        @RequestParam String lDepositMin, 
+	        @RequestParam String lDepositMax, 
+	        @RequestParam String mDepositMin, 
+	        @RequestParam String mDepositMax, 
+	        @RequestParam String monthlyFeeMin, 
+	        @RequestParam String monthlyFeeMax) {
+
+	    JSONObject result = new JSONObject();
+	    List<String> saleSeqs = new ArrayList<>();
+
+	    for (String saleType : saleTypeList) {
+	        List<String> tempSaleSeqs;
+	        switch (saleType) {
+	            case "p":
+	                tempSaleSeqs = mapper.getSaleSeqBySaleTypeP(priceMin, priceMax);
+	                break;
+	            case "l":
+	                tempSaleSeqs = mapper.getSaleSeqBySaleTypeL(lDepositMin, lDepositMax);
+	                break;
+	            case "m":
+	                tempSaleSeqs = mapper.getSaleSeqBySaleTypeM(mDepositMin, mDepositMax, monthlyFeeMin, monthlyFeeMax);
+	                break;
+	            default:
+	                tempSaleSeqs = Collections.emptyList();
+	        }
+	        saleSeqs.addAll(tempSaleSeqs);
+	    }
+
+	    result.put("saleSeqs", saleSeqs);
+	    return result;
 	}
 
 }
