@@ -150,7 +150,7 @@ public class MemberDAO {
 	
 	// 유저 정보 반환
 	public MemberTO getMemberTO(String userEmail) {
-		MemberTO memberTO = mapper.selectUserInfo(userEmail);
+		MemberTO memberTO = mapper.selectUserFromEmail(userEmail);
 		
 		return memberTO;
 	}
@@ -166,6 +166,11 @@ public class MemberDAO {
 	// 유저 북마크 추가
 	public int addUserBookmark(String userEmail, String saleSeq, String memo) {
 		return mapper.addUserBookmark(userEmail, saleSeq, memo);
+	}
+	
+	// 특정 유저 히스토리 반환
+	public List<HistoryTO> getHistoryTOList(MemberTO memberTO){
+		return mapper.getUserHistory(memberTO.getUserseq());
 	}
 	
 	
