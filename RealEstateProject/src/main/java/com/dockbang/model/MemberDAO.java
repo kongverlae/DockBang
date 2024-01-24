@@ -1,5 +1,7 @@
 package com.dockbang.model;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -144,6 +146,26 @@ public class MemberDAO {
 		// 기능
 		
 //		return null;
+	}
+	
+	// 유저 정보 반환
+	public MemberTO getMemberTO(String userEmail) {
+		MemberTO memberTO = mapper.selectUserInfo(userEmail);
+		
+		return memberTO;
+	}
+	
+	// 특정 유저 북마크 리스트 반환
+	public List<BookmarkTO> getBookmarkTOList(String userEmail){
+		List<BookmarkTO> bookmarkTOList = mapper.getUserBookmark(userEmail);
+		
+		return bookmarkTOList;
+	}
+	
+	
+	// 유저 북마크 추가
+	public int addUserBookmark(String userEmail, String saleSeq, String memo) {
+		return mapper.addUserBookmark(userEmail, saleSeq, memo);
 	}
 	
 	

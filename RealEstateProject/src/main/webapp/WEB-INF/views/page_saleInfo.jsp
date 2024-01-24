@@ -155,6 +155,16 @@
 				// let memo = document.getElementById('message-text');
 				// console.log(memo.value);
 				
+				// 로그인상태가 아니면 알림창
+				<%
+					if(session.getAttribute("email") == null || ((String)session.getAttribute("email")).equals("")){
+				%>
+				alert('로그인 후 이용해주세요!');
+				location.href='./page_memberLogin.do';
+				<%
+					}
+				%>
+				
 				$.ajax({
 					url: './act_addBookmark.do?userEmail=' + '<%= (String)session.getAttribute("email") %>' +
 							'&saleSeq=' + '<%= saleTO.getSale_seq() %>' +
