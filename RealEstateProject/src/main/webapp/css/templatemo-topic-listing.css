@@ -271,7 +271,31 @@ strong {
 .site-header .custom-icon:hover {
   color: var(--secondary-color);
 }
+/*site-header2*/
+.site-header2 {
+  background-image: linear-gradient(15deg, #13547a 0%, #80d0c7 100%);
+  /*padding-top: 150px;*/
+  padding-bottom: 80px;
+}
 
+.site-header2 .container {
+  height: 100%;
+}
+
+.breadcrumb-item+.breadcrumb-item::before,
+.breadcrumb-item a:hover,
+.breadcrumb-item.active {
+  color: var(--white-color);
+}
+
+.site-header2 .custom-icon {
+  color: var(--white-color);
+  font-size: var(--h4-font-size);
+}
+
+.site-header2 .custom-icon:hover {
+  color: var(--secondary-color);
+}
 
 /*---------------------------------------
   NAVIGATION              

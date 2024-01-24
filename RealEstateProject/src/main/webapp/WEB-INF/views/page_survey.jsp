@@ -225,6 +225,39 @@
 		console.log( i + " : " + (i % 20 != 0 ? Math.floor(i/maxLender) + 1 : Math.floor(i/maxLender)) + " vs " + Math.ceil(i/maxLender) );
 	
 	} */
+	let prices = [1234, 12345, 123456, 10000 ];
+	prices.forEach( price => {
+		/* // 1억 이상일 경우
+		if(Math.floor(price/10000) > 0){
+			if(Math.floor(price%10000) == 0){
+				console.log(Math.floor(price/10000) + "억원");
+			} else {
+				console.log(Math.floor(price/10000) + "억 " + Math.floor(price%10000) + "만원");
+			}
+		} else {
+			console.log(price + "만원");
+		}
+		console.log(Math.floor(price/10000));
+		console.log(Math.floor(price%10000)); */
+		console.log(manToEock(price));
+	});
+	
+	function manToEock(price) {
+		let result = '';
+		if(Math.floor(price/10000) > 0){
+			if(Math.floor(price%10000) == 0){
+				//console.log(Math.floor(price/10000) + "억원");
+				result = Math.floor(price/10000) + "억원";
+			} else {
+				//console.log(Math.floor(price/10000) + "억 " + Math.floor(price%10000) + "만원");
+				result = Math.floor(price/10000) + "억 " + Math.floor(price%10000) + "만원";
+			}
+		} else {
+			//console.log(price + "만원");
+			result = price + "만원";
+		}
+		return result;
+	}
 	var availableTags = [
 	 "가락시장  ",
 	 "강남    ",

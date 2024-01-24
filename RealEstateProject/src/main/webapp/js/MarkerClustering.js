@@ -545,6 +545,24 @@ Cluster.prototype = {
 			// pageSize = 사용하려는 매물 목록 크기                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
 			let pageSize = 1;
 
+			// 만원 단위를 억 단위로 변경하는 함수
+			function manToEock(price) {
+				let result = '';
+				if(Math.floor(price/10000) > 0){
+					if(Math.floor(price%10000) == 0){
+						//console.log(Math.floor(price/10000) + "억원");
+						result = Math.floor(price/10000) + "억원";
+					} else {
+						//console.log(Math.floor(price/10000) + "억 " + Math.floor(price%10000) + "만원");
+						result = Math.floor(price/10000) + "억 " + Math.floor(price%10000) + "만원";
+					}
+				} else {
+					//console.log(price + "만원");
+					result = price + "만원";
+				}
+				return result;
+			}
+			
 		    // 지도 화면 사이드에 표시되는 매물 리스트 그리는 함수
 		    function drawSideListing(filteredSeq) {
 				let list = "";
@@ -583,13 +601,13 @@ Cluster.prototype = {
 							list += "<div class='col-7'>";
 							if(data.sale_type=="P"){
 								//list += data.sale_type + data.price + "<br>";					
-								list += "매매 " + data.price + "만원<br>";					
+								list += "매매 " + manToEock(data.price) + "<br>";					
 							} else if (data.sale_type=="L"){
 								//list += data.sale_type + data.deposit + "<br>";					
-								list += "전세 " + data.deposit + "만원<br>";					
+								list += "전세 " + manToEock(data.deposit) + "<br>";					
 							} else if (data.sale_type=="M"){
 								//list += data.sale_type + data.deposit + "/" + data.monthly_fee + "<br>";					
-								list += "월세 " + data.deposit + "만원/" + data.monthly_fee + "만원<br>";					
+								list += "월세 " + manToEock(data.deposit) + "/" + manToEock(data.monthly_fee) + "<br>";					
 							}
 							switch(data.house_type){
 								case 'AT':
@@ -608,9 +626,21 @@ Cluster.prototype = {
 									list += "정보 없음";
 									break;
 							}
-							list += ", " + data.area + "㎡,";
-							list += data.floor + "/" + data.height + "<br>";
-							list += data.address + "<br>";
+							if(data.area){
+								list += ", " + data.area + "㎡,";
+							} else {
+								list += ", " + " - " + "㎡,";
+							}
+							if(data.floor){
+								list += data.floor + "/" + data.height + "<br>";
+							} else {
+								list += " - " + "/" + " - " + "<br>";
+							}
+							if(data.address){
+								list += data.address + "<br>";
+							} else {
+								list += "주소 정보 없음" + "<br>";
+							}
 							list += "</div>";
 							//list += "</div>";
 							list += "</a>";
