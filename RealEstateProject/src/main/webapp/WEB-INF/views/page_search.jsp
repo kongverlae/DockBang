@@ -987,9 +987,9 @@
 				    $( "#l-deposit-slider" ).slider({
 				      range: true,
 				      min: 0,
-				      max: 500,
-				      step: 10,
-				      values: [ 0, 500 ],
+				      max: 100000,
+				      step: 1000,
+				      values: [ 0, 100000 ],
 				      slide: function( event, ui ) {
 				        $( "#l-deposit" ).text( ui.values[ 0 ] + " 만원 - " + ui.values[ 1 ] + " 만원");
 				        refreshFilterKeywords();
@@ -1005,9 +1005,9 @@
 				    $( "#m-deposit-slider" ).slider({
 				      range: true,
 				      min: 0,
-				      max: 500,
-				      step: 10,
-				      values: [ 0, 500 ],
+				      max: 50000,
+				      step: 1000,
+				      values: [ 0, 50000 ],
 				      slide: function( event, ui ) {
 				        $( "#m-deposit" ).text( ui.values[ 0 ] + " 만원 - " + ui.values[ 1 ] + " 만원");
 				        refreshFilterKeywords();
@@ -1024,9 +1024,9 @@
 				    $( "#monthly-fee-slider" ).slider({
 				      range: true,
 				      min: 0,
-				      max: 500,
+				      max: 200,
 				      step: 10,
-				      values: [ 0, 500 ],
+				      values: [ 0, 200 ],
 				      slide: function( event, ui ) {
 				        $( "#monthly-fee" ).text( ui.values[ 0 ] + " 만원 - " + ui.values[ 1 ] + " 만원");
 				      	refreshFilterKeywords();
@@ -1042,9 +1042,9 @@
 				    $( "#price-slider" ).slider({
 				      range: true,
 				      min: 0,
-				      max: 500,
-				      step: 10,
-				      values: [ 0, 500 ],
+				      max: 150000,
+				      step: 1500,
+				      values: [ 0, 150000 ],
 				      slide: function( event, ui ) {
 				        $( "#price" ).text( ui.values[ 0 ] + " 만원 - " + ui.values[ 1 ] + " 만원");
 				      	refreshFilterKeywords();
@@ -1062,7 +1062,7 @@
 				      min: 0,
 				      max: 60,
 				      step: 5,
-				      values: [ 0, 120 ],
+				      values: [ 0, 60 ],
 				      slide: function( event, ui ) {
 				        $( "#commute" ).text( ui.values[ 0 ] + " 분 - " + ui.values[ 1 ] + " 분");
 				      }
@@ -1092,7 +1092,7 @@
 					"lDepositMax": null,	// 전세가 max
 					"mDepositMin": null,	// 월세가 min
 					"mDepositMax": null,	// 월세가 max
-					"montylyFeeMin": null,	// 월세 min
+					"monthlyFeeMin": null,	// 월세 min
 					"monthlyFeeMax": null,	// 월세 max
 					"priceMin": null, 		// 매매가 min
 					"priceMax": null 		// 매매가 max
@@ -1116,7 +1116,7 @@
 						filterKeywords.lDepositMax = $( "#l-deposit-slider" ).slider( "values", 1 );
 						filterKeywords.mDepositMin = $( "#m-deposit-slider" ).slider( "values", 0 );
 						filterKeywords.mDepositMax = $( "#m-deposit-slider" ).slider( "values", 1 );
-						filterKeywords.montylyFeeMin = $( "#monthly-fee-slider" ).slider( "values", 0 );
+						filterKeywords.monthlyFeeMin = $( "#monthly-fee-slider" ).slider( "values", 0 );
 						filterKeywords.monthlyFeeMax = $( "#monthly-fee-slider" ).slider( "values", 1 );
 						filterKeywords.priceMin = $( "#price-slider" ).slider( "values", 0 );
 						filterKeywords.priceMax = $( "#price-slider" ).slider( "values", 1 );
@@ -1293,7 +1293,7 @@
 							house_type_list.push("or");
 						}
 						//console.log(house_type_list);
-						searchSaleSeq(house_type_list);
+						getHouseTypeSeq(house_type_list);
 			        }
 			      	// let house_type_list = [];
 			        //console.log($("[id^=houseType]:checked"));
@@ -1314,7 +1314,10 @@
 			        if (checkedCount === 0) {
 			            // 현재 체크박스 선택 취소
 			            $(this).prop("checked", true);
-			        } 
+			        } else {
+			        	refreshable();
+			        	getSaleTypeSeq(filterKeywords)
+			        }
 			    });
 			    
 			    
@@ -1380,7 +1383,8 @@
 					}
 				}
 				
-				function searchSaleSeq(house_type_list){
+				// house_type을 기반으로 하는 매물 검색 
+				function getHouseTypeSeq(house_type_list){
 					$.ajax({
 						// jsp, xml 등 페이지 주소
 						url: '/act_house_type_search.do',
@@ -1403,6 +1407,52 @@
 							right.drawSidePaging();
 						},
 						// 실패 
+						error: function(e) {
+							alert('[에러]' + e.status);
+						}
+					});
+				};
+				
+				// sale_type을 기반으로 하는 매물 검색
+				function getSaleTypeSeq(filterKeywords) {
+					let saleTypeList = [];
+					if( filterKeywords.p ){
+						saleTypeList.push('p');
+					}
+					if( filterKeywords.l ){
+						saleTypeList.push('l');
+					}
+					if( filterKeywords.m ){
+						saleTypeList.push('m');
+					}
+					console.log(filterKeywords);
+					console.log(saleTypeList);
+					$.ajax({
+						url: '/act_sale_type_search.do',
+						type: 'get',
+						traditional: true,
+						data: {
+							'saleTypeList': saleTypeList,
+							'priceMin': filterKeywords.priceMin,
+							'priceMax': filterKeywords.priceMax,
+							'lDepositMin': filterKeywords.lDepositMin,
+							'lDepositMax': filterKeywords.lDepositMax,
+							'mDepositMin': filterKeywords.mDepositMin,
+							'mDepositMax': filterKeywords.mDepositMax,
+							'monthlyFeeMin': filterKeywords.monthlyFeeMin,
+							'monthlyFeeMax': filterKeywords.monthlyFeeMax
+						},
+						dataType: 'json',
+						success: function(json) {
+							console.log(json);
+							right.setFilteredSeq(json.saleSeqs);
+							right.setCpage(1);
+							right.clearFilter(markers);
+							right.applyFilter(markers);
+							markerClustering._redraw();
+							right.drawSideListing();
+							right.drawSidePaging();
+						},
 						error: function(e) {
 							alert('[에러]' + e.status);
 						}

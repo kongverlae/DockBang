@@ -231,4 +231,116 @@ public interface SqlMapperInter {
     })
     List<String> getSaleSeqByHouseTypes(@Param("houseTypes") List<String> houseTypes);
 	
+	/*
+	 * @Select({ "<script>", "SELECT sale_seq FROM sale WHERE",
+	 * "<foreach item='saleType' collection='saleTypeList' separator=' OR '>",
+	 * "sale_type = #{saleType} AND ", "<choose>",
+	 * "<when test=\"saleType == 'p'\">",
+	 * "price BETWEEN #{priceMin} AND #{priceMax}", "</when>",
+	 * "<when test=\"saleType == 'l'\">",
+	 * "deposit BETWEEN #{lDepositMin} AND #{lDepositMax}", "</when>",
+	 * "<when test=\"saleType == 'm'\">",
+	 * "deposit BETWEEN #{mDepositMin} AND #{mDepositMax} AND monthly_fee BETWEEN #{monthlyFeeMin} AND #{monthlyFeeMax}"
+	 * , "</when>", "</choose>", "</foreach>", "</script>", }) List<String>
+	 * getSaleSeqBySaleTypes(
+	 * 
+	 * @Param("saleTypeList") List<String> saleTypeList,
+	 * 
+	 * @Param("priceMin") String priceMin,
+	 * 
+	 * @Param("priceMax") String priceMax,
+	 * 
+	 * @Param("lDepositMin") String lDepositMin,
+	 * 
+	 * @Param("lDepositMax") String lDepositMax,
+	 * 
+	 * @Param("mDepositMin") String mDepositMin,
+	 * 
+	 * @Param("mDepositMax") String mDepositMax,
+	 * 
+	 * @Param("monthlyFeeMin") String monthlyFeeMin,
+	 * 
+	 * @Param("monthlyFeeMax") String monthlyFeeMax);
+	 */
+	
+	/*
+	 * @Select("<script>" + "SELECT sale_seq " + "FROM sale " + "WHERE " +
+	 * "<if test='saleTypeList != null'>" + "   <choose>" +
+	 * "       <when test='saleTypeList.contains(\"p\")'>" +
+	 * "           sale_type = 'p' AND price BETWEEN #{priceMin} AND #{priceMax} " +
+	 * "       </when>" + "       <when test='saleTypeList.contains(\"l\")'>" +
+	 * "           sale_type = 'l' AND deposit BETWEEN #{lDepositMin} AND #{lDepositMax} "
+	 * + "       </when>" + "       <when test='saleTypeList.contains(\"m\")'>" +
+	 * "           sale_type = 'm' AND deposit BETWEEN #{mDepositMin} AND #{mDepositMax} "
+	 * + "           AND monthly_fee BETWEEN #{monthlyFeeMin} AND #{monthlyFeeMax} "
+	 * + "       </when>" + "       <otherwise>" + "           1=0 " + // No
+	 * saleType matched, return no results "       </otherwise>" + "   </choose>" +
+	 * "</if>" + "</script>") List<String> getSaleSeqBySaleTypes(
+	 * 
+	 * @Param("saleTypeList") List<String> saleTypeList,
+	 * 
+	 * @Param("priceMin") String priceMin,
+	 * 
+	 * @Param("priceMax") String priceMax,
+	 * 
+	 * @Param("lDepositMin") String lDepositMin,
+	 * 
+	 * @Param("lDepositMax") String lDepositMax,
+	 * 
+	 * @Param("mDepositMin") String mDepositMin,
+	 * 
+	 * @Param("mDepositMax") String mDepositMax,
+	 * 
+	 * @Param("monthlyFeeMin") String monthlyFeeMin,
+	 * 
+	 * @Param("monthlyFeeMax") String monthlyFeeMax);
+	 */
+	
+	// 'p' 매물 타입 검색
+    @Select("<script>" +
+            "SELECT sale_seq FROM sale WHERE sale_type = 'p'" +
+            "<if test='priceMax != null and priceMax == \"150000\"'>" +
+            "   AND price &gt;= #{priceMin}" +
+            "</if>" +
+            "<if test='priceMax == null or priceMax != \"150000\"'>" +
+            "   AND price BETWEEN #{priceMin} AND #{priceMax}" +
+            "</if>" +
+            "</script>")
+    List<String> getSaleSeqBySaleTypeP(@Param("priceMin") String priceMin,
+                                       @Param("priceMax") String priceMax);
+
+    // 'l' 매물 타입 검색
+    @Select("<script>" +
+            "SELECT sale_seq FROM sale WHERE sale_type = 'l'" +
+            "<if test='lDepositMax != null and lDepositMax == \"100000\"'>" +
+            "   AND deposit &gt;= #{lDepositMin}" +
+            "</if>" +
+            "<if test='lDepositMax == null or lDepositMax != \"100000\"'>" +
+            "   AND deposit BETWEEN #{lDepositMin} AND #{lDepositMax}" +
+            "</if>" +
+            "</script>")
+    List<String> getSaleSeqBySaleTypeL(@Param("lDepositMin") String lDepositMin,
+                                       @Param("lDepositMax") String lDepositMax);
+
+    // 'm' 매물 타입 검색
+    @Select("<script>" +
+            "SELECT sale_seq FROM sale WHERE sale_type = 'm'" +
+            "<if test='mDepositMax != null and mDepositMax == \"50000\"'>" +
+            "   AND deposit &gt;= #{mDepositMin}" +
+            "</if>" +
+            "<if test='mDepositMax == null or mDepositMax != \"50000\"'>" +
+            "   AND deposit BETWEEN #{mDepositMin} AND #{mDepositMax}" +
+            "</if>" +
+            "<if test='monthlyFeeMax != null and monthlyFeeMax == \"200\"'>" +
+            "   AND monthly_fee &gt;= #{monthlyFeeMin}" +
+            "</if>" +
+            "<if test='monthlyFeeMax == null or monthlyFeeMax != \"200\"'>" +
+            "   AND monthly_fee BETWEEN #{monthlyFeeMin} AND #{monthlyFeeMax}" +
+            "</if>" +
+            "</script>")
+    List<String> getSaleSeqBySaleTypeM(@Param("mDepositMin") String mDepositMin,
+                                       @Param("mDepositMax") String mDepositMax,
+                                       @Param("monthlyFeeMin") String monthlyFeeMin,
+                                       @Param("monthlyFeeMax") String monthlyFeeMax);
+
 }
