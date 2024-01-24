@@ -125,6 +125,21 @@ public class SaleDAO {
 		return saleTO;
 	}
 	
+	// 유저 매물 조회 히스토리 저장
+	public int saveHistory(String userEmail, SaleTO saleTO) {
+		MemberTO memberTO = mapper.selectUserFromEmail(userEmail);
+		String userseq = memberTO.getUserseq();
+		System.out.println("userseq" + userseq);
+		String saleseq = saleTO.getSale_seq();
+		System.out.println("saleseq" + saleseq);
+		
+		// 1: 성공 / 0: 실패
+		int flag = mapper.insertUserHistory(userseq, saleseq);
+		
+		return flag;
+	}
+	
+	
 	// 매물 주변에 제일 가까운 편의시설 검색
 	public Map<String, Object> getConvNearStation(String sale_seq) {
 		SaleTO saleTO = mapper.getSale(sale_seq);

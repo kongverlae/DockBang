@@ -365,7 +365,7 @@
 				        for (let i = 0; i < dongName.length; i++) {
 				            if (dongName[i] === markerInfo.message) {
 				                return {
-				                    content: "<div style='border: 1px solid #000; background-color: white; padding: 5px; font-size: 12px;'>" + dongCount[i] + " " + markerInfo.message + "</div>",
+				                    content: "<div style='border: 1px solid #000; background-color: white; padding: 5px; font-size: 12px; white-space: nowrap;'>" + dongCount[i] + " " + markerInfo.message + "</div>",
 				                    size: new naver.maps.Size(30, 30),
 				                    anchor: new naver.maps.Point(15, 30)
 				                };

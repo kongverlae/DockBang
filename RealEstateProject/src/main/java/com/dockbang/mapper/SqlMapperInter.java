@@ -50,8 +50,12 @@ public interface SqlMapperInter {
 	int selectUser(@Param("email") String email, @Param("password") String password);
 	
 	// 일반 로그인 유저 이름 갖고 오기
-	@Select("select name,password from user where email=#{email}")
+	@Select("select name from user where email=#{email}")
 	String selectUserName(@Param("email") String email);
+	
+	// 이메일로 유저 전체 정보 갖고 오기
+	@Select("select * from user where email=#{email}")
+	MemberTO selectUserFromEmail(@Param("email") String email);
 	
 	// 로그인 유저 소셜 유무, 이메일, 이름 가져오기
 	@Select("SELECT social, email, name FROM user WHERE email=#{email}")
@@ -141,6 +145,14 @@ public interface SqlMapperInter {
 	// 역 정보 가져오기
 	@Select("select name, subway_line, latitude, longitude from subway_station group by name;")
 	List<SubwayStationTO> getStationsGroupByName();
+	
+	// 히스토리 저장
+	@Insert("insert into history (historyseq, userseq, saleseq) values (0, #{userseq}, #{saleseq})")
+	int insertUserHistory(String userseq, String saleseq);
+	
+	// 히스토리 가져오기
+	@Select("select historyseq, userseq, saleseq from history where userseq = #{userseq}")
+	List<HistoryTO> getUserHistory(String userseq);
 	
 	// saleTO 참고
 	//@Select("select title, lat, lon from sale")

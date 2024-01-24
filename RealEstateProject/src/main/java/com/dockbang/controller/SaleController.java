@@ -231,6 +231,7 @@ public class SaleController {
 		
 		// 열람 기록을 세션에 저장
 		List<SaleTO> historyList;
+		
 		// 세션에서 열람기록 받아옴
 		if(session.getAttribute("historyList") != null) {
 			historyList = (List<SaleTO>) session.getAttribute("historyList");
@@ -245,6 +246,17 @@ public class SaleController {
 		}
 		// 히스토리에 매물 추가
 		historyList.add(saleTO);
+		
+		// 1: 성공 / 0: 실패
+		int flag = 0;
+		// 유저 로그인시 히스토리DB에 추가
+		if(session.getAttribute("email") != null && !session.getAttribute("email").equals("")) {
+			flag = sdao.saveHistory((String)session.getAttribute("email"), saleTO);
+		}
+		
+		if(flag != 1) {
+			System.out.println("저장 실패");
+		}
 		
 		// 최대 5개만 남기고 삭제
 		while (historyList.size() > 5) {
