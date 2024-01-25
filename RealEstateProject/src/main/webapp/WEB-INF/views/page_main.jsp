@@ -59,17 +59,11 @@
 					<!-- <div class="col-lg-4 col-12 mb-4 mb-lg-0"> -->
 					<div class="col-lg-8 col-12 mb-4 mb-lg-0">
 						<div class="custom-block bg-white shadow-lg">
-							<!-- <a href="page_survey.do">
-								<div class="d-flex">
-									<div>
-										<h5 class="mb-2">나만의 집 찾기</h5>
-										<p class="mb-0">간단한 설문을 통해 원하는 지역과 집을 편하게 찾으세요.</p>
-									</div>									숫자 뱃지
-									<span class="badge bg-design rounded-pill ms-auto">14</span>
-								</div> <img src="images/topics/undraw_Remote_design_team_re_urdx.png"
-								class="custom-block-image img-fluid" alt="">
-							</a> -->
-							
+							<a href="page_survey.do">
+								<img src="images/building.jpg"
+								class="custom-block-image img-fluid" alt="" style="height:400px">
+							</a>
+							<!-- 
 							<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
 							  <ol class="carousel-indicators">
 							    <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
@@ -96,7 +90,7 @@
 							    <span class="sr-only">Next</span>
 							  </a>
 							</div>
-							
+							 -->
 						</div>
 					</div>
 				</div>
