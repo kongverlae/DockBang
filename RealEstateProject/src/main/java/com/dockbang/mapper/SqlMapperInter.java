@@ -68,6 +68,22 @@ public interface SqlMapperInter {
 	// 유저 북마크 검색
 	@Select("select bookmarkseq, useremail, memo, saleseq from bookmark where useremail=#{userEmail}")
 	List<BookmarkTO> getUserBookmark(String userEmail);
+
+	// 유저 북마크 삭제
+	@Delete("delete from bookmark where useremail=#{userEmail}")
+	int deleteUserBookmarkAll(String userEmail);
+
+	// 유저 북마크 삭제
+	@Delete("delete from history where userseq=#{userseq}")
+	int deleteUserHistoryAll(String userseq);
+	
+	// 일반유저 회원탈퇴
+	@Delete("delete from user where email=#{userEmail} and password=#{userPassword}")
+	int deleteUser(String userEmail, String userPassword);
+
+	// 일반유저 회원탈퇴
+	@Delete("delete from user where email=#{userEmail}")
+	int deleteSocialUser(String userEmail);
 	
 	// 게시판 리스트 출력
 	@Select("select boardseq, subject, writer, wdate from board where category = #{category} order by boardseq desc")

@@ -284,6 +284,89 @@ nav a:hover {
                 showHistory();
             });
 
+            // 회원탈퇴 - 모달 포커싱 버그로 인해 단순 입력창으로 구현
+            $('#withdrawalBtn').on('click', function(){
+
+                let confirmWithdrawal = window.confirm('정말 탈퇴하시겠습니까?');
+                if(confirmWithdrawal){
+                    // 일반유저의 회원탈퇴
+                    if(userInfo.socialAccount === 'X'){
+                        let inputPassword = prompt('비밀번호를 입력하세요.');
+                        // console.log(inputPassword);
+
+                        $.ajax({
+                            url: './act_memberDelete.do',
+                            type: 'POST',
+                            data: {inputPassword: inputPassword, isSocial: false},
+                            dataType: 'json',
+                            success: function(json){
+                                // 0 실패 1 성공
+                                // console.log(json.flag);
+                                if(json.flag === 1){
+                                    alert('회원탈퇴가 완료되었습니다.');
+                                    location.href = './page_main.do';
+                                } else{
+                                    alert('회원탈퇴에 실패했습니다.');
+                                }
+                            },
+                            error: function(){
+                                console.log('에러');
+                            }
+                        });
+
+                    // 소셜유저의 회원탈퇴
+                    } else{
+                        $.ajax({
+                            url: './act_memberDelete.do',
+                            type: 'POST',
+                            data: {inputPassword: null, isSocial: true},
+                            dataType: 'json',
+                            success: function(json){
+                                // 0 실패 1 성공
+                                // console.log(json.flag);
+                                if(json.flag === 1){
+                                    alert('회원탈퇴가 완료되었습니다.');
+                                    location.href = './page_main.do';
+                                } else{
+                                    alert('회원탈퇴에 실패했습니다.');
+                                }
+                            },
+                            error: function(){
+                                console.log('에러');
+                            }
+                        });
+                    }
+                } else{
+                    alert('회원탈퇴를 취소했습니다.');
+                }
+
+            });
+
+            // 모달 이벤트
+            // let withdrawalModal = document.getElementById('withdrawalModal');
+            // withdrawalModal.addEventListener('show.bs.modal', function (event) {
+            //     // Button that triggered the modal
+            //     let button = event.relatedTarget;
+            //     // Extract info from data-bs-* attributes
+            //     let saleTitle = button.getAttribute('data-bs-target');
+            //     // If necessary, you could initiate an AJAX request here
+            //     // and then do the updating in a callback.
+            //
+            //     // Update the modal's content.
+            //     // let modalTitle = bookmarkModal.querySelector('.modal-title');
+            //     let modalBodyInput = withdrawalModal.querySelector('.modal-body input');
+            //
+            //     // modalTitle.textContent = 'New message to ' + recipient;
+            //     modalBodyInput.value = '모달바디인풋';
+            // });
+
+            // $('#withdrawalModal').on('shown.bs.modal', function () {
+            //     $('#password-confirm').focus();
+            //     // alert('탈퇴');
+            //     let password = withdrawalModal.querySelector('.modal-body input').value;
+            //     console.log(password);
+            // });
+
 
         });
     </script>
@@ -321,6 +404,51 @@ nav a:hover {
 
 
             </div>
+
+            <div class="float-end">
+            	<button id="withdrawalBtn" class="btn btn-danger"
+<%--                        data-bs-toggle="modal" data-bs-target="#withdrawalModal"--%>
+                >회원 탈퇴</button>
+            </div>
+
+            <!-- 탈퇴확인 모달 -->
+<%--            <div class="modal" id="withdrawalModal" tabindex="-1" data-bs-backdrop="static" data-bs-focus="false">--%>
+<%--                <div class="modal-dialog">--%>
+<%--                    <div class="modal-content">--%>
+
+<%--                        <!-- Modal Header -->--%>
+<%--                        <div class="modal-header">--%>
+<%--                            <h4 class="modal-title">탈퇴 확인</h4>--%>
+<%--                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>--%>
+<%--                        </div>--%>
+
+<%--                        <!-- Modal body -->--%>
+<%--                        <div class="modal-body">--%>
+<%--                            <form>--%>
+<%--                                <div class="mb-3">--%>
+<%--                                    <label for="password-confirm" class="col-form-label">비밀번호 확인</label>--%>
+<%--                                    <input type="text" class="form-control" id="password-confirm" placeholder="비밀번호를 입력하세요...">--%>
+<%--                                </div>--%>
+<%--                            </form>--%>
+<%--                        </div>--%>
+
+<%--                        <!-- Modal footer -->--%>
+<%--                        <div class="modal-footer">--%>
+<%--                            <button type="button" class="btn custom-border-btn" id="bookmarkSubmitBtn">탈퇴</button>--%>
+
+<%--                            <!-- 북마크 추가 성공시 눌릴 버튼: hidden -->--%>
+<%--                            <button type="button" data-bs-toggle="modal" data-bs-target="#successModal" id="successBtn" hidden="hidden"></button>--%>
+<%--                            <!-- 북마크 추가 실패시 눌릴 버튼: hidden -->--%>
+<%--                            <button type="button" data-bs-toggle="modal" data-bs-target="#failModal" id="failBtn" hidden="hidden"></button>--%>
+
+<%--                            <button type="button" class="btn custom-border-btn"--%>
+<%--                                    data-bs-dismiss="modal">닫기</button>--%>
+<%--                        </div>--%>
+
+<%--                    </div>--%>
+<%--                </div>--%>
+<%--            </div>--%>
+
         </nav>
     </main>
 <%--    <footer style="margin-top: 30px;">--%>

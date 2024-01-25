@@ -60,12 +60,31 @@ public class MemberDAO {
 //		return null;
 	}
 	
+	// 일반회원 탈퇴
+	public int memberDeleteOk(String userEmail, String inputPassword) {
+		// 회원 삭제
+		int flag = mapper.deleteUser(userEmail, inputPassword);
+		return flag;
+	}
+
+	// 유저 북마크 제거
+	public int deleteUserBookmarkAll(String userEmail){
+		int flag = mapper.deleteUserBookmarkAll(userEmail);
+		return flag;
+	}
 	
-	// 기능 설명
-	public void memberDeleteOk() {
-		// 기능
-		
-//		return null;
+	// 유저 히스토리 제거
+	public int deleteUserHistoryAll(String userseq){
+		int flag = mapper.deleteUserHistoryAll(userseq);
+		return flag;
+	}
+	
+	// 소셜회원 탈퇴
+	public int socialMemberDeleteOk(String userEmail) {
+		// 회원 삭제
+		int flag = mapper.deleteSocialUser(userEmail);
+
+		return flag;
 	}
 	
 	
