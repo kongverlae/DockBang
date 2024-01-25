@@ -30,7 +30,8 @@ public class BoardController {
 	private SqlMapperInter mapper;
 	
 	// 환경에 따라 수정 필요
-	String uploadPath = "C:/DockBang/RealEstateProject/src/main/webapp/images/file";
+//	String uploadPath = "C:/DockBang/RealEstateProject/src/main/webapp/images/file";
+	String uploadPath = "/home/ubuntu/images";
 	
 	@RequestMapping("/page_boardChoose.do")
 	ModelAndView page_boardChoose() {
@@ -157,10 +158,17 @@ public class BoardController {
 	@RequestMapping("/act_boardDelete.do")
 	public ModelAndView act_boardDelete(HttpServletRequest request,
 	        @RequestParam("category") String category,
-	        @RequestParam("boardseq") int boardseq) {
-	    
-	    int flag = 0;
-	    
+	        @RequestParam("boardEmail") String boardEmail,
+	        @RequestParam("boardseq") String boardseq) {
+
+		HttpSession session = request.getSession();
+		String userEmail = (String)session.getAttribute("email");
+
+		int flag = 0;
+		if(boardEmail.equals(userEmail)){
+	    	flag = bdao.boardDeleteOk(boardseq);
+		}
+
 	    // flag 처리 구문
 
 	    ModelAndView modelAndView = new ModelAndView();

@@ -78,7 +78,7 @@
 	    <div class="container">
 	        <div class="row justify-content-center">
 				<div class="col-lg-12 col-12 text-center">
-		        	<h3 class="mb-4">수정 주파 발진기는 각종 통신에서 주파수를 맞추기 위해 사용됩니다.</h3>
+		        	<h3 class="mb-4">글 수정</h3>
 		        </div>
 	            <div class="col-lg-8 col-12 text-center mt-3">
 					<div class="custom-block bg-white shadow-lg">
@@ -121,25 +121,15 @@
 				                            <label for="floatingTextarea">내용을 입력해주세요</label>
 				                        </div>
 				                    </div>
-				                   <%
-    String subject2 = "123456";
-    String content2 = (String)request.getParameter("content2");
-				                            		
-	System.out.println("subject2: " + subject2);
-	System.out.println("content2: " + content2);
-				                            		
-%>
-				               
-				                    
+
 				                    <div class="col-lg-12 col-12">
 										<input type="file" name="upload" id="upload" class="form-control form-control-sm ">
 				                    </div>
 				                    <div class="d-flex justify-content-between mt-3">
 				                    	<div class="btn-group col-lg-3 col-3" role="group" >
-										  	<a href="page_boardList.do" class="btn custom-btn">목록</a>
-										  	<a href="page_boardView.do" class="btn custom-btn custom-border-btn">보기</a>
+										  	<a href="page_boardList.do?category=<%= category %>" class="btn custom-btn">목록</a>
+										  	<a href="page_boardView.do?category=<%= category%>&boardseq=<%= boardseq %>" class="btn custom-btn custom-border-btn">보기</a>
 				                    	</div>
-				                    	
 										<button type="submit" class="btn custom-btn col-3">수정</button>
 									</div>
 				                </div>

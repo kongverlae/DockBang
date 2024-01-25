@@ -68,11 +68,9 @@ public class BoardDAO {
 	
 	
 	// 기능 설명
-	public void boardDeleteOk() {
+	public int boardDeleteOk(String boardseq) {
 		// 기능
-		
-		
-//		return null;
+		return mapper.deleteBoard(boardseq);
 	}
 	
 	

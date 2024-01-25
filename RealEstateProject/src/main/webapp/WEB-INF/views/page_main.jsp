@@ -14,6 +14,7 @@
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&family=Open+Sans&display=swap" rel="stylesheet">
 	<link href="css/bootstrap.min.css" rel="stylesheet">
+	<!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" integrity="sha512-b2QcS5SsA8tZodcDtGRELiGv5SaKSk1vDHDaQRda0htPYWZ6046lr3kJ5bAAQdpV2mmA/4v0wQF9MyU6/pDIAg==" crossorigin="anonymous" referrerpolicy="no-referrer" /> -->
 	<link href="css/bootstrap-icons.css" rel="stylesheet">
 	<link href="css/templatemo-topic-listing.css" rel="stylesheet">   
 </head>
@@ -68,6 +69,34 @@
 								</div> <img src="images/topics/undraw_Remote_design_team_re_urdx.png"
 								class="custom-block-image img-fluid" alt="">
 							</a> -->
+							
+							<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+							  <ol class="carousel-indicators">
+							    <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+							    <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+							    <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+							  </ol>
+							  <div class="carousel-inner">
+							    <div class="carousel-item active">
+							      <img class="d-block w-100" src="images/faq_graphic.jpg" alt="First slide">
+							    </div>
+							    <div class="carousel-item">
+							      <img class="d-block w-100" src="images/colleagues-working-cozy-office-medium-shot.jpg" alt="Second slide">
+							    </div>
+							    <div class="carousel-item">
+							      <img class="d-block w-100" src="images/businesswoman-using-tablet-analysis.jpg" alt="Third slide">
+							    </div>
+							  </div>
+							  <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+							    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+							    <span class="sr-only">Previous</span>
+							  </a>
+							  <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+							    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+							    <span class="sr-only">Next</span>
+							  </a>
+							</div>
+							
 						</div>
 					</div>
 				</div>
@@ -82,6 +111,7 @@
 	<!-- JAVASCRIPT FILES -->
 	<script src="js/jquery.min.js"></script>
 	<script src="js/bootstrap.bundle.min.js"></script>
+	<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js" integrity="sha512-X/YkDZyjTf4wyc2Vy16YGCPHwAY8rZJY+POgokZjQB2mhIRFJCckEGc6YyX9eNsPfn0PzThEuNs+uaomE5CO6A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> -->
 	<script src="js/jquery.sticky.js"></script>
 	<script src="js/click-scroll.js"></script>
 	<script src="js/custom.js"></script>

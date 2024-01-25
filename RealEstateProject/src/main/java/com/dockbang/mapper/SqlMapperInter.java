@@ -130,9 +130,8 @@ public interface SqlMapperInter {
 	        @Param("category") String category,
 	        @Param("boardseq") int boardseq);
 	// 게시글 삭제
-	@Delete("delete from board where category = #{category} AND boardseq = #{boardseq}")
-	int deleteBoard(@Param("category") String category,
-			@Param("boardseq") int boardseq);
+	@Delete("delete from board where boardseq = #{boardseq}")
+	int deleteBoard(@Param("boardseq") String boardseq);
 	
 	// 댓글 리스트 출력
 	@Select("select writer, content, wdate from comment where boardseq = #{boardseq} order by commentseq desc")

@@ -3,8 +3,8 @@
 <%
 	request.setCharacterEncoding("utf-8");
 
-String category = (String)request.getAttribute("category");
-String boardseq = (String)request.getAttribute("boardseq");
+	String category = (String)request.getParameter("category");
+	String boardseq = (String)request.getParameter("boardseq");
 
 	
 	// int flag = (int)request.getAttribute("flag");
@@ -14,14 +14,16 @@ String boardseq = (String)request.getAttribute("boardseq");
 	if(flag == 1){
 		// 정상
 		out.println("alert('작성 완료');");
-		 out.println("history.back();");
-		 
+//		 out.println("history.back();");
+		
 
 	} else if(flag == 0){
 		// 에러
 		out.println("alert('작성 실패');");
-		out.println("history.back();");
+		// out.println("history.back();");
 	}
+	
+	out.println("location.href = 'page_boardView.do?category=" + category + "&boardseq=" + boardseq + "';");
 	out.println("</script>");
 	
 %>

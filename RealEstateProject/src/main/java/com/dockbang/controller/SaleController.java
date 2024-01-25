@@ -263,6 +263,9 @@ public class SaleController {
 			historyList.remove(0);
         }
 		
+		// 히스토리 뒤집기 - 최근자료가 위로
+		Collections.reverse(historyList);
+		
 		// 세션에 히스토리 추가
 		session.setAttribute("historyList", historyList);
 		// / ===히스토리 기능=== /
