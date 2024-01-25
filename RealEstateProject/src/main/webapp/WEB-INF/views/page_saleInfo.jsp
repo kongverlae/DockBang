@@ -87,9 +87,9 @@
         			<button type="button" class="btn custom-border-btn" id="bookmarkSubmitBtn">추가</button>
         			
 					<!-- 북마크 추가 성공시 눌릴 버튼: hidden -->
-        			<button type="button" data-bs-toggle="modal" data-bs-target="#successModal" id="successBtn" hidden="true"></button>
+        			<button type="button" data-bs-toggle="modal" data-bs-target="#successModal" id="successBtn" hidden="hidden"></button>
 					<!-- 북마크 추가 실패시 눌릴 버튼: hidden -->
-        			<button type="button" data-bs-toggle="modal" data-bs-target="#failModal" id="failBtn" hidden="true"></button>
+        			<button type="button" data-bs-toggle="modal" data-bs-target="#failModal" id="failBtn" hidden="hidden"></button>
         			
 					<button type="button" class="btn custom-border-btn"
 						data-bs-dismiss="modal">닫기</button>
@@ -161,8 +161,9 @@
 			});
 			
 			// 북마크에 추가
-			let bookmarkSubmitBtn = document.getElementById('bookmarkSubmitBtn');
-			bookmarkSubmitBtn.addEventListener('click', function(event){
+			// let bookmarkSubmitBtn = document.getElementById('bookmarkSubmitBtn');
+			// bookmarkSubmitBtn.addEventListener('click', function(event){
+			$('#bookmarkSubmitBtn').on('click', function(event){
 				let memo = bookmarkModal.querySelector('.modal-body textarea').value;
 				// let memo = document.getElementById('message-text');
 				// console.log(memo.value);
@@ -186,7 +187,7 @@
 					success: function(json){
 						// 0 실패 1 성공
 						// console.log(json.flag);
-						if(json.flag == 1){
+						if(json.flag === 1){
 							let btn = document.getElementById('successBtn');
 						    // click() 메소드를 사용하여 클릭 이벤트를 발생시킴
 							btn.click();

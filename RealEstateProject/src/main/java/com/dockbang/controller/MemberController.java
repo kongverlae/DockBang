@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.dockbang.model.*;
+import org.json.simple.JSONObject;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -14,10 +16,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.dockbang.mapper.SqlMapperInter;
-import com.dockbang.model.BoardDAO;
-import com.dockbang.model.KakaoDAO;
-import com.dockbang.model.MemberDAO;
-import com.dockbang.model.SaleDAO;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -219,16 +217,39 @@ public class MemberController {
 	
 	
 	@RequestMapping("/act_memberDelete.do")
-	ModelAndView act_memberDelete() {
-		
-		// view(.jsp) 설정
-		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.setViewName("/member/act_memberDelete");
-		// 데이터 전송
-		// modelAndView.addObject("data_name", data);
-		
-		// view 페이지로 반환
-		return modelAndView;
+	@ResponseBody
+	JSONObject act_memberDelete(HttpServletRequest request, String inputPassword, Boolean isSocial) {
+		JSONObject obj = new JSONObject();
+		HttpSession session = request.getSession();
+		String userEmail = (String)session.getAttribute("email");
+		MemberTO memberTO = mdao.getMemberTO(userEmail);
+
+
+		int flag = 0;
+
+		// 소셜유저
+		if(isSocial){
+			// 0:실패 1:성공
+			flag = mdao.socialMemberDeleteOk(userEmail);
+		// 일반유저
+		} else{
+			// 0:실패 1:성공
+			flag = mdao.memberDeleteOk(userEmail, inputPassword);
+		}
+
+
+		if(flag == 1){
+			// 세션 제거
+			session.invalidate();
+			// 북마크 제거
+			mdao.deleteUserBookmarkAll(userEmail);
+			// 히스토리 제거
+			mdao.deleteUserHistoryAll(memberTO.getUserseq());
+		}
+
+		obj.put("flag", flag);
+
+		return obj;
 	}
 	
 	
