@@ -576,7 +576,7 @@
 		            position: markerInfo.position,
 		            map: null, // 초기에는 지도에 표시하지 않음
 		            icon: {
-		            	content: `<div style="cursor:pointer;display:flex;align-items:center;"><img src="images/station_icon.png" alt="Station Icon" style="width: 40px; height: 40px;"><span style="margin-left: 2px;">` + markerInfo.message + `</span></div>`,
+		            	content: `<div style="cursor:pointer;display:flex;align-items:center; white-space: nowrap;"><img src="images/station_icon.png" alt="Station Icon" style="width: 40px; height: 40px;"><span style="margin-left: 2px;">` + markerInfo.message + `</span></div>`,
 		                anchor: new naver.maps.Point(20, 40) // 이미지의 중심점 설정
 		            
 		            }
