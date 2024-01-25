@@ -10,6 +10,9 @@ class Right {
 		this.maxLender = 20;
 		this.filteredSeq = filteredSeq;
 		this.pageSize = Math.ceil(this.filteredSeq.length/this.maxLender);;
+		this.stationSales;
+		this.houseTypeSales;
+		this.saleTypeSales;
 	}
 	
 	// cpage를 설정하는 함수
@@ -31,7 +34,7 @@ class Right {
 	// filteredSeq를 설정하는 함수
 	setFilteredSeq(filteredSeq) {
 		this.filteredSeq = filteredSeq;
-		this.pageSize = Math.ceil(this.filteredSeq.length/this.maxLender);
+		this.pageSize = Math.ceil(this.filteredSeq.size/this.maxLender);
 	}
 	// filteredSeq를 반환하는 함수
 	getFilteredSeq() {
@@ -42,18 +45,19 @@ class Right {
 		return this.pageSize;
 	}
 	
-	
 	// 지도 화면 사이드에 표시되는 매물 리스트 그리는 함수
 	drawSideListing() {
 		// 
 		let start = ( ( this.cpage - 1 ) * this.maxLender );
 		// 들어온 seq 리스트를 seq만 가지고 있는 배열로 변경하는 작업
-		let last = (((start + this.maxLender)<this.filteredSeq.length) ? start + this.maxLender : this.filteredSeq.length);
+		let last = (((start + this.maxLender)<this.filteredSeq.size) ? start + this.maxLender : this.filteredSeq.size);
 
 		// 최대 20개 혹은 입력된 갯수 만큼 매물의 정보를 가져오기 위한 작업		
 		let atSeqList = [];
+		let test = Array.from(this.filteredSeq);
 		for( let i = start; i < last; i++ ) {
-			atSeqList.push(this.filteredSeq[i]);
+			
+			atSeqList.push(test[i]);
 		}
 	
 		$.ajax({
@@ -246,6 +250,32 @@ class Right {
 			markers[seq-1].check = true;
 		});
 		return markers;
+	}
+	updateFilteredSeqs(){
+		// 시간 기반(falsy) 거래 유형 기반 (falsy)
+		if( !(this.stationSales || this.saleTypeSales) ){
+			console.log("시간 기반(falsy) 거래 유형 기반 (falsy)");
+			this.setFilteredSeq( this.houseTypeSales );
+		// 시간 기반(truthy) 거래 유형 기반 (falsy)
+		} else if ( this.stationSales && !(this.saleTypeSales)){
+			console.log("시간 기반(truthy) 거래 유형 기반 (falsy)");
+			this.setFilteredSeq( new Set(
+				[...this.houseTypeSales].filter( x => this.stationSales.has(x) ) ) );
+		// 시간 기반(falsy) 거래 유형 기반 (truthy)
+		} else if ( !(this.stationSales) && this.saleTypeSales ) {
+			console.log("시간 기반(falsy) 거래 유형 기반 (truthy)");
+			this.setFilteredSeq( new Set(
+				[...this.houseTypeSales].filter( x => this.saleTypeSales.has(x) ) ) );
+		// 시간 기반(truthy) 거래 유형 기반 (truthy)
+		} else if ( this.stationSales && this.saleTypeSales ) {
+			console.log("시간 기반(truthy) 거래 유형 기반 (truthy)");
+			this.setFilteredSeq( new Set(
+				[...this.houseTypeSales].filter( x => this.stationSales.has(x) ) ) );
+			this.setFilteredSeq( new Set(
+				[...this.filteredSeq].filter( x => this.saleTypeSales.has(x) ) ) );
+		} else {
+			console.log("에러");
+		}
 	}
 }
 

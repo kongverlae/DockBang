@@ -474,27 +474,27 @@
 		    });
 		   
 		   var htmlMarker1 = {
-		            content: '<div style="cursor:pointer;width:40px;height:40px;line-height:42px;font-size:10px;color:white;text-align:center;font-weight:bold;background:url(images/cluster/cluster-marker-1.png);background-size:contain;"></div>',
+		            content: '<div style="cursor:pointer;width:40px;height:40px;line-height:42px;font-size:18px;color:white;text-align:center;opacity:1.0;background:url(images/cluster/cluster-marker-1.png);background-size:contain;"></div>',
 		            size: N.Size(40, 40),
 		            anchor: N.Point(20, 20)
 		        },
 		        htmlMarker2 = {
-		            content: '<div style="cursor:pointer;width:40px;height:40px;line-height:42px;font-size:10px;color:white;text-align:center;font-weight:bold;background:url(images/cluster/cluster-marker-2.png);background-size:contain;"></div>',
+		            content: '<div style="cursor:pointer;width:40px;height:40px;line-height:42px;font-size:18px;color:white;text-align:center;opacity:1.0;background:url(images/cluster/cluster-marker-2.png);background-size:contain;"></div>',
 		            size: N.Size(40, 40),
 		            anchor: N.Point(20, 20)
 		        },
 		        htmlMarker3 = {
-		            content: '<div style="cursor:pointer;width:40px;height:40px;line-height:42px;font-size:10px;color:white;text-align:center;font-weight:bold;background:url(images/cluster/cluster-marker-3.png);background-size:contain;"></div>',
+		            content: '<div style="cursor:pointer;width:40px;height:40px;line-height:42px;font-size:18px;color:white;text-align:center;opacity:1.0;background:url(images/cluster/cluster-marker-3.png);background-size:contain;"></div>',
 		            size: N.Size(40, 40),
 		            anchor: N.Point(20, 20)
 		        },
 		        htmlMarker4 = {
-		            content: '<div style="cursor:pointer;width:40px;height:40px;line-height:42px;font-size:10px;color:white;text-align:center;font-weight:bold;background:url(images/cluster/cluster-marker-4.png);background-size:contain;"></div>',
+		            content: '<div style="cursor:pointer;width:40px;height:40px;line-height:42px;font-size:18px;color:white;text-align:center;opacity:1.0;background:url(images/cluster/cluster-marker-4.png);background-size:contain;"></div>',
 		            size: N.Size(40, 40),
 		            anchor: N.Point(20, 20)
 		        },
 		        htmlMarker5 = {
-		            content: '<div style="cursor:pointer;width:40px;height:40px;line-height:42px;font-size:10px;color:white;text-align:center;font-weight:bold;background:url(images/cluster/cluster-marker-5.png);background-size:contain;"></div>',
+		            content: '<div style="cursor:pointer;width:40px;height:40px;line-height:42px;font-size:18px;color:white;text-align:center;opacity:1.0;background:url(images/cluster/cluster-marker-5.png);background-size:contain;"></div>',
 		            size: N.Size(40, 40),
 		            anchor: N.Point(20, 20)
 		        };
@@ -831,8 +831,20 @@
 			
 			let right = new Right(saleSeqArray);
 	
-			right.drawSideListing();
-			right.drawSidePaging();
+			//right.drawSideListing();
+			//right.drawSidePaging();
+			// 시작 시 테스트
+			
+			//right.updateFilteredSeqs();
+			getHouseTypeSeq(['op','sh','or']);
+			/* right.houseTypeSales = [1,2];
+			right.updateFilteredSeqs();
+			
+			right.stationSales = [1,2];
+			right.updateFilteredSeqs();
+			
+			right.saleTypeSales = [1,2];
+			right.updateFilteredSeqs(); */
 			
 			// 거리기반검색
 			$("#commutebtn").on("click", function() {
@@ -883,7 +895,13 @@
 						console.log("markerClustering._redraw() executed");
 						drawSaleList(filteredSeq); */
 						
-						right.setFilteredSeq(salesNearStations);
+						// 시간 기반 검색 결과 저장
+						//right.stationSales = salesNearStations;
+						
+						//right.setFilteredSeq(salesNearStations);
+						right.stationSales = new Set(salesNearStations);
+						right.updateFilteredSeqs();
+						
 						right.clearFilter(markers);
 						right.applyFilter(markers);
 						markerClustering._redraw();
@@ -1009,13 +1027,13 @@
 				      step: 1000,
 				      values: [ 0, 100000 ],
 				      slide: function( event, ui ) {
-				        $( "#l-deposit" ).text( ui.values[ 0 ] + " 만원 - " + ui.values[ 1 ] + " 만원");
+				        $( "#l-deposit" ).text( manToEock(ui.values[ 0 ]) + " - " + manToEock(ui.values[ 1 ]) + "");
 				        refreshFilterKeywords();
 				        console.log(filterKeywords);
 				      }
 				    });
-				    $( "#l-deposit" ).text( $( "#l-deposit-slider" ).slider( "values", 0 ) +
-				      " 만원 - " + $( "#l-deposit-slider" ).slider( "values", 1 ) + " 만원" );
+				    $( "#l-deposit" ).text( manToEock($( "#l-deposit-slider" ).slider( "values", 0 )) +
+				      " - " + manToEock($( "#l-deposit-slider" ).slider( "values", 1 )) + "" );
 				  } );
 				
 				// 월세가 m-deposit-slider
@@ -1027,13 +1045,13 @@
 				      step: 1000,
 				      values: [ 0, 50000 ],
 				      slide: function( event, ui ) {
-				        $( "#m-deposit" ).text( ui.values[ 0 ] + " 만원 - " + ui.values[ 1 ] + " 만원");
+				        $( "#m-deposit" ).text( manToEock(ui.values[ 0 ]) + " - " + manToEock(ui.values[ 1 ]) + "");
 				        refreshFilterKeywords();
 				        console.log(filterKeywords);
 				      }
 				    });
-				    $( "#m-deposit" ).text( $( "#m-deposit-slider" ).slider( "values", 0 ) +
-				      " 만원 - " + $( "#m-deposit-slider" ).slider( "values", 1 ) + " 만원" );
+				    $( "#m-deposit" ).text( manToEock($( "#m-deposit-slider" ).slider( "values", 0 )) +
+				      " - " + manToEock($( "#m-deposit-slider" ).slider( "values", 1 )) + "" );
 				  } );
 				
 				
@@ -1046,13 +1064,13 @@
 				      step: 10,
 				      values: [ 0, 200 ],
 				      slide: function( event, ui ) {
-				        $( "#monthly-fee" ).text( ui.values[ 0 ] + " 만원 - " + ui.values[ 1 ] + " 만원");
+				        $( "#monthly-fee" ).text( manToEock(ui.values[ 0 ]) + " - " + manToEock(ui.values[ 1 ]) + "");
 				      	refreshFilterKeywords();
 				        console.log(filterKeywords);
 				      }
 				    });
-				    $( "#monthly-fee" ).text( $( "#monthly-fee-slider" ).slider( "values", 0 ) +
-				      " 만원 - " + $( "#monthly-fee-slider" ).slider( "values", 1 ) + " 만원" );
+				    $( "#monthly-fee" ).text( manToEock($( "#monthly-fee-slider" ).slider( "values", 0 )) +
+				      " - " + manToEock($( "#monthly-fee-slider" ).slider( "values", 1 )) + "" );
 				  } );
 				
 				// 매물가 price-slider
@@ -1064,13 +1082,13 @@
 				      step: 1500,
 				      values: [ 0, 150000 ],
 				      slide: function( event, ui ) {
-				        $( "#price" ).text( ui.values[ 0 ] + " 만원 - " + ui.values[ 1 ] + " 만원");
+				        $( "#price" ).text( manToEock(ui.values[ 0 ]) + " - " + manToEock(ui.values[ 1 ]) + "");
 				      	refreshFilterKeywords();
 				        console.log(filterKeywords);
 				      }
 				    });
-				    $( "#price" ).text( $( "#price-slider" ).slider( "values", 0 ) +
-				      " 만원 - " + $( "#price-slider" ).slider( "values", 1 ) + " 만원" );
+				    $( "#price" ).text( manToEock($( "#price-slider" ).slider( "values", 0 )) +
+				      " - " + manToEock($( "#price-slider" ).slider( "values", 1 )) + "" );
 				  } );
 				
 				// 통근시간 commute-slider
@@ -1239,23 +1257,6 @@
 			        } else {
 			            console.log("원룸이 해제되었습니다.");
 			        }
-			        
-					/* refreshable();
-					let house_type_list = [];
-					if( filterKeywords.at ){
-						house_type_list.push("at");
-					}
-					if( filterKeywords.op ){
-						house_type_list.push("op");
-					}
-					if( filterKeywords.sh ){
-						house_type_list.push("sh");
-					}
-					if( filterKeywords.or ){
-						house_type_list.push("or");
-					}
-					//console.log(house_type_list);
-					searchSaleSeq(house_type_list); */
 			    });
 
 			    // 아파트 체크박스 이벤트
@@ -1268,22 +1269,6 @@
 			        } else {
 			            console.log("아파트가 해제되었습니다.");
 			        }
-			        /* refreshable();
-			        let house_type_list = [];
-					if( filterKeywords.at ){
-						house_type_list.push("at");
-					}
-					if( filterKeywords.op ){
-						house_type_list.push("op");
-					}
-					if( filterKeywords.sh ){
-						house_type_list.push("sh");
-					}
-					if( filterKeywords.or ){
-						house_type_list.push("or");
-					}
-					//console.log(house_type_list);
-					searchSaleSeq(house_type_list); */
 			    });
 
 			    // 모든 집 유형 체크박스의 변경 이벤트
@@ -1414,9 +1399,13 @@
 						dataType: 'json',
 						// 성공 4 && 200 이라는 말
 						success: function(json) {
-							// 거리 기반 검색 성공
 							console.log(json);
-							right.setFilteredSeq(json.saleSeqs);
+							right.houseTypeSales = new Set(json.saleSeqs);
+							console.log(right.houseTypeSales);
+							right.updateFilteredSeqs();
+							//right.setFilteredSeq(json.saleSeqs);
+							
+							// 집 유형 검색 결과 저장
 							right.setCpage(1);
 							right.clearFilter(markers);
 							right.applyFilter(markers);
@@ -1463,7 +1452,11 @@
 						dataType: 'json',
 						success: function(json) {
 							console.log(json);
-							right.setFilteredSeq(json.saleSeqs);
+							right.saleTypeSales = new Set(json.saleSeqs);
+							right.updateFilteredSeqs();
+							
+							//right.setFilteredSeq(json.saleSeqs);
+							
 							right.setCpage(1);
 							right.clearFilter(markers);
 							right.applyFilter(markers);

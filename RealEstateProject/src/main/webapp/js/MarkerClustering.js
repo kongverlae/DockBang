@@ -534,7 +534,7 @@ Cluster.prototype = {
 			//console.log(markers);
 	        let filteredSeq = [];
 	        for (var i = 0; i < markers.length; i++) {
-				console.log("마커 " + (i + 1) + ": 위치 - " + markers[i].message + "<br>");
+				//console.log("마커 " + (i + 1) + ": 위치 - " + markers[i].message + "<br>");
 	            // 마커에 대한 다른 정보도 추가할 수 있습니다.
 	            //console.log(markers[i]);
 	            filteredSeq.push(markers[i].message);
