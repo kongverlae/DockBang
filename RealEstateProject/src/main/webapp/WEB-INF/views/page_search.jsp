@@ -413,7 +413,12 @@
 			        keyword = markerInfo.message;
 
 			        // 경계선 그리기 함수 호출
-			        drawPolygon(keyword);
+			        /* console.log(polygon);
+			        if(polygon){
+			        	polygon.setMap(null);
+			        } else {
+			        } */
+					drawPolygon(keyword);
 			    });
 			});
 		    
@@ -1040,45 +1045,47 @@
 				
 				// 전세가 l-deposit-slider
 				$( function() {
-				    $( "#l-deposit-slider" ).slider({
-				      range: true,
-				      min: 0,
-				      max: 100000,
-				      step: 1000,
-				      values: [ 0, 100000 ],
-				      slide: function( event, ui ) {
-				        $( "#l-deposit" ).text( manToEock(ui.values[ 0 ]) + " - " + manToEock(ui.values[ 1 ]) + "");
-				        refreshFilterKeywords();
-				        console.log(filterKeywords);
-				      }
-				    });
-				    $( "#l-deposit" ).text( manToEock($( "#l-deposit-slider" ).slider( "values", 0 )) +
-				      " - " + manToEock($( "#l-deposit-slider" ).slider( "values", 1 )) + "" );
-				  } ).mouseup(function(){
+					$( "#l-deposit-slider" ).slider({
+						range: true,
+						min: 0,
+						max: 100000,
+						step: 1000,
+						values: [ 0, 100000 ],
+						slide: function( event, ui ) {
+							$( "#l-deposit" ).text( manToEock(ui.values[ 0 ]) + " - " + manToEock(ui.values[ 1 ]) + "");
+				        	refreshFilterKeywords();
+				        	console.log(filterKeywords);
+				      	}
+				    }).mouseup(function(){
 				    	refreshable();
 			        	getSaleTypeSeq(filterKeywords)
 				    });
+					
+				    $( "#l-deposit" ).text( manToEock($( "#l-deposit-slider" ).slider( "values", 0 )) +
+				      " - " + manToEock($( "#l-deposit-slider" ).slider( "values", 1 )) + "" );
+				});
 				
 				// 월세가 m-deposit-slider
 				$( function() {
 				    $( "#m-deposit-slider" ).slider({
-				      range: true,
-				      min: 0,
-				      max: 50000,
-				      step: 1000,
-				      values: [ 0, 50000 ],
-				      slide: function( event, ui ) {
-				        $( "#m-deposit" ).text( manToEock(ui.values[ 0 ]) + " - " + manToEock(ui.values[ 1 ]) + "");
+						range: true,
+						min: 0,
+						max: 50000,
+						step: 1000,
+						values: [ 0, 50000 ],
+						slide: function( event, ui ) {
+				        	$( "#m-deposit" ).text( manToEock(ui.values[ 0 ]) + " - " + manToEock(ui.values[ 1 ]) + "");
 				        refreshFilterKeywords();
 				        console.log(filterKeywords);
 				      }
-				    });
-				    $( "#m-deposit" ).text( manToEock($( "#m-deposit-slider" ).slider( "values", 0 )) +
-				      " - " + manToEock($( "#m-deposit-slider" ).slider( "values", 1 )) + "" );
-				  } ).mouseup(function(){
+				    }).mouseup(function(){
 				    	refreshable();
 			        	getSaleTypeSeq(filterKeywords)
 				    });
+				    
+					$( "#m-deposit" ).text( manToEock($( "#m-deposit-slider" ).slider( "values", 0 )) +
+				      " - " + manToEock($( "#m-deposit-slider" ).slider( "values", 1 )) + "" );
+				});
 				
 				
 				// 월세 monthly-fee-slider
@@ -1094,13 +1101,14 @@
 				      	refreshFilterKeywords();
 				        console.log(filterKeywords);
 				      }
-				    });
-				    $( "#monthly-fee" ).text( manToEock($( "#monthly-fee-slider" ).slider( "values", 0 )) +
-				      " - " + manToEock($( "#monthly-fee-slider" ).slider( "values", 1 )) + "" );
-				  } ).mouseup(function(){
+				    }).mouseup(function(){
 				    	refreshable();
 			        	getSaleTypeSeq(filterKeywords)
 				    });
+				    
+					$( "#monthly-fee" ).text( manToEock($( "#monthly-fee-slider" ).slider( "values", 0 )) +
+				      " - " + manToEock($( "#monthly-fee-slider" ).slider( "values", 1 )) + "" );
+				});
 				
 				// 매물가 price-slider
 				$( function() {
@@ -1115,13 +1123,14 @@
 				      		refreshFilterKeywords();
 				        	console.log(filterKeywords);
 				      	}
-					});
-				    $( "#price" ).text( manToEock($( "#price-slider" ).slider( "values", 0 )) +
-				   		" - " + manToEock($( "#price-slider" ).slider( "values", 1 )) + "" );
-				  	}).mouseup(function(){
+					}).mouseup(function(){
 				    	refreshable();
 			        	getSaleTypeSeq(filterKeywords)
 				    });
+					
+				    $( "#price" ).text( manToEock($( "#price-slider" ).slider( "values", 0 )) +
+				   		" - " + manToEock($( "#price-slider" ).slider( "values", 1 )) + "" );
+				});
 				
 				// 통근시간 commute-slider
 				$( function() {
