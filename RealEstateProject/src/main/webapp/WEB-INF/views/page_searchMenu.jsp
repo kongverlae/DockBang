@@ -168,7 +168,7 @@
 								</p>
 								<div id="monthly-fee-slider" class="mx-2 mb-2"></div>
 								<p>
-								  <label for="monthly-fee">매매가:</label>
+								  <label for="monthly-fee">월세:</label>
 								  <label class="refreshable" id="monthly-fee"></label>
 								</p>
 								<hr>
