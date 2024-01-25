@@ -69,7 +69,7 @@ boolean isLoggedIn = name2 != null;
 	            <div class="col-lg-5 col-12">
 	                <nav aria-label="breadcrumb">
 	                    <ol class="breadcrumb">
-	                        <li class="breadcrumb-item"><a href="page_boardList.do">공지 게시판</a></li>
+	                        <li class="breadcrumb-item"><a href="page_boardChoose.do">공지 게시판</a></li>
 	                        <li class="breadcrumb-item active" aria-current="page">글쓰기</li>
 	                    </ol>
 	                </nav>
@@ -81,17 +81,17 @@ boolean isLoggedIn = name2 != null;
 	
 	<!-- page content -->
 	<main>
-	<section id="c1" class="section-padding">
+	<section id="c1" class="section-padding pt-1">
 	    <div class="container">
 	        <div class="row justify-content-center">
-				<div class="col-lg-12 col-12 text-center">
+				<!-- <div class="col-lg-12 col-12 text-center">
 		        	<h3 class="mb-4">글쓰기입니다 대회는 아니구요</h3>
-		        </div>
-	            <div class="col-lg-8 col-12 text-center mt-3">
+		        </div> -->
+	            <div class="col-lg-8 col-12 text-center mt-1">
 					<div class="custom-block bg-white shadow-lg">
 						<div class="col-lg-12 col-12">
 						<div class="mt-0 text-start">
-								<h6 class="m-0"><b><%=name2 %></b><%=email2 %></h6>
+								<h6 class="m-0"><b><%=name2 %></b>(<%=email2 %>)</h6>
 								<!-- <div class="m-0">2019.12.05. 10:56 | 89,994 읽음</div> -->
 								<hr>
 							</div>

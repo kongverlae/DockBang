@@ -15,7 +15,7 @@
                         		   "<li><button class=\"dropdown-item\" type=\"button\" onclick=\"window.location.href = 'page_mypage.do'\">마이페이지</button></li>" +
                            "<li><button class=\"dropdown-item\" type=\"button\" onclick=\"window.location.href = 'act_memberLogout.do'\">로그아웃</button></li>" +
                            "</ul>";
-		drops = "connected";
+		drops = name;
        	
     } else {
         // 로그인되지 않은 상태
@@ -50,14 +50,14 @@
 				<li class="nav-item"><a class="nav-link"
 					href="page_search.do" style="color: var(--primary-color)">지도</a></li>
 
-				<li class="nav-item"><a class="nav-link"
-					href="page_survey.do" style="color: var(--primary-color)">나만의 집 찾기</a></li>
+				<!-- <li class="nav-item"><a class="nav-link"
+					href="page_survey.do" style="color: var(--primary-color)">나만의 집 찾기</a></li> -->
 
 				<li class="nav-item"><a class="nav-link"
 					href="page_boardChoose.do" style="color: var(--primary-color)">게시판</a></li>
 
-				<li class="nav-item"><a class="nav-link"
-					href="#section_5" style="color: var(--primary-color)">Contact</a></li>
+				<!-- <li class="nav-item"><a class="nav-link"
+					href="#section_5" style="color: var(--primary-color)">Contact</a></li> -->
 					
 				<li class="nav-item dropdown">
 				

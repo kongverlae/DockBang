@@ -88,9 +88,9 @@
 							  <label id="commute"></label>
 							</p>
 							
-							<div class="btn-primary" id="commutebtn">
+							<button class="dong-custom-btn col-2" style="text-align:center;" id="commutebtn">
 								입력
-							</div>
+							</button>
 			            </li>
 			        </ul>
    				</div>

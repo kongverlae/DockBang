@@ -113,7 +113,28 @@
 				</tr>
 				<tr>
 					<th>비밀번호</th>
-					<td colspan="3"><input type="password" name="password" value="" class="board_view_input_mail"/></td>
+					<td colspan="3"><input type="password" name="password
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					" value="" class="board_view_input_mail"/></td>
 				</tr>
 				</table>
 			</div>

@@ -18,14 +18,11 @@
 					<li class="site-footer-link-item"><a href="page_main.do"
 						class="site-footer-link">Home</a></li>
 
-					<li class="site-footer-link-item"><a href="#"
-						class="site-footer-link">How it works</a></li>
+					<li class="site-footer-link-item"><a href="page_search.do"
+						class="site-footer-link">지도</a></li>
 
-					<li class="site-footer-link-item"><a href="#"
-						class="site-footer-link">FAQs</a></li>
-
-					<li class="site-footer-link-item"><a href="#"
-						class="site-footer-link">Contact</a></li>
+					<li class="site-footer-link-item"><a href="page_boardChoose.do"
+						class="site-footer-link">게시판</a></li>
 				</ul>
 			</div>
 
@@ -38,13 +35,13 @@
 				</p>
 
 				<p class="text-white d-flex">
-					<a href="mailto:admin@dockbang.com" class="site-footer-link">
-						admin@dockbang.com </a>
+					<a href="mailto:jhkim18@gmail.com" class="site-footer-link">
+						jhkim18@gmail.com </a>
 				</p>
 			</div>
 
 			<div class="col-lg-3 col-md-4 col-12 mt-4 mt-lg-0 ms-auto">
-				<div class="dropdown">
+				<!-- <div class="dropdown">
 					<button class="btn btn-secondary dropdown-toggle" type="button"
 						data-bs-toggle="dropdown" aria-expanded="false">English</button>
 
@@ -55,7 +52,7 @@
 
 						<li><button class="dropdown-item" type="button">Arabic</button></li>
 					</ul>
-				</div>
+				</div> -->
 
 				<p class="copyright-text mt-lg-5 mt-4">
 					Copyright © 2048 Topic Listing Center. All rights reserved. <br>

@@ -82,7 +82,7 @@ if(category.equals("news")){
 		                                <a href="page_boardList.do?category=notice" class="btn custom-btn mt-3 mt-lg-4">Learn More</a>
 		                            </div>
 		
-		                            <span class="badge bg-design rounded-pill ms-auto">14</span>
+		                            <!-- <span class="badge bg-design rounded-pill ms-auto">14</span> -->
 		                        </div>
 		                    </div>
 		                </div>
@@ -100,7 +100,7 @@ if(category.equals("news")){
 		                                <a href="page_boardList.do?category=news" class="btn custom-btn mt-3 mt-lg-4">Learn More</a>
 		                            </div>
 		
-		                            <span class="badge bg-advertising rounded-pill ms-auto">30</span>
+		                            <!-- <span class="badge bg-advertising rounded-pill ms-auto">30</span> -->
 		                        </div>
 		                    </div>
 		                </div>
@@ -118,7 +118,7 @@ if(category.equals("news")){
 		                                <a href="page_boardList.do?category=free" class="btn custom-btn mt-3 mt-lg-4">Learn More</a>
 		                            </div>
 		
-		                            <span class="badge bg-music rounded-pill ms-auto">20</span>
+		                            <!-- <span class="badge bg-music rounded-pill ms-auto">20</span> -->
 		                        </div>
 		                    </div>
 		                </div>

@@ -93,12 +93,12 @@
 	
 	<!-- page content -->
 	<main>
-	<section id="c1" class="section-padding">
+	<section id="c1" class="section-padding pt-1">
 	    <div class="container">
 	        <div class="row justify-content-center">
-				<div class="col-lg-12 col-12 text-center">
+				<!-- <div class="col-lg-12 col-12 text-center">
 		        	<h3 class="mb-4">글보기입니다 만지시면 안되요</h3>
-		        </div>
+		        </div> -->
 	            <div class="col-lg-8 col-12 text-center mt-3">
 					<div class="custom-block bg-white shadow-lg">
 						<div class="col-lg-12 col-12 text-start">
