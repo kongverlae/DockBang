@@ -1,6 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ page errorPage="../error/error_mypage.jsp" %>
 <%@page import="com.dockbang.model.MemberTO"%>
 <%
 	MemberTO to = (MemberTO)request.getAttribute("userInfo");

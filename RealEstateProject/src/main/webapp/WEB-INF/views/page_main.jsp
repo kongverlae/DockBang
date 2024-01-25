@@ -58,16 +58,16 @@
 					<!-- <div class="col-lg-4 col-12 mb-4 mb-lg-0"> -->
 					<div class="col-lg-8 col-12 mb-4 mb-lg-0">
 						<div class="custom-block bg-white shadow-lg">
-							<a href="page_survey.do">
+							<!-- <a href="page_survey.do">
 								<div class="d-flex">
 									<div>
 										<h5 class="mb-2">나만의 집 찾기</h5>
 										<p class="mb-0">간단한 설문을 통해 원하는 지역과 집을 편하게 찾으세요.</p>
-									</div>									<!-- 숫자 뱃지 -->
-									<!-- <span class="badge bg-design rounded-pill ms-auto">14</span> -->
+									</div>									숫자 뱃지
+									<span class="badge bg-design rounded-pill ms-auto">14</span>
 								</div> <img src="images/topics/undraw_Remote_design_team_re_urdx.png"
 								class="custom-block-image img-fluid" alt="">
-							</a>
+							</a> -->
 						</div>
 					</div>
 				</div>
