@@ -288,10 +288,12 @@
 			
 			// 검색한 동의 경계선 정보 받아 오기
 			let local = '${lineLocal}';
-			let formattedLocal = local.replace(/\[|\]/g, '');
-			let localArray = formattedLocal.split(',').map(item => item.trim());
+	        let formattedLocal = local.replace(/\[|\]/g, '');
+	        let localArray = formattedLocal.split(',').map(item => item.trim());
+			//console.log(localArray);
 			let lineLat = ${lineLat};
 			let lineLon = ${lineLon};
+			
 			
 			let polygon;
 			
@@ -341,6 +343,7 @@
 
 			    let indices = [];
 			    for (let i = 0; i < localArray.length; i++) {
+			    	//console.log(localArray[i]);
 			        if (localArray[i] === keyword) {
 			            indices.push(i);
 			        }
@@ -357,10 +360,11 @@
 			            map: map,
 			            paths: polygonCoords,
 			            strokeColor: '#f00',
-			            strokeWeight: 2,
+			            strokeWeight: 1,
 			            strokeOpacity: 0.7,
-			            fillColor: '#00f',
+			            fillColor: 'crimson',
 			            fillOpacity: 0.3
+			            
 			        });
 			    } else {
 			        console.log('local 배열에서 해당 키워드를 찾을 수 없습니다.');
@@ -377,7 +381,8 @@
 				        for (let i = 0; i < dongName.length; i++) {
 				            if (dongName[i] === markerInfo.message) {
 				                return {
-				                    content: "<div style='border: 1px solid #000; background-color: white; padding: 5px; font-size: 12px; white-space: nowrap;'>" + dongCount[i] + " " + markerInfo.message + "</div>",
+				                    content: "<div class='dong-custom-btn'>" + dongCount[i] + " " + markerInfo.message + "</div>",
+				                    /* content: "<div style='border: 1px solid #000; background-color: white; padding: 5px; font-size: 12px; white-space: nowrap;'>" + dongCount[i] + " " + markerInfo.message + "</div>", */
 				                    size: new naver.maps.Size(30, 30),
 				                    anchor: new naver.maps.Point(15, 30)
 				                };
@@ -393,7 +398,8 @@
 				    
 				});
 
-
+				markerInfo.marker = marker; // 마커 정보에 실제 마커 객체 저장
+				
 			    naver.maps.Event.addListener(marker, 'click', function() {
 			        
 			        // 편의성을 위한 클릭시 확대만 되게
@@ -403,6 +409,7 @@
 			        map.panTo(markerInfo.position);
 			        
 			        // 클릭한 마커의 위치의 키워드로 설정
+			       	//console.log(markerInfo.message);
 			        keyword = markerInfo.message;
 
 			        // 경계선 그리기 함수 호출
@@ -426,7 +433,20 @@
 			            marker.setMap(null);
 			        }
 			    });
+			    
+			    // 동 마커 표시 여부 설정
+			    dongMarkers.forEach(markerInfo => {
+			        const marker = markerInfo.marker;
 			
+			        if (currentZoom >= 15) {
+			            marker.setMap(null);
+			        } else {
+			            marker.setMap(map);
+			        }
+			    });
+			    
+			    console.log(stationMarkers);
+			    console.log(dongMarkers);
 			    // 기존 정보 창 닫기
 			    infoWindows.forEach(window => window.close());
 			});
@@ -576,7 +596,7 @@
 		            position: markerInfo.position,
 		            map: null, // 초기에는 지도에 표시하지 않음
 		            icon: {
-		            	content: `<div style="cursor:pointer;display:flex;align-items:center; white-space: nowrap;"><img src="images/station_icon.png" alt="Station Icon" style="width: 40px; height: 40px;"><span style="margin-left: 2px;">` + markerInfo.message + `</span></div>`,
+		            	content: `<div style="cursor:pointer;display:flex;align-items:center;"><img src="images/station_icon.png" alt="Station Icon" style="width: 40px; height: 40px;"><span style="margin-left: 2px;">` + markerInfo.message + `</span></div>`,
 		                anchor: new naver.maps.Point(20, 40) // 이미지의 중심점 설정
 		            
 		            }
@@ -1034,7 +1054,10 @@
 				    });
 				    $( "#l-deposit" ).text( manToEock($( "#l-deposit-slider" ).slider( "values", 0 )) +
 				      " - " + manToEock($( "#l-deposit-slider" ).slider( "values", 1 )) + "" );
-				  } );
+				  } ).mouseup(function(){
+				    	refreshable();
+			        	getSaleTypeSeq(filterKeywords)
+				    });
 				
 				// 월세가 m-deposit-slider
 				$( function() {
@@ -1052,7 +1075,10 @@
 				    });
 				    $( "#m-deposit" ).text( manToEock($( "#m-deposit-slider" ).slider( "values", 0 )) +
 				      " - " + manToEock($( "#m-deposit-slider" ).slider( "values", 1 )) + "" );
-				  } );
+				  } ).mouseup(function(){
+				    	refreshable();
+			        	getSaleTypeSeq(filterKeywords)
+				    });
 				
 				
 				// 월세 monthly-fee-slider
@@ -1071,25 +1097,31 @@
 				    });
 				    $( "#monthly-fee" ).text( manToEock($( "#monthly-fee-slider" ).slider( "values", 0 )) +
 				      " - " + manToEock($( "#monthly-fee-slider" ).slider( "values", 1 )) + "" );
-				  } );
+				  } ).mouseup(function(){
+				    	refreshable();
+			        	getSaleTypeSeq(filterKeywords)
+				    });
 				
 				// 매물가 price-slider
 				$( function() {
-				    $( "#price-slider" ).slider({
-				      range: true,
-				      min: 0,
-				      max: 150000,
-				      step: 1500,
-				      values: [ 0, 150000 ],
-				      slide: function( event, ui ) {
-				        $( "#price" ).text( manToEock(ui.values[ 0 ]) + " - " + manToEock(ui.values[ 1 ]) + "");
-				      	refreshFilterKeywords();
-				        console.log(filterKeywords);
-				      }
-				    });
+					$( "#price-slider" ).slider({
+						range: true,
+						min: 0,
+						max: 150000,
+						step: 1500,
+						values: [ 0, 150000 ],
+						slide: function( event, ui ) {
+				        	$( "#price" ).text( manToEock(ui.values[ 0 ]) + " - " + manToEock(ui.values[ 1 ]) + "");
+				      		refreshFilterKeywords();
+				        	console.log(filterKeywords);
+				      	}
+					});
 				    $( "#price" ).text( manToEock($( "#price-slider" ).slider( "values", 0 )) +
-				      " - " + manToEock($( "#price-slider" ).slider( "values", 1 )) + "" );
-				  } );
+				   		" - " + manToEock($( "#price-slider" ).slider( "values", 1 )) + "" );
+				  	}).mouseup(function(){
+				    	refreshable();
+			        	getSaleTypeSeq(filterKeywords)
+				    });
 				
 				// 통근시간 commute-slider
 				$( function() {
@@ -1159,11 +1191,6 @@
 
 						//console.log(filterKeywords);
 					}
-				$(document).ready(function(){
-					//filterKeywords.station = document.getElementById( "station-autocomplete" ).value; 
-					//filterKeywords.commuteWay = document.querySelector( 'input[name="commuteWay"]:checked' ).value; 
-					//console.log(cpage);
-				});
 				
 				// house_type 필터 만들기
 				// offer_type 필터 만들기 
@@ -1182,15 +1209,6 @@
 				
 				function refreshable() {
 					refreshFilterKeywords();
-					//console.log(filterKeywords);
-					//changedArr = filteringList(saleJsonArr);
-					/*changedArr = saleJsonArr.filter(item => {
-			   			return (item.house_type === 'at' && filterKeywords.at) ||
-							(item.house_type === 'op' && filterKeywords.op) ||
-							(item.house_type === 'sh' && filterKeywords.sh) ||
-							(item.house_type === 'or' && filterKeywords.or);
-						})
-					console.log(saleJsonArr.length);*/
 				}
 				
 				// 오피스텔 체크박스 이벤트
@@ -1203,24 +1221,6 @@
 			            // 해제되었을 때의 동작
 			            console.log("오피스텔이 해제되었습니다.");
 			        }
-					/* refreshable();
-					let house_type_list = [];
-					if( filterKeywords.at ){
-						house_type_list.push("at");
-					}
-					if( filterKeywords.op ){
-						house_type_list.push("op");
-					}
-					if( filterKeywords.sh ){
-						house_type_list.push("sh");
-					}
-					if( filterKeywords.or ){
-						house_type_list.push("or");
-					}
-					//console.log(house_type_list);
-					searchSaleSeq(house_type_list);
-					//console.log(this);
-					//console.log(right); */
 			    });
 
 			    // 주택 체크박스 이벤트
@@ -1231,22 +1231,6 @@
 			        } else {
 			            console.log("주택이 해제되었습니다.");
 			        }
-					/* refreshable();
-					let house_type_list = [];
-					if( filterKeywords.at ){
-						house_type_list.push("at");
-					}
-					if( filterKeywords.op ){
-						house_type_list.push("op");
-					}
-					if( filterKeywords.sh ){
-						house_type_list.push("sh");
-					}
-					if( filterKeywords.or ){
-						house_type_list.push("or");
-					}
-					//console.log(house_type_list);
-					searchSaleSeq(house_type_list); */
 			    });
 
 			    // 원룸 체크박스 이벤트
@@ -1298,15 +1282,6 @@
 						//console.log(house_type_list);
 						getHouseTypeSeq(house_type_list);
 			        }
-			      	// let house_type_list = [];
-			        //console.log($("[id^=houseType]:checked"));
-					/*
-			        $("[id^=houseType]:checked").forEach(checked => {
-			        	console.log(checked);
-			        	house_type_list = checked;
-			        	console.log(house_type_list);
-			        });
-			        */
 			    });
 			    
 				// 모든 거래 유형 체크박스의 변경 이벤트
@@ -1356,6 +1331,7 @@
 			            $("#pSlider").hide();
 			        }
 			    });
+			    
 
 
 			    /*
